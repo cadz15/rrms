@@ -1,0 +1,36 @@
+version: "3.0"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 8000:80
+    depends_on:
+      - db
+    networks:
+      - rrms-app
+
+  db:
+    image: mysql:8.0.34
+    platform: linux/amd64
+    ports:
+      - 3306:3306
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD:-password}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE:-rrms_db}'
+      MYSQL_USER: '${DB_USERNAME:-dbuser}'
+      MYSQL_PASSWORD: '${DB_PASSWORD:-password}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    networks:
+      - rrms-app
+
+networks:
+  rrms-app:
+    driver: bridge
