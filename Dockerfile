@@ -35,8 +35,7 @@ RUN if [ -d "/var/www/html/bootstrap/cache"]; then chown -R www-data:www-data /v
 RUN useradd -G www-data,root -u 100 -d /home/devuser devuser
 
 RUN mkdir -p /home/devuser/.composer && \
-    chown -R devuser:devuser /home/devuser && \
-    chown -R devuser:devuser /var/www/html
+    chown -R devuser:devuser /home/devuser /var/www/html
 
 RUN a2enmod rewrite headers
 
