@@ -39,4 +39,4 @@ RUN mkdir -p /home/devuser/.composer && \
 
 RUN a2enmod rewrite headers
 
-ENTRYPOINT [ "start-container.sh" ]
+ENTRYPOINT [ "./start-container.sh" ]
