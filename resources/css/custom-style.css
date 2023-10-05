@@ -1,0 +1,22 @@
+/* Modified Sneat */
+
+  
+.app-brand {
+    height: 64px;
+    margin-top: 12px;
+}
+
+.app-brand-logo img {
+    width: 3rem;
+    height: 3rem;
+}
+
+.app-brand-text {
+    font-size: 1.75rem;
+    letter-spacing: -0.5px;
+    text-transform: capitalize;
+}
+
+.authentication-wrapper {
+    padding: 0 !important;
+}
