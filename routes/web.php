@@ -16,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('requestor/register', [RequestorController::class, 'store'])->name('requestor.store');
+Route::get('requestor/index', [RequestorController::class, 'index'])->name('requestor.index');
