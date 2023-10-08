@@ -34,7 +34,7 @@
 
                     <form id="formAuthentication" class="mb-3 fv-plugins-bootstrap5 fv-plugins-framework" action="index.html" method="POST" novalidate="novalidate">
                         <div class="mb-3 fv-plugins-icon-container">
-                            <label for="email" class="form-label">Email or Username</label>
+                            <label for="email" class="form-label">Username</label>
                             <input type="text" class="form-control" id="email" name="email-username" placeholder="Enter your email or username" autofocus="">
                             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                         </div>
