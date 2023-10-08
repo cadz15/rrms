@@ -9,7 +9,7 @@
             <span class="app-brand-text menu-text fw-bolder ms-2">RRMS</span>
         </a>
 
-        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
               <i class="bx bx-chevron-left bx-sm align-middle"></i>
             </a>
     </div>
@@ -31,7 +31,7 @@
         </li>
 
         <li class="menu-item">
-            <a href="pages" class="menu-link">
+            <a href="#" class="menu-link">
             <i class="menu-icon tf-icons bx bx-home-circle"></i>
             <div data-i18n="Analytics">Menu Link</div>
             </a>
@@ -51,7 +51,7 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="pages" class="menu-link">
                         <div class="text-truncate" data-i18n="Sub Nav 1">Sub Nav 1</div>
                     </a>
                 </li>

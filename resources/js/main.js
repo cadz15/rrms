@@ -80,13 +80,14 @@ let menu, animate;
     let menu_items = document.querySelector("#sidebar-nav").getElementsByTagName("a");
     for (let i = 0, len = menu_items.length; i < len; i++) {
 
-      console.log(menu_items[i].getAttribute("href").indexOf(current_location), current_location);
       if (menu_items[i].getAttribute("href").indexOf(current_location) !== -1) {
-        if(menu_items[i].parentNode.className === "menu-sub") {
-          console.log(menu_items[i].getAttribute("href"));
+        if(menu_items[i].parentNode.parentNode.className === "menu-sub") {
           // if sub menu
-          menu_items[i].parentNode.parentNode.classList.add("active");
-          menu_items[i].parentNode.parentNode.classList.add("open");
+          menu_items[i].parentNode.parentNode.parentNode.classList.add("active");
+          menu_items[i].parentNode.parentNode.parentNode.classList.add("open");
+
+          // self active          
+          menu_items[i].parentNode.classList.add("active");
         }else {
           // if menu
           menu_items[i].parentNode.classList.add("active");
