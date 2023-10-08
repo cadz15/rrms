@@ -21,6 +21,11 @@ Route::get('/test', function () {
     return view('home');
 });
 
+Route::get('/requestor', function() {
+
+    return view('requestor');
+});
+
 Route::get('/pages', function () {
     return view('home');
 });
