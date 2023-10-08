@@ -34,7 +34,7 @@
 
                     <form id="formAuthentication" class="mb-3 fv-plugins-bootstrap5 fv-plugins-framework" action="index.html" method="POST" novalidate="novalidate">
                         <div class="mb-3 fv-plugins-icon-container">
-                            <label for="email" class="form-label">Email or Username</label>
+                            <label for="email" class="form-label">Username</label>
                             <input type="text" class="form-control" id="email" name="email-username" placeholder="Enter your email or username" autofocus="">
                             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                         </div>
@@ -45,9 +45,9 @@
                                     <small>Forgot Password?</small>
                                 </a>
                             </div>
-                            <div class="input-group input-group-merge has-validation">
+                            <div class="form-group has-validation">
                                 <input type="password" id="password" class="form-control" name="password" placeholder="············" aria-describedby="password">
-                                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                <!-- <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span> -->
                             </div>
                             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                         </div>

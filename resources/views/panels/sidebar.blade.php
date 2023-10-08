@@ -44,13 +44,13 @@
             </a>
         </li>
 
-        <li class="menu-item active open">
+        <li class="menu-item">
             <a href="#" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div class="text-truncate" data-i18n="DropDown Nav">DropDown Nav</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item active">
+                <li class="menu-item">
                     <a href="#" class="menu-link">
                         <div class="text-truncate" data-i18n="Sub Nav 1">Sub Nav 1</div>
                     </a>
