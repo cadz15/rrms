@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\RequestApiController;
+use App\Http\Controllers\Api\StudentApiController;
+use App\Http\Controllers\RequestorAuthApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 Route::prefix('v1')->group(function () {
     Route::prefix('requestor')->group(function () {
-        Route::post('login', [AuthController::class, 'requestorLogin']);
+        Route::post('login', [RequestorAuthApiController::class, 'login']);
+        Route::post('register', [StudentApiController::class, 'store']);
+
+        Route::middleware('api')->group(function () {
+            Route::apiResource('requests', RequestApiController::class);
+        });
     });
 });

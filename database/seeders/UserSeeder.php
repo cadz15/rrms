@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Enums\RoleEnum;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -30,7 +29,7 @@ class UserSeeder extends Seeder
                 'name' => RoleEnum::STUDENT,
                 'display_name' => RoleEnum::STUDENT->getDisplayName(),
                 'description' => (RoleEnum::STUDENT)->getDescription(),
-            ]
+            ],
         ];
 
         $roles = Role::factory(3)
