@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\RequestApiController;
 use App\Http\Controllers\Api\StudentApiController;
-use App\Http\Controllers\RequestorAuthApiController;
+use App\Http\Controllers\Api\RequestorAuthApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
