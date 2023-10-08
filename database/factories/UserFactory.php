@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -21,8 +20,7 @@ class UserFactory extends Factory
         return [
             'username' => fake()->name(),
             'password' => bcrypt('1234'),
-            'role_id' => Role::factory()
+            'role_id' => Role::factory(),
         ];
     }
-
 }

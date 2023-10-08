@@ -2,17 +2,17 @@
 
 namespace App\Rules;
 
+use App\Models\Student;
 use Illuminate\Contracts\Validation\Rule;
-use App\Models\Student; 
 
 class UniqueStudentNumberRule implements Rule
 {
     public function passes($attribute, $value)
     {
-        
-        if (!empty($value)) {
-           
-            return !Student::where('student_number', $value)->exists();
+
+        if (! empty($value)) {
+
+            return ! Student::where('student_number', $value)->exists();
         }
 
         return true;

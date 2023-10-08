@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use App\Enums\ResponseTypeEnum;
 use App\Enums\RoleEnum;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService
@@ -16,7 +16,7 @@ class AuthService
      * @param  string  $password
      * @param  array<RoleEnum>  $role
      */
-    public static function authenticate(?string $username, ?string $password, array $roles)
+    public static function authenticate(?string $username, ?string $password, array $roles, ResponseTypeEnum $responseType = ResponseTypeEnum::WEB)
     {
         $user = User::with('role')->where('username', $username)->whereHas('role', function ($query) use ($roles) {
             $query->whereIn('name', $roles);
@@ -28,8 +28,8 @@ class AuthService
 
         $auth = auth();
 
-        if($user->role->name == RoleEnum::STUDENT->value) {
-           $auth = $auth->guard('api');
+        if ($responseType == ResponseTypeEnum::API) {
+            $auth = $auth->guard('api');
         }
 
         return $auth->login($user);
