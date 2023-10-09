@@ -1,12 +1,12 @@
 @extends('layout.contentLayoutMaster')
 
-@section('title', 'Requestor')
+@section('title', 'Student | List')
 
 @section('content')
 
 
     <h5 class="py-3">
-        <span class="text-muted fw-light">Requestor /</span> List
+        <span class="text-muted fw-light">Student /</span> List
     </h5>
 
     <div class="row">
@@ -14,7 +14,7 @@
         <div class="col-12 mt-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Requestor List</h5>
+                    <h5 class="card-title">Student List</h5>
                 </div>
                 <div class="table-responsive">
 

@@ -26,6 +26,21 @@ Route::get('/requestor', function() {
     return view('requestor');
 });
 
+Route::group(['prefix' => 'student'], function() {
+    Route::get('/information', function() {
+
+        return view('student.information-form');
+    });
+    Route::get('/create', function() {
+
+        return view('student.information-form');
+    });
+    Route::get('/list', function() {
+
+        return view('student.list');
+    });
+});
+
 Route::get('/pages', function () {
     return view('home');
 });
