@@ -32,7 +32,8 @@
                     <h4 class="mb-2">Welcome to RRMS! 👋</h4>
                     <p class="mb-4">Please sign-in to your account</p>
 
-                    <form id="formAuthentication" class="mb-3 fv-plugins-bootstrap5 fv-plugins-framework" action="index.html" method="POST" novalidate="novalidate">
+                    <form id="formAuthentication" class="mb-3 fv-plugins-bootstrap5 fv-plugins-framework" action="{{route('auth.login')}}" method="POST" novalidate="novalidate">
+                        @csrf
                         <div class="mb-3 fv-plugins-icon-container">
                             <label for="email" class="form-label">Username</label>
                             <input type="text" class="form-control" id="email" name="email-username" placeholder="Enter your email or username" autofocus="">

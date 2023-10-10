@@ -30,6 +30,15 @@ Route::get('/login', function () {
     return view('auth.login');
 });
 
-Route::middleware('guest')->group(function () {
-    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
-});
+  Route::middleware('guest')->group(function () {
+      Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+ });
+
+ Route::middleware('auth')->group(function () {
+    Route::post('/test', [AuthController::class, 'test'])->name('home.test');
+ });
+//  Route::group(['middleware' => 'web'], function () {
+//     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+// });
+//Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+//Route::post('/login', 'AuthController@login')->middleware('web');
