@@ -38,6 +38,13 @@
         </li>
 
         <li class="menu-item">
+            <a href="/requests" class="menu-link">
+                <i class='menu-icon bx bx-receipt'></i>
+                <div data-i18n="Request">Request</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
             <a href="#" class="menu-link menu-toggle">                
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div class="text-truncate" data-i18n="Students">

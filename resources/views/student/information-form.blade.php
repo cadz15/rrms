@@ -19,7 +19,7 @@
                     <div class="col-lg-4 col-md-12">
 
                         <div class="form-group">
-                            <label for="id-number">ID Number</label>
+                            <label for="id-number">ID Number <span class="text-danger">*</span></label>
                             <input type="text" name="id-number" id="id-number" class="form-control" placeholder="Student's ID Number">
                             <div class="invalid-feedback">
                                 This field is required.
@@ -37,7 +37,7 @@
                         <div class="col-lg-4 col-md-12">
     
                             <div class="form-group">
-                                <label for="last-name">Last Name</label>
+                                <label for="last-name">Last Name <span class="text-danger">*</span></label>
                                 <input type="text" name="last-name" id="last-name" class="form-control" placeholder="Last Name">
                                 <div class="invalid-feedback">
                                     This field is required.
@@ -48,7 +48,7 @@
                         <div class="col-lg-4 col-md-12">
     
                             <div class="form-group">
-                                <label for="first-name">First Name</label>
+                                <label for="first-name">First Name <span class="text-danger">*</span></label>
                                 <input type="text" name="first-name" id="first-name" class="form-control" placeholder="First Name">
                                 <div class="invalid-feedback">
                                     This field is required.
@@ -81,7 +81,7 @@
                         <div class="col-lg-4 col-md-12">
 
                             <div class="form-group">
-                                <label for="sex">Sex</label>
+                                <label for="sex">Sex <span class="text-danger">*</span></label>
                                 <select name="sex" id="sex" class="form-control">
                                     <option value="">--Select--</option>
                                     <option value="male">Male</option>
@@ -96,7 +96,7 @@
                         <div class="col-lg-4 col-md-12">
 
                             <div class="form-group">
-                                <label for="contact-number">Contact #</label>
+                                <label for="contact-number">Contact # <span class="text-danger">*</span></label>
                                 <input type="text" name="contact-number" id="contact-number" class="form-control" placeholder="Contact Number">
                                 <div class="invalid-feedback">
                                     This field is required.
@@ -107,7 +107,7 @@
                         <div class="col-lg-4 col-md-12">
 
                             <div class="form-group">
-                                <label for="birthday">Birthday</label>
+                                <label for="birthday">Birthday <span class="text-danger">*</span></label>
                                 <input type="date" name="birthday" id="birthday" class="form-control" placeholder="Birthday">
                                 <div class="invalid-feedback">
                                     This field is required.
@@ -118,7 +118,7 @@
                         <div class="col-lg-8 col-md-12">
 
                             <div class="form-group">
-                                <label for="birth-place">Birth Place</label>
+                                <label for="birth-place">Birth Place <span class="text-danger">*</span></label>
                                 <input type="text" name="birth-place" id="birth-place" class="form-control" placeholder="Birth Place">
                                 <div class="invalid-feedback">
                                     This field is required.
@@ -129,7 +129,7 @@
                         <div class="col-lg-12 col-md-12">
 
                             <div class="form-group">
-                                <label for="Addrress">Address</label>
+                                <label for="Addrress">Address <span class="text-danger">*</span></label>
                                 <input type="text" name="Addrress" id="Addrress" class="form-control" placeholder="Address">
                                 <div class="invalid-feedback">
                                     This field is required.
@@ -146,7 +146,7 @@
                         <div class="col-lg-4 col-md-12">
 
                             <div class="form-group">
-                                <label for="degree">Degree / Course</label>
+                                <label for="degree">Degree / Course <span class="text-danger">*</span></label>
                                 <select name="degree" id="degree" class="form-control">
                                     <option value="">--Select Degree/Course--</option>
                                 </select>
@@ -159,7 +159,7 @@
                         <div class="col-lg-4 col-md-12">
 
                             <div class="form-group">
-                                <label for="major">Major</label>
+                                <label for="major">Major <span class="text-danger">*</span></label>
                                 <select name="major" id="major" class="form-control">
                                     <option value="">--Select Major--</option>
                                 </select>
@@ -172,7 +172,7 @@
                         <div class="col-lg-4 col-md-12">
 
                             <div class="form-group">
-                                <label for="date-enrolled">Date Enrolled</label>
+                                <label for="date-enrolled">Date Enrolled <span class="text-danger">*</span></label>
                                 <input type="date" name="date-enrolled" id="date-enrolled" class="form-control">
                                 <div class="invalid-feedback">
                                     This field is required.
@@ -183,7 +183,7 @@
                         <div class="col-lg-4 col-md-12">
 
                             <div class="form-group">
-                                <label for="year-level">Year Level</label>
+                                <label for="year-level">Year Level <span class="text-danger">*</span></label>
                                 <input type="number" name="year-level" id="year-level" class="form-control" placeholder="Year Level">
                                 <div class="invalid-feedback">
                                     This field is required.

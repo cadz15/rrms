@@ -26,6 +26,19 @@ Route::get('/requestor', function() {
     return view('requestor');
 });
 
+Route::group(['prefix' => 'requests'], function() {
+    Route::get('/', function() {
+
+        return view('requestor.list');
+    });
+
+    Route::get('/history/{slug}', function($slug) {
+        // we can use id here instead of slug. For this example we use slug for page title and breadcrumbs
+
+        return view('requestor.request-timeline', compact('slug'));
+    });
+});
+
 Route::group(['prefix' => 'student'], function() {
     Route::get('/information', function() {
 
