@@ -75,13 +75,17 @@ let menu, animate;
 
   // Add active to selected link  
   const navActiveLink = () => {
-    let current_location = window.location.pathname.split('/')[1];
+    let current_location = window.location.pathname;
     if (current_location === "") return;
     let menu_items = document.querySelector("#sidebar-nav").getElementsByTagName("a");
+
     for (let i = 0, len = menu_items.length; i < len; i++) {
 
-      if (menu_items[i].getAttribute("href").indexOf(current_location) !== -1) {
+      // if (menu_items[i].getAttribute("href").indexOf(current_location) !== -1) {
+      if (current_location.indexOf(menu_items[i].getAttribute("href")) !== -1) {
+
         if(menu_items[i].parentNode.parentNode.className === "menu-sub") {
+          
           // if sub menu
           menu_items[i].parentNode.parentNode.parentNode.classList.add("active");
           menu_items[i].parentNode.parentNode.parentNode.classList.add("open");
