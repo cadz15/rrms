@@ -8,25 +8,24 @@ use App\Services\AuthService;
 use App\Enums\RoleEnum;
 use App\Enums\ResponseTypeEnum;
 use Illuminate\Http\Response;
-
+use App\Models\User;
 
 class AuthController extends Controller
 {
+    
     public function login(Request $request)
-    {
-        $user = AuthService::authenticate($request->username, $request->password, [RoleEnum::ADMIN, RoleEnum::REGISTRAR, RoleEnum::STUDENT]);
-        if($user == $request->username && $request->password)
-        {
-            return redirect(route('home.test'));
-        }
-        else 
-        { 
-        return response()->json([
-            'message' => 'Unable to login, invalid credentials provided.',
-        ]);
-        return redirect(route('auth.login'));
-            }
+{
+    $credentials = $request->only(['username', 'password']);
+    $authenticated = AuthService::authenticate($request->username, $request->password, [RoleEnum::ADMIN, RoleEnum::REGISTRAR, RoleEnum::STUDENT, ResponseTypeEnum::WEB]);
+    
+    if ($authenticated) {
+        return redirect()->route('home.test');
     }
     
+    return back()->withErrors([
+        'error' => 'Invalid Credentials'
+    ]);
+    
+}
     
     }

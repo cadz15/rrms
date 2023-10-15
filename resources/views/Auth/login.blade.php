@@ -35,8 +35,8 @@
                     <form id="formAuthentication" class="mb-3 fv-plugins-bootstrap5 fv-plugins-framework" action="{{route('auth.login')}}" method="POST" novalidate="novalidate">
                         @csrf
                         <div class="mb-3 fv-plugins-icon-container">
-                            <label for="email" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="email" name="email-username" placeholder="Enter your email or username" autofocus="">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your email or username" autofocus="">
                             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                         </div>
                         <div class="mb-3 form-password-toggle fv-plugins-icon-container">
