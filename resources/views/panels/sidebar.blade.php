@@ -9,7 +9,7 @@
             <span class="app-brand-text menu-text fw-bolder ms-2">RRMS</span>
         </a>
 
-        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
               <i class="bx bx-chevron-left bx-sm align-middle"></i>
             </a>
     </div>
@@ -31,17 +31,38 @@
         </li>
 
         <li class="menu-item">
-            <a href="pages" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-            <div data-i18n="Analytics">Menu Link</div>
+            <a href="/requestor" class="menu-link">
+                <i class='menu-icon bx bx-user-voice'></i>
+                <div data-i18n="Requestor">Requestor</div>
             </a>
         </li>
 
         <li class="menu-item">
-            <a href="users" class="menu-link">
-            <i class="menu-icon tf-icons bx bxs-user-detail"></i>
-            <div data-i18n="Users">Users</div>
+            <a href="/requests" class="menu-link">
+                <i class='menu-icon bx bx-receipt'></i>
+                <div data-i18n="Request">Request</div>
             </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="#" class="menu-link menu-toggle">                
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div class="text-truncate" data-i18n="Students">
+                    Students
+                </div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="/student/create" class="menu-link">
+                        <div class="text-truncate" data-i18n="Add Student">Add Student</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/student/list" class="menu-link">
+                        <div class="text-truncate" data-i18n="List">List</div>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <li class="menu-item">
@@ -51,7 +72,7 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="pages" class="menu-link">
                         <div class="text-truncate" data-i18n="Sub Nav 1">Sub Nav 1</div>
                     </a>
                 </li>
