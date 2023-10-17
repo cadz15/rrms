@@ -26,12 +26,6 @@ class AuthService
             return false;
         }
 
-        $auth = auth();
-
-        if ($responseType == ResponseTypeEnum::API) {
-            $auth = $auth->guard('api');
-        }
-
-        return $auth->login($user);
+        return auth($responseType->value)->login($user);
     }
 }

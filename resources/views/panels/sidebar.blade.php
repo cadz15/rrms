@@ -20,7 +20,7 @@
     <ul class="menu-inner py-1" id="sidebar-nav">
         <!-- Dashboard -->
         <li class="menu-item">
-            <a href="/test" class="menu-link">
+            <a href="{{route('dashboard')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
@@ -45,7 +45,7 @@
         </li>
 
         <li class="menu-item">
-            <a href="#" class="menu-link menu-toggle">                
+            <a href="#" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div class="text-truncate" data-i18n="Students">
                     Students
