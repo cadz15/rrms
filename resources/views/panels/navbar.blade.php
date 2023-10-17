@@ -9,7 +9,7 @@
     </div>
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-        
+
         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
             <li class="nav-item dropdown-style-switcher dropdown me-2 me-xl-0">
@@ -34,7 +34,7 @@
                 </li>
                 </ul>
             </li>
-        
+
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
                 <a class="nav-link dropdown-toggle hide-arrow nav-icon" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                     <i class="bx bx-bell bx-sm"></i>
@@ -101,7 +101,7 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="auth-login-basic.html">
+                        <a class="dropdown-item" href="{{route('logout')}}">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Log Out</span>
                         </a>

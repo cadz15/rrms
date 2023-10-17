@@ -37,7 +37,11 @@
                         <div class="mb-3 fv-plugins-icon-container">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" id="username" name="username" placeholder="Enter your email or username" autofocus="">
-                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                @error('username')
+                                    {{$message}}
+                                @enderror
+                            </div>
                         </div>
                         <div class="mb-3 form-password-toggle fv-plugins-icon-container">
                             <div class="d-flex justify-content-between">

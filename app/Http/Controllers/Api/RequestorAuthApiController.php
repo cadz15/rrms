@@ -23,7 +23,7 @@ class RequestorAuthApiController extends ApiController
 
         return $this->makeResponse(Response::HTTP_OK, [
             'token' => $token,
-            'user' => auth('api')->user()
+            'user' => auth('api')->user(),
         ]);
     }
 }

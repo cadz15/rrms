@@ -1,31 +1,44 @@
 <?php
 
 namespace App\Http\Controllers\Web;
-use App\Http\Controllers\Web\AuthController;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Services\AuthService;
-use App\Enums\RoleEnum;
+
 use App\Enums\ResponseTypeEnum;
-use Illuminate\Http\Response;
-use App\Models\User;
+use App\Enums\RoleEnum;
+use App\Http\Controllers\Controller;
+use App\Services\AuthService;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    
+    public function index()
+    {
+        return view('auth.login');
+    }
+
     public function login(Request $request)
-{
-    $credentials = $request->only(['username', 'password']);
-    $authenticated = AuthService::authenticate($request->username, $request->password, [RoleEnum::ADMIN, RoleEnum::REGISTRAR, RoleEnum::STUDENT, ResponseTypeEnum::WEB]);
-    
-    if ($authenticated) {
-        return redirect()->route('home.test');
+    {
+        AuthService::authenticate($request->username, $request->password, [RoleEnum::ADMIN, RoleEnum::REGISTRAR, RoleEnum::STUDENT], ResponseTypeEnum::WEB);
+
+        if (! auth()->check()) {
+            return back()->withErrors([
+                'username' => 'Invalid credentials provided.',
+            ]);
+        }
+
+        return redirect()->intended(route('dashboard'));
     }
-    
-    return back()->withErrors([
-        'error' => 'Invalid Credentials'
-    ]);
-    
+
+    public function logout(Request $request)
+    {
+        if (auth()->check()) {
+            auth()->logout();
+            $request->session()->invalidate();
+
+            $request->session()->regenerateToken();
+
+            return redirect(route('login'));
+        }
+
+        return back();
+    }
 }
-    
-    }
