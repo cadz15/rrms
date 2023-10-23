@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Enums\RoleEnum;
+use App\Models\Employee;
 use App\Models\Role;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +16,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        Role::truncate();
+        User::truncate();
+        Student::truncate();
+        Employee::truncate();
+
         $roleData = [
             [
                 'name' => RoleEnum::ADMIN,
@@ -36,8 +43,27 @@ class UserSeeder extends Seeder
             ->sequence(fn ($sequence) => $roleData[$sequence->index])
             ->create();
 
-        User::factory(3)
+        $users = User::factory(3)
             ->sequence(fn ($sequence) => ['username' => $roles[$sequence->index]->name, 'role_id' => $roles[$sequence->index]->id])
             ->create();
+
+        Student::factory()->create([
+            'user_id' => $users->toQuery()->whereHas('role', fn ($query) => $query->where('name', RoleEnum::STUDENT))->first()->id,
+            'is_approved' => true,
+            'approved_by' => $users->toQuery()->whereHas('role', fn ($query) => $query->where('name', RoleEnum::ADMIN))->first()->id,
+        ]);
+
+        Employee::factory(2)
+            ->sequence(function ($sequence) use ($users) {
+                if ($sequence->index == 1) {
+                    return [
+                        'user_id' => $users->toQuery()->whereHas('role', fn ($query) => $query->where('name', RoleEnum::REGISTRAR))->first()->id,
+                    ];
+                }
+
+                return [
+                    'user_id' => $users->toQuery()->whereHas('role', fn ($query) => $query->where('name', RoleEnum::ADMIN))->first()->id,
+                ];
+            })->create();
     }
 }
