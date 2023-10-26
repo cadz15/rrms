@@ -43,51 +43,30 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1010230-1</td>
-                                <td>Dela Cruz, Juan Jr.</td>
-                                <td>BSCrim</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-label-success">Yes</span>
-                                </td>
-                                <td>
-                                    <a href="/student/information" class="text-primary fs-5">
-                                        <i class='bx bx-show'></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Malapsan, Tangol</td>
-                                <td>BSHRTM</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-label-danger">No</span>
-                                </td>
-                                <td>
-                                    <a href="/student/information" class="text-primary fs-5">
-                                        <i class='bx bx-show'></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Juan Dela Cruz</td>
-                                <td>20</td>
-                                <td>2030</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-label-danger">No</span>
-                                </td>
-                                <td>
-                                    <a href="/student/information" class="text-primary fs-5">
-
-                                        <i class='bx bx-show'></i>
-                                    </a>
-                                </td>
-                            </tr>
+                            @forelse ($requestors as $requestor)
+                                <tr>
+                                    <td>{{ $requestor->student_number }}</td>
+                                    <td>{{ $requestor->fullName5() }}</td>
+                                    <td>{{ $requestor->degree }}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-label-success">{{ $requestor->prettyTextIsGraduated() }}</span>
+                                    </td>
+                                    <td>
+                                        <a href="/student/information" class="text-primary fs-5">
+                                            <i class='bx bx-show'></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5">No Record</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
 
                     <div class="px-3 pt-3 float-end">
-                        <nav aria-label="Page navigation example">
+                        <!-- <nav aria-label="Page navigation example">
                             <ul class="pagination">
                                 <li class="page-item">
                                 <a class="page-link" href="#" aria-label="Previous">
@@ -103,13 +82,15 @@
                                 </a>
                                 </li>
                             </ul>
-                        </nav>
+                        </nav> -->
+
+                        {{ $requestors->links() }}
                     </div>
                 </div>
             </div>
         </div>
 
-        
+
     </div>
 
 @endsection

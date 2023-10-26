@@ -31,7 +31,7 @@
         </li>
 
         <li class="menu-item">
-            <a href="/requestor" class="menu-link">
+            <a href="{{ route('requestors.list') }}" class="menu-link">
                 <i class='menu-icon bx bx-user-voice'></i>
                 <div data-i18n="Requestor">Requestor</div>
             </a>
