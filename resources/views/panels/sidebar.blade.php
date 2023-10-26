@@ -31,7 +31,7 @@
         </li>
 
         <li class="menu-item">
-            <a href="/requestor" class="menu-link">
+            <a href="/requestors" class="menu-link">
                 <i class='menu-icon bx bx-user-voice'></i>
                 <div data-i18n="Requestor">Requestor</div>
             </a>
@@ -65,7 +65,7 @@
             </ul>
         </li>
 
-        <li class="menu-item">
+        <!-- <li class="menu-item">
             <a href="#" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div class="text-truncate" data-i18n="Students">
@@ -84,7 +84,7 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> -->
 
         <li class="menu-item">
             <a href="#" class="menu-link menu-toggle">
