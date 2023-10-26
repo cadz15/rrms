@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\RequestorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,18 +26,16 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-});
-
-
-Route::get('/requestors', function() {
-
-    return view('requestor');
+    Route::prefix('requestors')->controller(RequestorController::class)->group(function () {
+        Route::get('/', 'index')->name('requestors.list');
+        Route::get('/{student}', 'show')->name('requestors.show');
+    });
 });
 
 Route::group(['prefix' => 'requests'], function() {
     Route::get('/', function() {
 
-        return view('requestor.list');
+        return view('requests.list');
     });
 
     Route::get('/history/{slug}', function($slug) {
@@ -68,8 +67,4 @@ Route::group(['prefix' => 'student'], function() {
 
 Route::get('/pages', function () {
     return view('home');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/test', [AuthController::class, 'test'])->name('home.test');
 });
