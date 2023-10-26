@@ -26,39 +26,43 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
     Route::prefix('requestors')->controller(RequestorController::class)->group(function () {
         Route::get('/', 'index')->name('requestors.list');
         Route::get('/{student}', 'show')->name('requestors.show');
     });
 });
 
-Route::group(['prefix' => 'requests'], function () {
-    Route::get('/', function () {
+Route::group(['prefix' => 'requests'], function() {
+    Route::get('/', function() {
 
         return view('requests.list');
     });
 
-    Route::get('/history/{slug}', function ($slug) {
+    Route::get('/history/{slug}', function($slug) {
         // we can use id here instead of slug. For this example we use slug for page title and breadcrumbs
 
         return view('requestor.request-timeline', compact('slug'));
     });
 });
 
-Route::group(['prefix' => 'student'], function () {
-    Route::get('/information', function () {
+Route::group(['prefix' => 'student'], function() {
+    Route::get('/information', function() {
 
         return view('student.information-form');
     });
-    Route::get('/create', function () {
+    Route::get('/create', function() {
 
-        return view('student.information-form');
+        return view('student.create-form');
     });
-    Route::get('/list', function () {
+    Route::get('/list', function() {
 
         return view('student.list');
     });
+
+    Route::get('/decline-student', function() {
+
+        return view('student.decline-student');
+    })->name('student.decline');
 });
 
 Route::get('/pages', function () {
