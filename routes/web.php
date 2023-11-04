@@ -68,3 +68,5 @@ Route::group(['prefix' => 'student'], function() {
 Route::get('/pages', function () {
     return view('home');
 });
+
+Route::get('/student/{id}', [RequestorController::class, 'showStudentForm'])->name('student.information');
