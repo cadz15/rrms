@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\RequestorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,23 +16,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('guest')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('login', 'index')->name('login');
+        Route::post('login', 'login')->name('auth.login');
+    });
 });
 
-Route::get('/test', function () {
-    return view('home');
-});
-
-Route::get('/requestor', function() {
-
-    return view('requestor');
+Route::middleware('auth')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::prefix('requestors')->controller(RequestorController::class)->group(function () {
+        Route::get('/', 'index')->name('requestors.list');
+        Route::get('/{student}', 'show')->name('requestors.show');
+    });
 });
 
 Route::group(['prefix' => 'requests'], function() {
     Route::get('/', function() {
 
-        return view('requestor.list');
+        return view('requests.list');
     });
 
     Route::get('/history/{slug}', function($slug) {
@@ -46,18 +52,19 @@ Route::group(['prefix' => 'student'], function() {
     });
     Route::get('/create', function() {
 
-        return view('student.information-form');
+        return view('student.create-form');
     });
     Route::get('/list', function() {
 
         return view('student.list');
     });
+
+    Route::get('/decline-student', function() {
+
+        return view('student.decline-student');
+    })->name('student.decline');
 });
 
 Route::get('/pages', function () {
     return view('home');
-});
-
-Route::get('/login', function () {
-    return view('auth.login');
 });

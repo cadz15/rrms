@@ -20,7 +20,7 @@
     <ul class="menu-inner py-1" id="sidebar-nav">
         <!-- Dashboard -->
         <li class="menu-item">
-            <a href="/test" class="menu-link">
+            <a href="{{route('dashboard')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
@@ -31,7 +31,7 @@
         </li>
 
         <li class="menu-item">
-            <a href="/requestor" class="menu-link">
+            <a href="{{ route('requestors.list') }}" class="menu-link">
                 <i class='menu-icon bx bx-user-voice'></i>
                 <div data-i18n="Requestor">Requestor</div>
             </a>
@@ -64,6 +64,27 @@
                 </li>
             </ul>
         </li>
+
+        <!-- <li class="menu-item">
+            <a href="#" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div class="text-truncate" data-i18n="Students">
+                    Students
+                </div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="/student/create" class="menu-link">
+                        <div class="text-truncate" data-i18n="Add Student">Add Student</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/student/list" class="menu-link">
+                        <div class="text-truncate" data-i18n="List">List</div>
+                    </a>
+                </li>
+            </ul>
+        </li> -->
 
         <li class="menu-item">
             <a href="#" class="menu-link menu-toggle">
