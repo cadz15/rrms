@@ -35,14 +35,13 @@ class RequestorController extends Controller
    
     public function showStudentForm($id)
     {
-    $student = Student::find($id); 
-     
-    if (!$student) {
+        $student = Student::find($id); 
         
-        abort(404); 
-    }
-    return view('student.information-form', ['student' => $student]);
-    return $student;
+        if (!$student) {
+            
+            abort(404); 
+        }
+        return view('student.information-form', ['student' => $student]);
     }
 
 }

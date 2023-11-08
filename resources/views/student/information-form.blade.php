@@ -1,121 +1,340 @@
-{{-- @extends('layout.contentLayoutMaster')
+ @extends('layout.contentLayoutMaster')
 
 @section('title', 'Student | Information Form')
 
-@section('content')
-    <h5 class="py-3">
-        <span class="text-muted fw-light">Student /</span> Information
-
-    </h5>
-
-    <x-form.information 
-        :data="$student"
-        formURL="http://localhost/information"
-        formTitle="Student Information"
-        cancelURL="{{ route('student.decline') }}"
-        cancelText="Decline"
-        :cancelVisible="true"
-    ></x-form.information>
-@endsection --}}
-@extends('layout.contentLayoutMaster')
-
-@section('title', 'Student | Information Form')
 
 @section('content')
-<div class="py-3">
-    <span class="text-muted fw-light">Student /</span> Information
-</div>
+<div class="col-12">
 
-<div class="row justify-content-center">
-    <div class="col-md-10" >
-        <form action="" method="post">
-           
-            <div class="mb-3">
-                <label for="studentNumber" class="form-label">Student Number:</label>
-                <input type="text" class="form-control" id="studentNumber" value="{{ $student->student_number }}" readonly>
+    <div class="card">       
+
+        <div class="card-body">
+
+            <h5 class="card-title mb-3">Requestor Information</h5>
+
+            <div class="col-lg-4 col-md-12">
+            
+                <div class="form-group">
+                    
+                    <label for="student_number">Student Number <span class="text-danger">*</span></label>
+                    <input type="text" 
+                        name="student_number" 
+                        id="student_number" 
+                        class="form-control {{ $errors->has('student_number') ? 'is-invalid' : '' }}"
+                        placeholder="Student's ID Number" 
+                        value="{{ $student->student_number }}"
+                    >
+                    <div class="invalid-feedback">
+                        This field is required and must be unique.
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label for="lastName" class="form-label">Last Name:</label>
-                <input type="text" class="form-control" id="lastName" value="{{ $student->last_name }}" readonly>
+            <div class="row mt-2 gy-2">
+                
+                <div class="divider">
+                    <div class="divider-text"><h6>Basic Information</h6></div>
+                </div>
+            
+
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="last_name">Last Name <span class="text-danger">*</span></label>
+                        <input type="text" 
+                            name="last_name" 
+                            id="last_name" 
+                            class="form-control  {{ $errors->has('last_name') ? 'is-invalid' : '' }}" 
+                            placeholder="Last Name"
+                            value="{{ $student->last_name }}"
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+                    
+                    <div class="form-group">
+                        <label for="first_name">First Name <span class="text-danger">*</span></label>
+                        <input type="text" 
+                            name="first_name" 
+                            id="first_name" 
+                            class="form-control  {{ $errors->has('first_name') ? 'is-invalid' : '' }}" 
+                            placeholder="First Name"
+                            value="{{ $student->first_name }}"
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="middle_name">Middle Name</label>
+                        <input type="text" 
+                            name="middle_name" 
+                            id="middle_name" 
+                            class="form-control  {{ $errors->has('middle_name') ? 'is-invalid' : '' }}" 
+                            placeholder="Middle Name"
+                            value="{{ $student->middle_name }}"
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="suffix">Suffix</label>
+                        <input type="text" 
+                            name="suffix" 
+                            id="suffix" 
+                            class="form-control  {{ $errors->has('suffix') ? 'is-invalid' : '' }}" 
+                            placeholder="ex. Jr. Sr. III"
+                            value="{{ $student->suffix }}"
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="sex">Sex <span class="text-danger">*</span></label>
+                        <select name="sex" id="sex" class="form-select  {{ $errors->has('sex') ? 'is-invalid' : '' }}">
+                            <option value="">--Select--</option>
+                            <option value="male"
+                            {{ $student->sex == "male" ? 'selected' : '' }}
+                            >
+                                Male
+                            </option>
+                            <option value="female"
+                            {{ $student->sex == "female" ? 'selected' : '' }}
+                            >
+                                Female
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="contact_number">Contact # <span class="text-danger">*</span></label>
+                        <input type="text" 
+                            name="contact_number" 
+                            id="contact_number" 
+                            class="form-control  {{ $errors->has('contact_number') ? 'is-invalid' : '' }}" 
+                            placeholder="Contact Number"
+                            value="{{ $student->contact_number }}"
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="birth_date">Birthday <span class="text-danger">*</span></label>
+                        <input type="date" 
+                            name="birth_date" 
+                            id="birth_date" 
+                            class="form-control  {{ $errors->has('birth_date') ? 'is-invalid' : '' }}" 
+                            placeholder="Birthday"
+                            value="{{ $student->birth_date }}"
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8 col-md-12">
+
+                    <div class="form-group">
+                        <label for="birth_place">Birth Place <span class="text-danger">*</span></label>
+                        <input type="text" 
+                            name="birth_place" 
+                            id="birth_place" 
+                            class="form-control  {{ $errors->has('birth_place') ? 'is-invalid' : '' }}" 
+                            placeholder="Birth Place"
+                            value="{{ $student->birth_place }}"
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12">
+
+                    <div class="form-group">
+                        <label for="address">Address <span class="text-danger">*</span></label>
+                        <input type="text" 
+                            name="address" 
+                            id="address" 
+                            class="form-control  {{ $errors->has('address') ? 'is-invalid' : '' }}" 
+                            placeholder="Address"
+                            value="{{ $student->address }}"
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="divider">
+                    <div class="divider-text"><h6>Education</h6></div>
+                </div>
+
+
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="degree">Degree / Course <span class="text-danger">*</span></label>
+                        <select name="degree" id="degree" class="form-select  {{ $errors->has('degree') ? 'is-invalid' : '' }}">
+                            <option value="">--Select Degree/Course--</option>
+                            @if(!empty($degrees))
+                                @foreach ($degrees as $degree)
+                                    <option value="{{ $degree['id'] }}"
+                                    @if($student->degree == $degree['id'])
+                                        selected="selected"
+                                    @endif
+                                    >
+                                        {{ $degree['name'] }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="major">Major <span class="text-danger">*</span></label>
+                        <select name="major" id="major" class="form-select  {{ $errors->has('major') ? 'is-invalid' : '' }}">
+                            <option value="">--Select Major--</option>
+                            @if(!empty($majors))
+                                @foreach ($majors as $major)
+                                    <option value="{{ $major['id'] }}"
+                                    @if($student->major == $major['id'])
+                                        selected="selected"
+                                    @endif
+                                    >
+                                        {{ $major['name'] }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="date_enrolled">Date Enrolled <span class="text-danger">*</span></label>
+                        <input type="date" 
+                            name="date_enrolled" 
+                            id="date_enrolled" 
+                            class="form-control  {{ $errors->has('date_enrolled') ? 'is-invalid' : '' }}"
+                            value="{{ $student->date_enrolled }}"
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="year_level">Year Level <span class="text-danger">*</span></label>
+                        <input type="number" 
+                            name="year_level" 
+                            id="year_level" 
+                            class="form-control  {{ $errors->has('year_level') ? 'is-invalid' : '' }}" 
+                            placeholder="Year Level"
+                            value="{{ $student->year_level }}"
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="is_graduated">Is Graduate</label>
+                        <select name="is_graduated" id="is_graduated" class="form-control  {{ $errors->has('is_graduated') ? 'is-invalid' : '' }}">
+                            <option 
+                                value="0"
+                                @if($student->is_graduated == 0)
+                                    selected="selected"
+                                @endif
+                            >
+                                No
+                            </option>
+                            <option 
+                                value="1"
+                                @if($student->is_graduated == 1)
+                                    selected="selected"
+                                @endif   
+                            >
+                                Yes                                    
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="col-lg-4 col-md-12">
+
+                    <div class="form-group">
+                        <label for="date_graduated">Date Graduated</label>
+                        <input type="date" 
+                            name="date_graduated" 
+                            id="date_graduated" 
+                            class="form-control  {{ $errors->has('date_graduated') ? 'is-invalid' : '' }}"
+                            value="{{ $student->date_graduated }}"                                
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="mb-3">
-                <label for="firstName" class="form-label">First Name:</label>
-                <input type="text" class="form-control" id="firstName" value="{{ $student->first_name }}" readonly>
-            </div>
+        </div>
 
-            <div class="mb-3">
-                <label for="middleName" class="form-label">Middle Name:</label>
-                <input type="text" class="form-control" id="middleName" value="{{ $student->middle }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="suffix" class="form-label">Suffix:</label>
-                <input type="text" class="form-control" id="suffix" value="{{ $student->suffix }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="sex" class="form-label">Sex:</label>
-                <input type="text" class="form-control" id="sex" value="{{ $student->sex }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="contactNumber" class="form-label">Contact Number:</label>
-                <input type="text" class="form-control" id="contactNumber" value="{{ $student->contact_number }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="birthDate" class="form-label">Birth Date:</label>
-                <input type="text" class="form-control" id="birthDate" value="{{ $student->birth_date }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="birthPlace" class="form-label">Birth Place:</label>
-                <input type="text" class="form-control" id="birthPlace" value="{{ $student->birth_place }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="address" class="form-label">Address:</label>
-                <input type="text" class="form-control" id="address" value="{{ $student->address }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="degree" class="form-label">Degree/Course:</label>
-                <input type="text" class="form-control" id="degree" value="{{ $student->degree }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="major" class="form-label">Major:</label>
-                <input type="text" class="form-control" id="major" value="{{ $student->major }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="dateEnrolled" class="form-label">Date Enrolled:</label>
-                <input type="text" class="form-control" id="dateEnrolled" value="{{ $student->date_enrolled }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="yearLevel" class="form-label">Year Level:</label>
-                <input type="text" class="form-control" id="yearLevel" value="{{ $student->year_level }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="isGraduated" class="form-label">Is Graduate:</label>
-                <input type="text" class="form-control" id="isGraduated" value="{{ $student->is_graduated }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label for="dateGraduated" class="form-label">Date Graduated:</label>
-                <input type="text" class="form-control" id="dateGraduated" value="{{ $student->date_graduated }}" readonly>
-            </div>
-
-            <!-- Decline Button -->
-            <a href="{{ route('student.decline') }}" class="btn btn-outline-danger">Decline</a>
-
-            <!-- Save Button -->
-            <button type="submit" class="btn btn-success">Save</button>
-        </form>
+        <div class="card-footer border-top">
+            <a href="#" class="btn btn-outline-danger"><i class='bx bx-block'></i> Disapprove</a>
+        </div>
     </div>
 </div>
+
 @endsection

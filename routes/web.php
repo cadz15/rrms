@@ -30,6 +30,30 @@ Route::middleware('auth')->group(function () {
         Route::get('/', 'index')->name('requestors.list');
         Route::get('/{student}', 'show')->name('requestors.show');
     });
+
+
+    Route::group(['prefix' => 'student'], function() {
+        Route::get('/information', function() {
+    
+            return view('student.information-form');
+        });
+    
+        Route::get('/{id}', [RequestorController::class, 'showStudentForm'])->name('student.information');
+    
+        Route::get('/create', function() {
+    
+            return view('student.create-form');
+        });
+        Route::get('/list', function() {
+    
+            return view('student.list');
+        });
+    
+        Route::get('/decline-student', function() {
+    
+            return view('student.decline-student');
+        })->name('student.decline');
+    });
 });
 
 Route::group(['prefix' => 'requests'], function() {
@@ -45,28 +69,10 @@ Route::group(['prefix' => 'requests'], function() {
     });
 });
 
-Route::group(['prefix' => 'student'], function() {
-    Route::get('/information', function() {
 
-        return view('student.information-form');
-    });
-    Route::get('/create', function() {
-
-        return view('student.create-form');
-    });
-    Route::get('/list', function() {
-
-        return view('student.list');
-    });
-
-    Route::get('/decline-student', function() {
-
-        return view('student.decline-student');
-    })->name('student.decline');
-});
 
 Route::get('/pages', function () {
     return view('home');
 });
 
-Route::get('/student/{id}', [RequestorController::class, 'showStudentForm'])->name('student.information');
+

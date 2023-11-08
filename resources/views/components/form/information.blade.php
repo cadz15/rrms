@@ -11,10 +11,10 @@
                 <h5 class="card-title mb-3">{{ $formTitle }}</h5>
 
                 @if(is_array($dataForm) && isset($dataForm['id']))
-    <h5>{{ $dataForm['id'] }}</h5>
-    @else
-    <h5>Data not found</h5>
-    @endif  
+                    <h5>{{ $dataForm['id'] }}</h5>
+                @else
+                    <h5>Data not found</h5>
+                @endif  
                 <div class="col-lg-4 col-md-12">
                 
                     <div class="form-group">
@@ -25,7 +25,7 @@
                             id="student_number" 
                             class="form-control {{ $errors->has('student_number') ? 'is-invalid' : '' }}"
                             placeholder="Student's ID Number" 
-                            value="@if(!empty($dataForm) && is_array($dataForm)){{ in_array('student_number', $dataForm) ? $dataForm['student_number'] : old('student_number') }}@endif"
+                            value="@if(!empty($dataForm) && is_array($dataForm)){{ array_key_exists('student_number', $dataForm) ? $dataForm['student_number'] : old('student_number') }}@endif"
                         >
                         <div class="invalid-feedback">
                             This field is required and must be unique.
@@ -50,7 +50,7 @@
                                 class="form-control  {{ $errors->has('last_name') ? 'is-invalid' : '' }}" 
                                 placeholder="Last Name"
                                 value="@if(!empty($dataForm) && is_array($dataForm))
-                                {{ in_array('last_name', $dataForm) ? $dataForm['last_name'] : old('last_name') }}
+                                {{ array_key_exists('last_name', $dataForm) ? $dataForm['last_name'] : old('last_name') }}
                             @endif"
                             >
                             <div class="invalid-feedback">
@@ -69,7 +69,7 @@
                                 class="form-control  {{ $errors->has('first_name') ? 'is-invalid' : '' }}" 
                                 placeholder="First Name"
                                 value="@if(!empty($dataForm) && is_array($dataForm))
-                                {{ in_array('first_name', $dataForm) ? $dataForm['first_name'] : old('first_name') }}
+                                {{ array_key_exists('first_name', $dataForm) ? $dataForm['first_name'] : old('first_name') }}
                             @endif"
                             >
                             <div class="invalid-feedback">
@@ -88,7 +88,7 @@
                                 class="form-control  {{ $errors->has('middle_name') ? 'is-invalid' : '' }}" 
                                 placeholder="Middle Name"
                                 value="@if(!empty($dataForm) && is_array($dataForm))
-                                {{ in_array('middle_name', $dataForm) ? $dataForm['middle_name'] : old('middle_name') }}
+                                {{ array_key_exists('middle_name', $dataForm) ? $dataForm['middle_name'] : old('middle_name') }}
                             @endif"
                             >
                             <div class="invalid-feedback">
@@ -107,7 +107,7 @@
                                 class="form-control  {{ $errors->has('suffix') ? 'is-invalid' : '' }}" 
                                 placeholder="ex. Jr. Sr. III"
                                 value="@if(!empty($dataForm) && is_array($dataForm))
-                                {{ in_array('suffix', $dataForm) ? $dataForm['suffix'] : old('suffix') }}
+                                {{ array_key_exists('suffix', $dataForm) ? $dataForm['suffix'] : old('suffix') }}
                             @endif"
                             >
                             <div class="invalid-feedback">
@@ -125,7 +125,7 @@
                                 <option value="male"
                                 @if(empty($dataForm) || !is_array($dataForm))
                                 {{ old("sex") == "male" ? 'selected' : '' }}
-                            @elseif(in_array('sex', $dataForm))
+                            @elseif(array_key_exists('sex', $dataForm))
                                 {{ $dataForm['sex'] == "male" ? 'selected' : '' }}
                             @endif
                                 >
@@ -134,7 +134,7 @@
                                 <option value="female"
                                 @if(empty($dataForm) || !is_array($dataForm))
                                 {{ old("sex") == "female" ? 'selected' : '' }}
-                            @elseif(in_array('sex', $dataForm))
+                            @elseif(array_key_exists('sex', $dataForm))
                                 {{ $dataForm['sex'] == "female" ? 'selected' : '' }}
                             @endif
                                 >
@@ -157,7 +157,7 @@
                                 class="form-control  {{ $errors->has('contact_number') ? 'is-invalid' : '' }}" 
                                 placeholder="Contact Number"
                                 value="@if(!empty($dataForm) && is_array($dataForm))
-                                {{ in_array('contact_number', $dataForm) ? $dataForm['contact_number'] : old('contact_number') }}
+                                {{ array_key_exists('contact_number', $dataForm) ? $dataForm['contact_number'] : old('contact_number') }}
                             @endif"
                             >
                             <div class="invalid-feedback">
@@ -176,7 +176,7 @@
                                 class="form-control  {{ $errors->has('birth_date') ? 'is-invalid' : '' }}" 
                                 placeholder="Birthday"
                                 value="@if(!empty($dataForm) && is_array($dataForm))
-                                {{ in_array('birth_date', $dataForm) ? $dataForm['birth_date'] : old('birth_date') }}
+                                {{ array_key_exists('birth_date', $dataForm) ? $dataForm['birth_date'] : old('birth_date') }}
                             @endif"
                             >
                             <div class="invalid-feedback">
@@ -195,7 +195,7 @@
                                 class="form-control  {{ $errors->has('birth_place') ? 'is-invalid' : '' }}" 
                                 placeholder="Birth Place"
                                 value="@if(!empty($dataForm) && is_array($dataForm))
-                                {{ in_array('birth_place', $dataForm) ? $dataForm['birth_place'] : old('birth_place') }}
+                                {{ array_key_exists('birth_place', $dataForm) ? $dataForm['birth_place'] : old('birth_place') }}
                             @endif"
                             >
                             <div class="invalid-feedback">
@@ -214,7 +214,7 @@
                                 class="form-control  {{ $errors->has('address') ? 'is-invalid' : '' }}" 
                                 placeholder="Address"
                                 value="@if(!empty($dataForm) && is_array($dataForm))
-                                {{ in_array('address', $dataForm) ? $dataForm['address'] : old('address') }}
+                                {{ array_key_exists('address', $dataForm) ? $dataForm['address'] : old('address') }}
                             @endif"
                             >
                             <div class="invalid-feedback">
@@ -290,7 +290,7 @@
                                 id="date_enrolled" 
                                 class="form-control  {{ $errors->has('date_enrolled') ? 'is-invalid' : '' }}"
                                 value="@if(!empty($dataForm) && is_array($dataForm))
-                                {{ in_array('date_enrolled', $dataForm) ? $dataForm['date_enrolled'] : old('date_enrolled') }}
+                                {{ array_key_exists('date_enrolled', $dataForm) ? $dataForm['date_enrolled'] : old('date_enrolled') }}
                             @endif"
                             >
                             <div class="invalid-feedback">
@@ -309,7 +309,7 @@
                                 class="form-control  {{ $errors->has('year_level') ? 'is-invalid' : '' }}" 
                                 placeholder="Year Level"
                                 value="@if(!empty($dataForm) && is_array($dataForm))
-                                {{ in_array('year_level', $dataForm) ? $dataForm['year_level'] : old('year_level') }}
+                                {{ array_key_exists('year_level', $dataForm) ? $dataForm['year_level'] : old('year_level') }}
                             @endif"
                             >
                             <div class="invalid-feedback">
@@ -359,7 +359,7 @@
                                 id="date_graduated" 
                                 class="form-control  {{ $errors->has('date_graduated') ? 'is-invalid' : '' }}"
                                 value="@if(!empty($dataForm) && is_array($dataForm))
-                                {{ in_array('date_graduated', $dataForm) ? $dataForm['date_graduated'] : old('date_graduated') }}
+                                {{ array_key_exists('date_graduated', $dataForm) ? $dataForm['date_graduated'] : old('date_graduated') }}
                             @endif"                                
                             >
                             <div class="invalid-feedback">
