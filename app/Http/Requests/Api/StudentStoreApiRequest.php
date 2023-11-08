@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Api;
 
 use App\Rules\UniqueStudentNumberRule;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Traits\FormRequestJsonResponseTrait;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StudentStoreApiRequest extends FormRequest
 {
