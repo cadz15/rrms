@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HealthCheckController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\RequestorController;
@@ -15,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::controller(HealthCheckController::class)->prefix('health-check')->group(function (){
+    Route::get('/sms', 'checkSmsNotification');
+});
 
 Route::middleware('guest')->group(function () {
     Route::controller(AuthController::class)->group(function () {
