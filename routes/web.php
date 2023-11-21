@@ -4,6 +4,7 @@ use App\Http\Controllers\HealthCheckController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\RequestorController;
+use App\Http\Controllers\Web\RequestorRegistrationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,13 @@ Route::middleware('guest')->group(function () {
         Route::get('login', 'index')->name('login');
         Route::post('login', 'login')->name('auth.login');
     });
+
+
+    Route::group(['prefix' => 'requestor'], function() {
+
+        Route::get('/register', [RequestorRegistrationController::class, 'index']);
+        Route::post('/register', [RequestorRegistrationController::class, 'store'])->name('requestor.register');
+    });
 });
 
 Route::middleware('auth')->group(function () {
@@ -34,6 +42,32 @@ Route::middleware('auth')->group(function () {
     Route::prefix('requestors')->controller(RequestorController::class)->group(function () {
         Route::get('/', 'index')->name('requestors.list');
         Route::get('/{student}', 'show')->name('requestors.show');
+    });
+
+
+    Route::group(['prefix' => 'student'], function() {
+        Route::get('/information', function() {
+    
+            return view('student.information-form');
+        });
+            
+        Route::get('/create', function() {
+            
+            return view('student.create-form');
+        });
+
+        Route::get('/list', function() {
+            
+            return view('student.list');
+        });
+        
+        Route::get('/decline-student', function() {
+            
+            return view('student.decline-student');
+        })->name('student.decline');
+
+
+        Route::get('/{id}', [RequestorController::class, 'showStudentForm'])->name('student.information');
     });
 });
 
@@ -50,26 +84,10 @@ Route::group(['prefix' => 'requests'], function() {
     });
 });
 
-Route::group(['prefix' => 'student'], function() {
-    Route::get('/information', function() {
 
-        return view('student.information-form');
-    });
-    Route::get('/create', function() {
-
-        return view('student.create-form');
-    });
-    Route::get('/list', function() {
-
-        return view('student.list');
-    });
-
-    Route::get('/decline-student', function() {
-
-        return view('student.decline-student');
-    })->name('student.decline');
-});
 
 Route::get('/pages', function () {
     return view('home');
 });
+
+
