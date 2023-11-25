@@ -15,6 +15,7 @@ export default defineConfig({
                 'resources/js/helpers.js',
                 'resources/js/menu.js',
                 'resources/js/main.js',
+                'resources/js/requestor-registration.js',
                 'resources/css/page-auth.css'
             ],
             refresh: true,

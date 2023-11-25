@@ -1,5 +1,8 @@
+
+
 <div {{ $attributes->merge(['class' => 'col-12']) }}>
     <div class="card">
+        
 
         <form action="{{ $formURL }}" method="post">
 
@@ -7,16 +10,22 @@
 
                 <h5 class="card-title mb-3">{{ $formTitle }}</h5>
 
+                @if(is_array($dataForm) && isset($dataForm['id']))
+                    <h5>{{ $dataForm['id'] }}</h5>
+                @else
+                    <h5>Data not found</h5>
+                @endif  
                 <div class="col-lg-4 col-md-12">
-                    
+                
                     <div class="form-group">
+                        
                         <label for="student_number">Student Number <span class="text-danger">*</span></label>
                         <input type="text" 
                             name="student_number" 
                             id="student_number" 
                             class="form-control {{ $errors->has('student_number') ? 'is-invalid' : '' }}"
                             placeholder="Student's ID Number" 
-                            value="@if(!empty($dataForm)) {{ in_array('student_number', $dataForm) ?  $dataForm['student_number'] : old('student_number')  }} @endif"
+                            value="@if(!empty($dataForm) && is_array($dataForm)){{ array_key_exists('student_number', $dataForm) ? $dataForm['student_number'] : old('student_number') }}@endif"
                         >
                         <div class="invalid-feedback">
                             This field is required and must be unique.
@@ -40,7 +49,9 @@
                                 id="last_name" 
                                 class="form-control  {{ $errors->has('last_name') ? 'is-invalid' : '' }}" 
                                 placeholder="Last Name"
-                                value="@if(!empty($dataForm)) {{ in_array('last_name', $dataForm) ?  $dataForm['last_name'] : old('last_name')  }} @endif"
+                                value="@if(!empty($dataForm) && is_array($dataForm))
+                                {{ array_key_exists('last_name', $dataForm) ? $dataForm['last_name'] : old('last_name') }}
+                            @endif"
                             >
                             <div class="invalid-feedback">
                                 This field is required.
@@ -49,7 +60,7 @@
                     </div>
 
                     <div class="col-lg-4 col-md-12">
-
+                        
                         <div class="form-group">
                             <label for="first_name">First Name <span class="text-danger">*</span></label>
                             <input type="text" 
@@ -57,7 +68,9 @@
                                 id="first_name" 
                                 class="form-control  {{ $errors->has('first_name') ? 'is-invalid' : '' }}" 
                                 placeholder="First Name"
-                                value="@if(!empty($dataForm)) {{ in_array('first_name', $dataForm) ?  $dataForm['first_name'] : old('first_name')  }} @endif"
+                                value="@if(!empty($dataForm) && is_array($dataForm))
+                                {{ array_key_exists('first_name', $dataForm) ? $dataForm['first_name'] : old('first_name') }}
+                            @endif"
                             >
                             <div class="invalid-feedback">
                                 This field is required.
@@ -74,7 +87,9 @@
                                 id="middle_name" 
                                 class="form-control  {{ $errors->has('middle_name') ? 'is-invalid' : '' }}" 
                                 placeholder="Middle Name"
-                                value="@if(!empty($dataForm)) {{ in_array('middle_name', $dataForm) ?  $dataForm['middle_name'] : old('middle_name')  }} @endif"
+                                value="@if(!empty($dataForm) && is_array($dataForm))
+                                {{ array_key_exists('middle_name', $dataForm) ? $dataForm['middle_name'] : old('middle_name') }}
+                            @endif"
                             >
                             <div class="invalid-feedback">
                                 This field is required.
@@ -91,7 +106,9 @@
                                 id="suffix" 
                                 class="form-control  {{ $errors->has('suffix') ? 'is-invalid' : '' }}" 
                                 placeholder="ex. Jr. Sr. III"
-                                value="@if(!empty($dataForm)) {{ in_array('suffix', $dataForm) ?  $dataForm['suffix'] : old('suffix')  }} @endif"
+                                value="@if(!empty($dataForm) && is_array($dataForm))
+                                {{ array_key_exists('suffix', $dataForm) ? $dataForm['suffix'] : old('suffix') }}
+                            @endif"
                             >
                             <div class="invalid-feedback">
                                 This field is required.
@@ -106,24 +123,20 @@
                             <select name="sex" id="sex" class="form-select  {{ $errors->has('sex') ? 'is-invalid' : '' }}">
                                 <option value="">--Select--</option>
                                 <option value="male"
-                                    @if(empty($dataForm))
-                                        {{ old("sex") == "male" ? 'selected' : '' }}
-                                    @else
-                                        @if(in_array('sex', $dataForm))
-                                            {{ $dataForm['sex'] == "male" ? 'selected' : '' }}
-                                        @endif
-                                    @endif
+                                @if(empty($dataForm) || !is_array($dataForm))
+                                {{ old("sex") == "male" ? 'selected' : '' }}
+                            @elseif(array_key_exists('sex', $dataForm))
+                                {{ $dataForm['sex'] == "male" ? 'selected' : '' }}
+                            @endif
                                 >
                                     Male
                                 </option>
                                 <option value="female"
-                                    @if(empty($dataForm))
-                                        {{ old("sex") == "female" ? 'selected' : '' }}
-                                    @else
-                                        @if(in_array('sex', $dataForm))
-                                            {{ $dataForm['sex'] == "female" ? 'selected' : '' }}
-                                        @endif
-                                    @endif
+                                @if(empty($dataForm) || !is_array($dataForm))
+                                {{ old("sex") == "female" ? 'selected' : '' }}
+                            @elseif(array_key_exists('sex', $dataForm))
+                                {{ $dataForm['sex'] == "female" ? 'selected' : '' }}
+                            @endif
                                 >
                                     Female
                                 </option>
@@ -143,7 +156,9 @@
                                 id="contact_number" 
                                 class="form-control  {{ $errors->has('contact_number') ? 'is-invalid' : '' }}" 
                                 placeholder="Contact Number"
-                                value="@if(!empty($dataForm)) {{ in_array('contact_number', $dataForm) ?  $dataForm['contact_number'] : old('contact_number')  }} @endif"
+                                value="@if(!empty($dataForm) && is_array($dataForm))
+                                {{ array_key_exists('contact_number', $dataForm) ? $dataForm['contact_number'] : old('contact_number') }}
+                            @endif"
                             >
                             <div class="invalid-feedback">
                                 This field is required.
@@ -160,7 +175,9 @@
                                 id="birth_date" 
                                 class="form-control  {{ $errors->has('birth_date') ? 'is-invalid' : '' }}" 
                                 placeholder="Birthday"
-                                value="@if(!empty($dataForm)) {{ in_array('birth_date', $dataForm) ?  $dataForm['birth_date'] : old('birth_date')  }} @endif"
+                                value="@if(!empty($dataForm) && is_array($dataForm))
+                                {{ array_key_exists('birth_date', $dataForm) ? $dataForm['birth_date'] : old('birth_date') }}
+                            @endif"
                             >
                             <div class="invalid-feedback">
                                 This field is required.
@@ -177,7 +194,9 @@
                                 id="birth_place" 
                                 class="form-control  {{ $errors->has('birth_place') ? 'is-invalid' : '' }}" 
                                 placeholder="Birth Place"
-                                value="@if(!empty($dataForm)) {{ in_array('birth_place', $dataForm) ?  $dataForm['birth_place'] : old('birth_place')  }} @endif"
+                                value="@if(!empty($dataForm) && is_array($dataForm))
+                                {{ array_key_exists('birth_place', $dataForm) ? $dataForm['birth_place'] : old('birth_place') }}
+                            @endif"
                             >
                             <div class="invalid-feedback">
                                 This field is required.
@@ -194,7 +213,9 @@
                                 id="address" 
                                 class="form-control  {{ $errors->has('address') ? 'is-invalid' : '' }}" 
                                 placeholder="Address"
-                                value="@if(!empty($dataForm)) {{ in_array('address', $dataForm) ?  $dataForm['address'] : old('address')  }}  @endif"
+                                value="@if(!empty($dataForm) && is_array($dataForm))
+                                {{ array_key_exists('address', $dataForm) ? $dataForm['address'] : old('address') }}
+                            @endif"
                             >
                             <div class="invalid-feedback">
                                 This field is required.
@@ -217,13 +238,11 @@
                                 @if(!empty($degrees))
                                     @foreach ($degrees as $degree)
                                         <option value="{{ $degree['id'] }}"
-                                            @if(empty($dataForm))
-                                                {{ old("degree") == $degree['id'] ? 'selected' : '' }}
-                                            @else
-                                                @if(in_array('degree', $dataForm))
-                                                    {{ $dataForm['degree'] == $degree['id'] ? 'selected' : '' }}
-                                                @endif
-                                            @endif
+                                        @if(empty($dataForm))
+                                        {{ old("degree") == $degree['id'] ? 'selected' : '' }}
+                                    @elseif(isset($dataForm['degree']) && $dataForm['degree'] == $degree['id'])
+                                        selected="selected"
+                                    @endif
                                         >
                                             {{ $degree['name'] }}
                                         </option>
@@ -245,13 +264,11 @@
                                 @if(!empty($majors))
                                     @foreach ($majors as $major)
                                         <option value="{{ $major['id'] }}"
-                                            @if(empty($dataForm))
-                                                {{ old("major") == $major['id'] ? 'selected' : '' }}
-                                            @else
-                                                @if(in_array('major', $dataForm))
-                                                    {{ $dataForm['major'] == $major['id'] ? 'selected' : '' }}
-                                                @endif
-                                            @endif
+                                        @if(empty($dataForm))
+                                        {{ old("major") == $major['id'] ? 'selected' : '' }}
+                                    @elseif(isset($dataForm['major']) && $dataForm['major'] == $major['id'])
+                                        selected="selected"
+                                    @endif
                                         >
                                             {{ $major['name'] }}
                                         </option>
@@ -272,7 +289,9 @@
                                 name="date_enrolled" 
                                 id="date_enrolled" 
                                 class="form-control  {{ $errors->has('date_enrolled') ? 'is-invalid' : '' }}"
-                                value="@if(!empty($dataForm)) {{ in_array('date_enrolled', $dataForm) ?  $dataForm['date_enrolled'] : old('date_enrolled')  }}  @endif"
+                                value="@if(!empty($dataForm) && is_array($dataForm))
+                                {{ array_key_exists('date_enrolled', $dataForm) ? $dataForm['date_enrolled'] : old('date_enrolled') }}
+                            @endif"
                             >
                             <div class="invalid-feedback">
                                 This field is required.
@@ -289,7 +308,9 @@
                                 id="year_level" 
                                 class="form-control  {{ $errors->has('year_level') ? 'is-invalid' : '' }}" 
                                 placeholder="Year Level"
-                                value="@if(!empty($dataForm)) {{ in_array('year_level', $dataForm) ?  $dataForm['year_level'] : old('year_level')  }}  @endif"
+                                value="@if(!empty($dataForm) && is_array($dataForm))
+                                {{ array_key_exists('year_level', $dataForm) ? $dataForm['year_level'] : old('year_level') }}
+                            @endif"
                             >
                             <div class="invalid-feedback">
                                 This field is required.
@@ -305,24 +326,20 @@
                                 <option 
                                     value="0"
                                     @if(empty($dataForm))
-                                        {{ old("is_graduated") == 0 ? 'selected' : '' }}
-                                    @else
-                                        @if(in_array('is_graduated', $dataForm))
-                                            {{ $dataForm['is_graduated'] == 0 ? 'selected' : '' }}
-                                        @endif
-                                    @endif                                
+                                    {{ old("is_graduated") == 0 ? 'selected' : '' }}
+                                @elseif(isset($dataForm['is_graduated']) && $dataForm['is_graduated'] == 0)
+                                    selected="selected"
+                                @endif                          
                                 >
                                     No
                                 </option>
                                 <option 
                                     value="1"
                                     @if(empty($dataForm))
-                                        {{ old("is_graduated") == 1 ? 'selected' : '' }}
-                                    @else
-                                        @if(in_array('is_graduated', $dataForm))
-                                            {{ $dataForm['is_graduated'] == 1 ? 'selected' : '' }}
-                                        @endif
-                                    @endif   
+                                    {{ old("is_graduated") == 1 ? 'selected' : '' }}
+                                @elseif(isset($dataForm['is_graduated']) && $dataForm['is_graduated'] == 1)
+                                    selected="selected"
+                                @endif   
                                 >
                                     Yes                                    
                                 </option>
@@ -341,7 +358,9 @@
                                 name="date_graduated" 
                                 id="date_graduated" 
                                 class="form-control  {{ $errors->has('date_graduated') ? 'is-invalid' : '' }}"
-                                value="@if(!empty($dataForm)) {{ in_array('date_graduated', $dataForm) ?  $dataForm['date_graduated'] : old('date_graduated')  }}  @endif"                                
+                                value="@if(!empty($dataForm) && is_array($dataForm))
+                                {{ array_key_exists('date_graduated', $dataForm) ? $dataForm['date_graduated'] : old('date_graduated') }}
+                            @endif"                                
                             >
                             <div class="invalid-feedback">
                                 This field is required.
@@ -360,3 +379,4 @@
         </form>
     </div>
 </div>
+
