@@ -4,6 +4,7 @@ use App\Http\Controllers\HealthCheckController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\RequestorController;
+use App\Http\Controllers\Web\StudentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +52,7 @@ Route::group(['prefix' => 'requests'], function() {
 });
 
 Route::group(['prefix' => 'student'], function() {
+    Route::get('/list', [StudentController::class, 'index'])->name('students.index');
     Route::get('/information', function() {
 
         return view('student.information-form');
@@ -59,11 +61,6 @@ Route::group(['prefix' => 'student'], function() {
 
         return view('student.create-form');
     });
-    Route::get('/list', function() {
-
-        return view('student.list');
-    });
-
     Route::get('/decline-student', function() {
 
         return view('student.decline-student');

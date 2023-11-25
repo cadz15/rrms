@@ -11,10 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('degrees', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->unsignedBigInteger('request_id');
+            $table->string('reference_number')->unique();
+            $table->string('payment_type');
+            $table->float('amount');
+            $table->boolean('is_paid')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -23,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('degrees');
+        Schema::dropIfExists('transactions');
     }
 };

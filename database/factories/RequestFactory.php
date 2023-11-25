@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Degree>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Request>
  */
-class DegreeFactory extends Factory
+class RequestFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,7 @@ class DegreeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word,
+            //
         ];
     }
 }

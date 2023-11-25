@@ -2,11 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Request extends Model
 {
-    // ... other attributes and methods
+    use HasFactory, SoftDeletes;
+
+    protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongs(User::class);
+    }
 
     /**
      * Define a one-to-many relationship with RequestItem model.
@@ -23,8 +32,8 @@ class Request extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function transactions()
+    public function transaction()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasOne(Transaction::class);
     }
 }
