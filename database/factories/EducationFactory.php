@@ -36,6 +36,7 @@ class EducationFactory extends Factory
             'degree' => Arr::random(['BSED', 'BSIT',NULL]),
             'major' => Arr::random(['EDUCATION', 'IT', NULL]),
             'is_graduated' => rand(0, 1),
+            'date_graduated' => now()->subYears(2),
         ];
     }
 }

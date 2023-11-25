@@ -43,8 +43,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($requestors as $requestor)
-                                <tr>
+                    @forelse ($requestors as $requestor)
+                              
                                     <td>{{ $requestor->student_number }}</td>
                                     <td>{{ $requestor->fullName5() }}</td>
                                     <td>{{ $requestor->degree }}</td>
@@ -52,7 +52,7 @@
                                         <span class="badge rounded-pill bg-label-success">{{ $requestor->prettyTextIsGraduated() }}</span>
                                     </td>
                                     <td>
-                                        <a href="/student/information" class="text-primary fs-5">
+                                        <a href={{"student/$requestor->id"}} class="text-primary fs-5">
                                             <i class='bx bx-show'></i>
                                         </a>
                                     </td>

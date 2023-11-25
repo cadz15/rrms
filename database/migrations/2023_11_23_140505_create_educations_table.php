@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('degree')->nullable();
             $table->string('major')->nullable();
             $table->boolean('is_graduated')->default(false);
+            $table->date('date_graduated')->nullable();
             $table->timestamps();
         });
     }
