@@ -8,6 +8,7 @@ use App\Enums\RoleEnum;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notification;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,30 +30,54 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function scopeStudents(Builder $query)
+    {
+        $query->whereHas('role', fn ($subQuery) => $subQuery->student());
+    }
+
+    public function scopeApprovedStudents(Builder $query)
+    {
+        $query->whereHas('role', fn ($subQuery) => $subQuery->student())
+            ->where('is_approved', true)->whereNotNull('approved_by');
+    }
+
+    public function scopeRegistrars(Builder $query)
+    {
+        $query->whereHas('role', fn ($subQuery) => $subQuery->registrar());
+    }
+
+    public function scopeAdmins(Builder $query)
+    {
+        $query->whereHas('role', fn ($subQuery) => $subQuery->admin());
+    }
+
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
-    public function student()
+    public function approver()
     {
-        return $this->hasOne(Student::class);
+        return $this->belongsTo(User::class, 'approved_by', 'id');
     }
 
-    public function employee()
+    public function candidates()
     {
-        return $this->hasOne(Employee::class);
+        return $this->hasMany(User::class, 'approved_by', 'id');
+    }
+
+    public function educations()
+    {
+        return $this->hasMany(Education::class);
     }
 
     public function routeNotificationForVonage(Notification $notification)
     {
-        $information = $this->load(['role', 'student', 'employee']);
+        return $this->contact_number;
+    }
 
-        return match($information->role->name) {
-            RoleEnum::ADMIN->value => $information->employee->contact_number,
-            RoleEnum::REGISTRAR->value => $information->employee->contact_number,
-            RoleEnum::STUDENT->value => $information->student->contact_number,
-            default => config('vonage.sms_from'),
-        };
+    public function fullName()
+    {
+        return $this->last_name . ', ' . $this->first_name . ' ' . $this->middle_name;
     }
 }

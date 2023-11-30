@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class RequestorController extends Controller
 {
     public function index()
     {
-        $requestors = Student::where('is_approved', false)->paginate(10);
+        $requestors = User::where('is_approved', false)->whereNull('approved_by')->paginate(10);
 
         return view('requestor', [
             'requestors' => $requestors,
         ]);
     }
 
-    public function show(Student $student)
+    public function show(User $student)
     {
         if ($student->is_approved == true) {
             abort(404);

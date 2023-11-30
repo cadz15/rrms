@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\RequestorRegisterRequest;
 use App\Models\Student;
+use App\Models\User;
 
 class RequestorRegistrationController extends Controller
 {
@@ -72,7 +73,7 @@ class RequestorRegistrationController extends Controller
             "is_graduated",
             "date_graduated"
         ]);
-        $student = Student::create($data);
+        $student = User::create($data);
 
 
         return view('requestor.congratulation', compact('student'));
