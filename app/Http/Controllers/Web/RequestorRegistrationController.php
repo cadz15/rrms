@@ -8,7 +8,7 @@ use App\Models\Student;
 
 class RequestorRegistrationController extends Controller
 {
-    
+
     public function index() {
         $selectPage1 = "active-tab tab-primary";
         $selectPage2 = "";

@@ -332,7 +332,8 @@
         </div>
 
         <div class="card-footer border-top">
-            <a href="#" class="btn btn-outline-danger"><i class='bx bx-block'></i> Disapprove</a>
+            <a href="#" class="btn btn-outline-danger"><i class='bx bx-dislike'></i> Disapprove</a>
+            <a href="#" class="btn btn-outline-success"><i class='bx bx-like'></i> Approve</a>
         </div>
     </div>
 </div>
