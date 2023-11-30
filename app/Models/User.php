@@ -4,12 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use App\Enums\RoleEnum;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -40,5 +42,17 @@ class User extends Authenticatable implements JWTSubject
     public function employee()
     {
         return $this->hasOne(Employee::class);
+    }
+
+    public function routeNotificationForVonage(Notification $notification)
+    {
+        $information = $this->load(['role', 'student', 'employee']);
+
+        return match($information->role->name) {
+            RoleEnum::ADMIN->value => $information->employee->contact_number,
+            RoleEnum::REGISTRAR->value => $information->employee->contact_number,
+            RoleEnum::STUDENT->value => $information->student->contact_number,
+            default => config('vonage.sms_from'),
+        };
     }
 }

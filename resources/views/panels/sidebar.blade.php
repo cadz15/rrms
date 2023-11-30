@@ -19,7 +19,7 @@
     <!-- Menu -->
     <ul class="menu-inner py-1" id="sidebar-nav">
         <!-- Dashboard -->
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('/') ? 'active' : '' }}">
             <a href="{{route('dashboard')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
@@ -30,21 +30,21 @@
             <span class="menu-header-text">Pages</span>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('requestors') ? 'active' : '' }}">
             <a href="{{ route('requestors.list') }}" class="menu-link">
                 <i class='menu-icon bx bx-user-voice'></i>
                 <div data-i18n="Requestor">Requestor</div>
             </a>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('requests') ? 'active' : '' }}">
             <a href="/requests" class="menu-link">
                 <i class='menu-icon bx bx-receipt'></i>
                 <div data-i18n="Request">Request</div>
             </a>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('student') ? 'active open' : '' }}">
             <a href="#" class="menu-link menu-toggle">                
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div class="text-truncate" data-i18n="Students">
@@ -52,12 +52,12 @@
                 </div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('student/create') ? 'active' : '' }}">
                     <a href="/student/create" class="menu-link">
                         <div class="text-truncate" data-i18n="Add Student">Add Student</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('student/list') ? 'active' : '' }}">
                     <a href="/student/list" class="menu-link">
                         <div class="text-truncate" data-i18n="List">List</div>
                     </a>
@@ -65,49 +65,5 @@
             </ul>
         </li>
 
-        <!-- <li class="menu-item">
-            <a href="#" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div class="text-truncate" data-i18n="Students">
-                    Students
-                </div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="/student/create" class="menu-link">
-                        <div class="text-truncate" data-i18n="Add Student">Add Student</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="/student/list" class="menu-link">
-                        <div class="text-truncate" data-i18n="List">List</div>
-                    </a>
-                </li>
-            </ul>
-        </li> -->
-
-        <li class="menu-item">
-            <a href="#" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div class="text-truncate" data-i18n="DropDown Nav">DropDown Nav</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="pages" class="menu-link">
-                        <div class="text-truncate" data-i18n="Sub Nav 1">Sub Nav 1</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div class="text-truncate" data-i18n="Sub Nav 2">Sub Nav 2</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div class="text-truncate" data-i18n="Sub Nav 3">Sub Nav 3</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
     </ul>
 </aside>
