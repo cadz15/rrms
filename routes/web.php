@@ -3,6 +3,7 @@
 use App\Http\Controllers\HealthCheckController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\RequestController;
 use App\Http\Controllers\Web\RequestorController;
 use App\Http\Controllers\Web\StudentController;
 use App\Http\Controllers\Web\RequestorRegistrationController;
@@ -69,10 +70,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::group(['prefix' => 'requests'], function() {
-    Route::get('/', function() {
-
-        return view('requests.list');
-    });
+    Route::get('/', [RequestController::class, 'index']);
 
     Route::get('/history/{slug}', function($slug) {
         // we can use id here instead of slug. For this example we use slug for page title and breadcrumbs

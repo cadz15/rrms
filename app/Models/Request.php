@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RequestStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +12,11 @@ class Request extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
+
+    public function prettyStatus()
+    {
+        return RequestStatusEnum::from($this->status)->prettyStatus();
+    }
 
     public function user()
     {
@@ -36,4 +42,5 @@ class Request extends Model
     {
         return $this->hasOne(Transaction::class);
     }
+
 }
