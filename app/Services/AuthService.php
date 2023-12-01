@@ -18,7 +18,7 @@ class AuthService
      */
     public static function authenticate(?string $username, ?string $password, array $roles, ResponseTypeEnum $responseType = ResponseTypeEnum::WEB)
     {
-        $user = User::with('role')->where('username', $username)->whereHas('role', function ($query) use ($roles) {
+        $user = User::with('role')->where('id_number', $username)->whereHas('role', function ($query) use ($roles) {
             $query->whereIn('name', $roles);
         })->first();
 

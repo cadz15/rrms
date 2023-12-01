@@ -7,6 +7,7 @@ use App\Http\Requests\Web\RequestorRegisterRequest;
 use App\Models\EducationLevel;
 use App\Models\Major;
 use App\Models\Student;
+use App\Models\User;
 
 class RequestorRegistrationController extends Controller
 {
@@ -59,7 +60,8 @@ class RequestorRegistrationController extends Controller
         $data['major'] = $request->degree;
         $data['degree'] = $educationName;
 
-        $student = Student::create($data);
+        // $student = Student::create($data);
+        // $student = User::create($data);
 
 
         return view('requestor.congratulation', compact('student'));

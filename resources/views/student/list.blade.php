@@ -37,18 +37,21 @@
                             <tr>
                                 <th>ID Number</th>
                                 <th>Name</th>
+                                <th>Level</th>
                                 <th>Course</th>
                                 <th>Is Graduate</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
+                        @forelse ($students as $student)
                             <tr>
-                                <td>1010230-1</td>
-                                <td>Dela Cruz, Juan Jr.</td>
-                                <td>BSCrim</td>
+                                <td>{{ $student->id_number }}</td>
+                                <td>{{ $student->fullName() }}</td>
+                                <td>{{ $student->educations->last()?->level ?? '-' }}</td>
+                                <td>{{ $student->educations->last()?->degree ?? '-' }}</td>
                                 <td>
-                                    <span class="badge rounded-pill bg-label-success">Yes</span>
+                                    <span class="badge rounded-pill bg-label-success">{{ $student->educations->last()?->prettyIsGraduated() }}</span>
                                 </td>
                                 <td>
                                     <a href="/student/information" class="text-primary fs-5">
@@ -56,33 +59,11 @@
                                     </a>
                                 </td>
                             </tr>
+                        @empty
                             <tr>
-                                <td></td>
-                                <td>Malapsan, Tangol</td>
-                                <td>BSHRTM</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-label-danger">No</span>
-                                </td>
-                                <td>
-                                    <a href="/student/information" class="text-primary fs-5">
-                                        <i class='bx bx-show'></i>
-                                    </a>
-                                </td>
+                                <td colspan="5"></td>
                             </tr>
-                            <tr>
-                                <td>Juan Dela Cruz</td>
-                                <td>20</td>
-                                <td>2030</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-label-danger">No</span>
-                                </td>
-                                <td>
-                                    <a href="/student/information" class="text-primary fs-5">
-
-                                        <i class='bx bx-show'></i>
-                                    </a>
-                                </td>
-                            </tr>
+                        @endforelse
                         </tbody>
                     </table>
 
@@ -109,7 +90,7 @@
             </div>
         </div>
 
-        
+
     </div>
 
 @endsection

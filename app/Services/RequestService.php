@@ -9,7 +9,7 @@ class RequestService
     public function list(string|int $studentId, bool $isPaginated = false, int $count = 10)
     {
         $requests = Request::with(['requestItems', 'transactions'])
-            ->where('student_id', $studentId);
+            ->where('user_id', $studentId);
 
         if ($isPaginated) {
             return $requests->paginate($count);
