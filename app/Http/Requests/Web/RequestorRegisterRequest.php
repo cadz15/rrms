@@ -27,15 +27,16 @@ class RequestorRegisterRequest extends FormRequest
         return [
             'last_name' => ['required'],
             'first_name' => ['required'],
+            'suffix' => ['max:10'],
             'sex' => 'required',
             'contact_number' => ['required', 'regex:/^0\d{10}$/', 'unique:students,contact_number'],
             'birth_date' => ['required', 'date', 'before:18 years ago'],
             'birth_place' => ['required', 'min:5'],
             'address' => ['required', 'min:5'],
             'degree' => ['required'],
-            'major' => ['required'],
+            // 'major' => ['required'],
             'date_enrolled' => ['required'],
-            'year_level' => ['required', 'numeric', 'max:5']
+            // 'year_level' => ['required', 'numeric', 'max:5'] // commented
         ];
     }
 
@@ -44,6 +45,7 @@ class RequestorRegisterRequest extends FormRequest
     {
         return [
             'required' => 'This field is required.',
+            'suffix.max' => 'Maximum character is 10.',
             'contact_number.required' => 'This field is required.',
             'contact_number.regex' => 'Please enter valid phone number.',
             'contact_number.unique' => 'This number is already in use.',

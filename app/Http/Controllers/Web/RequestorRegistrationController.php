@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\RequestorRegisterRequest;
+use App\Models\EducationLevel;
+use App\Models\Major;
 use App\Models\Student;
 
 class RequestorRegistrationController extends Controller
@@ -14,42 +16,16 @@ class RequestorRegistrationController extends Controller
         $selectPage2 = "";
         $selectPage3 = "";
 
+        $programs = EducationLevel::with('majors')
+        ->get()
+        ->transform(function($level) {
+            return [
+                'level_name' => $level->name,
+                'major_names' => [...$level->majors->pluck('name')]
+            ];
+        });
 
-        $degree = [
-            [
-                'id' => 1,
-                'name' => 'Bachelor of Science in Computer Engineering'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Bachelor of Science in Criminology'
-            ]
-        ];
-
-        $major = [
-            [
-                'id' => 1,
-                'degree_id' => 1,
-                'name' => 'N/A'
-            ],
-            [
-                'id' => 2,
-                'degree_id' => 1,
-                'name' => 'Electronics'
-            ],
-            [
-                'id' => 3,
-                'degree_id' => 2,
-                'name' => 'Forensic'
-            ],
-            [
-                'id' => 4,
-                'degree_id' => 2,
-                'name' => 'Criminal Psycology'
-            ]
-        ];
-
-        return view('requestor.registration', compact('selectPage1', 'selectPage2', 'selectPage3', 'degree', 'major'));
+        return view('requestor.registration', compact('selectPage1', 'selectPage2', 'selectPage3', 'programs'));
     }
 
 
@@ -66,12 +42,23 @@ class RequestorRegistrationController extends Controller
             "birth_place",
             "address",
             "degree",
-            "major",
+            // "major",
             "date_enrolled",
             "year_level",
             "is_graduated",
             "date_graduated"
         ]);
+
+        // Get Degree
+        $educationName = Major::join('education_levels', 'education_levels.id', '=', 'majors.education_level_id')
+        ->where('majors.name', $request->degree)
+        ->select('education_levels.name as level_name')
+        ->pluck('level_name')
+        ->first() ?? '';
+
+        $data['major'] = $request->degree;
+        $data['degree'] = $educationName;
+
         $student = Student::create($data);
 
 

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('address', 250);
             $table->string('degree', 100);
             $table->string('major', 100);
-            $table->integer('year_level');
+            $table->integer('year_level')->nullable();
             $table->date('date_enrolled');
             $table->boolean('is_graduated')->default(false);
             $table->date('date_graduated')->nullable();
