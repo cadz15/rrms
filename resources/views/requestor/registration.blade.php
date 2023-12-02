@@ -84,7 +84,7 @@
                                 <i class='bx bx-circle
                                 @if(array_intersect($errors->keys(), ["degree", "major", "date_enrolled", "year_level"])) hidden @else  @endif
                                 ' id="page-2-primary-icon"></i>
-                                Education
+                                Current Education
                             </td>
                             <td  width="33.3%" class="multi-step-indicator " id="page-3-indicator">
                                 <i class='bx bx-check-circle text-success hidden' id="page-3-success-icon"></i>

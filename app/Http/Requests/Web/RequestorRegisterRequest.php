@@ -29,14 +29,15 @@ class RequestorRegisterRequest extends FormRequest
             'first_name' => ['required'],
             'suffix' => ['max:10'],
             'sex' => 'required',
-            'contact_number' => ['required', 'regex:/^0\d{10}$/', 'unique:students,contact_number'],
-            'birth_date' => ['required', 'date', 'before:18 years ago'],
+            'contact_number' => ['required', 'regex:/^0\d{10}$/', 'unique:users,contact_number'],
+            'birth_date' => ['required', 'date', 'before:3 years ago'],
             'birth_place' => ['required', 'min:5'],
             'address' => ['required', 'min:5'],
             'degree' => ['required'],
             // 'major' => ['required'],
             'date_enrolled' => ['required'],
             // 'year_level' => ['required', 'numeric', 'max:5'] // commented
+            'date_graduated' => ['required_if:is_graduated,1']
         ];
     }
 
