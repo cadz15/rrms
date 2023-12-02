@@ -71,6 +71,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Education::class);
     }
 
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
+
     public function routeNotificationForVonage(Notification $notification)
     {
         return $this->contact_number;
