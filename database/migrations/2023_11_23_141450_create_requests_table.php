@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\RequestEnum;
+use App\Enums\RequestStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('approved_by');
-            $table->string('status')->default(RequestEnum::PENDING);
+            $table->string('status')->default(RequestStatusEnum::PENDING_REVIEW);
             $table->timestamps();
             $table->softDeletes();
         });
