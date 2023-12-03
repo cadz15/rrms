@@ -3,7 +3,7 @@
     <div class="app-brand">
         <a href="#" class="app-brand-link">
             <span class="app-brand-logo">
-                <img src="https://rssoncr.psa.gov.ph/sites/default/files/ocrg_new_logo%20copy_0.png" alt="logo"
+                <img src="{{ asset('img/bato leyte icon.jpg') }}" alt="logo"
                 class="">
             </span>
             <span class="app-brand-text menu-text fw-bolder ms-2">RRMS</span>
@@ -44,7 +44,7 @@
             </a>
         </li>
 
-        <li class="menu-item {{ request()->is('student') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->is('student*') ? 'active open' : '' }}">
             <a href="#" class="menu-link menu-toggle">                
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div class="text-truncate" data-i18n="Students">
@@ -60,6 +60,26 @@
                 <li class="menu-item {{ request()->is('student/list') ? 'active' : '' }}">
                     <a href="/student/list" class="menu-link">
                         <div class="text-truncate" data-i18n="List">List</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item {{ request()->is('setup*') ? 'active open' : '' }}">
+            <a href="#" class="menu-link menu-toggle">                
+                <i class='bx bx-cog'></i>
+                <div class="text-truncate" data-i18n="Setup">
+                    Setup
+                </div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->is('setup/education*') ? 'active' : '' }}">
+                    <a href="/setup/education" class="menu-link">
+                        <div class="text-truncate" data-i18n="Education">Education</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->is('setup/request-item') ? 'active' : '' }}">
+                    <a href="/setup/request-item" class="menu-link">
+                        <div class="text-truncate" data-i18n="Request Item">Request Item</div>
                     </a>
                 </li>
             </ul>

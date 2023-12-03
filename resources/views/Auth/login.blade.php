@@ -21,7 +21,7 @@
                     <div class="app-brand mb-5">
                         <a href="#" class="app-brand-link">
                             <span class="app-brand-logo">
-                                <img src="https://rssoncr.psa.gov.ph/sites/default/files/ocrg_new_logo%20copy_0.png" alt="logo"
+                                <img src="{{ asset('img/bato leyte icon.jpg') }}" alt="logo"
                                 class="">
                             </span>
                             <span class="app-brand-text menu-text fw-bolder ms-2">RRMS</span>
