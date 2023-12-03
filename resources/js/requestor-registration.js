@@ -36,7 +36,7 @@ const displayTextToPage3 = () => {
     
     
     document.getElementById('degree_text').innerHTML = document.getElementById('degree').selectedOptions[0].text;
-    document.getElementById('major_text').innerHTML = document.getElementById('major').selectedOptions[0].text;
+    // document.getElementById('major_text').innerHTML = document.getElementById('major').selectedOptions[0].text;
     document.getElementById('date_enrolled_text').innerHTML = document.getElementById('date_enrolled').value;
     document.getElementById('year_level_text').innerHTML = document.getElementById('year_level').value;
     document.getElementById('is_graduated_text').innerHTML = document.getElementById('is_graduated').selectedOptions[0].text;
@@ -215,20 +215,20 @@ const page2 = () => {
         document.getElementById('degree').classList.add('is-invalid');
     };
     
-    if(requiredValidation(document.getElementById('major').value, '')){
-        hasError = true;
-        document.getElementById('major').classList.add('is-invalid');
-    };
+    // if(requiredValidation(document.getElementById('major').value, '')){
+    //     hasError = true;
+    //     document.getElementById('major').classList.add('is-invalid');
+    // };
     
     if(requiredValidation(document.getElementById('date_enrolled').value, 'string')){
         hasError = true;
         document.getElementById('date_enrolled').classList.add('is-invalid');
     };
     
-    if(requiredValidation(document.getElementById('year_level').value, 'year-level')){
-        hasError = true;
-        document.getElementById('year_level').classList.add('is-invalid');
-    };
+    // if(requiredValidation(document.getElementById('year_level').value, 'year-level')){
+    //     hasError = true;
+    //     document.getElementById('year_level').classList.add('is-invalid');
+    // };
 
 
     if(hasError) {
@@ -319,10 +319,14 @@ if (document.readyState === "interactive") {
         let charCode = e.which;
         let allowedKey = [8, 9, 37, 39, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
 
+        if(e.target.value.length === 11 && [8,46].includes(charCode)) {
+            return true;
+        }
+
         if(allowedKey.includes(charCode) && e.target.value.length < 11) {
             return true;
         };
-        
+        console.log(charCode, e.target.value.length);
         e.preventDefault();
         return false;
     });
