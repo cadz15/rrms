@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EducationController;
 use App\Http\Controllers\HealthCheckController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
@@ -39,13 +40,14 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
     Route::prefix('requestors')->controller(RequestorController::class)->group(function () {
         Route::get('/', 'index')->name('requestors.list');
         Route::get('/{student}', 'show')->name('requestors.show');
     });
-
 
     Route::group(['prefix' => 'student'], function() {
         Route::get('/list', [StudentController::class, 'index'])->name('students.index');
@@ -66,6 +68,19 @@ Route::middleware('auth')->group(function () {
 
 
         Route::get('/{id}', [RequestorController::class, 'showStudentForm'])->name('student.information');
+    });
+
+    Route::group(['prefix' => 'setup'], function() {
+        Route::group(['prefix' => 'education'], function() {
+            Route::get('/', [EducationController::class, 'index'])->name('education.index');
+            Route::get('/create-education', [EducationController::class, 'createEducation'])->name('education.create');
+            Route::post('store-education', [EducationController::class, 'storeLevel'])->name('education.store');
+            Route::post('update-education', [EducationController::class, 'updateLevel'])->name('education.update');
+            Route::post('store-major', [EducationController::class, 'storeMajor'])->name('education.major.store');
+            Route::get('delete-major/{id}', [EducationController::class, 'deleteMajor'])->name('education.major.destroy');
+
+            Route::get('/{id}', [EducationController::class, 'view'])->name('education.view');
+        });
     });
 });
 
