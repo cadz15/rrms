@@ -84,7 +84,7 @@
                                 <i class='bx bx-circle
                                 @if(array_intersect($errors->keys(), ["degree", "major", "date_enrolled", "year_level"])) hidden @else  @endif
                                 ' id="page-2-primary-icon"></i>
-                                Education
+                                Current Education
                             </td>
                             <td  width="33.3%" class="multi-step-indicator " id="page-3-indicator">
                                 <i class='bx bx-check-circle text-success hidden' id="page-3-success-icon"></i>
@@ -302,23 +302,25 @@
                         <!-- Page 2 Start -->
                         <div id="page-2" class="hidden">
                             <div class="row gy-3">
-                                <div class="col-lg-4 col-md-12">
+
+                                <div class="col-lg-8 col-md-12">
     
                                     <div class="form-group">
-                                        <label for="degree">Degree / Course <span class="text-danger">*</span></label>
-                                        <select name="degree" id="degree" class="form-select  {{ $errors->has('degree') ? 'is-invalid' : '' }}">
-                                            <option value="">--Select Degree/Course--</option>
-                                            @if(!empty($degrees))
-                                                @foreach ($degrees as $degree)
-                                                    <option value="{{ $degree['id'] }}"
-                                                    @if(old('degree') == $degree['id'])
-                                                        selected="selected"
-                                                    @endif
+                                        <label for="degree">Education Level / Degree <span class="text-danger">*</span></label>
+                                        <select type="text" name="degree" id="degree" class="form-select {{ $errors->has('degree') ? 'is-invalid' : '' }}" style="width:100%">
+                                        @foreach ($programs as $program)
+                                            <optgroup label="{{ $program['level_name'] }}">
+                                                @foreach($program['major_names'] as $major)
+                                                    <option value="{{ $major }}" 
+                                                        @if($major == old('major'))
+                                                            selected
+                                                        @endif
                                                     >
-                                                        {{ $degree['name'] }}
+                                                    {{ ucwords($major) }}
                                                     </option>
                                                 @endforeach
-                                            @endif
+                                            </optgroup>
+                                        @endforeach
                                         </select>
                                         <div class="invalid-feedback">
                                             This field is required.
@@ -326,29 +328,16 @@
                                     </div>
                                 </div>
     
-                                <div class="col-lg-4 col-md-12">
+                                <!-- <div class="col-lg-4 col-md-12">
     
                                     <div class="form-group">
-                                        <label for="major">Major <span class="text-danger">*</span></label>
-                                        <select name="major" id="major" class="form-select  {{ $errors->has('major') ? 'is-invalid' : '' }}">
-                                            <option value="">--Select Major--</option>
-                                            @if(!empty($majors))
-                                                @foreach ($majors as $major)
-                                                    <option value="{{ $major['id'] }}"
-                                                    @if(old('major') == $major['id'])
-                                                        selected="selected"
-                                                    @endif
-                                                    >
-                                                        {{ $major['name'] }}
-                                                    </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
+                                        <label for="major">Major (Leave blank if not applicable)</label>
+                                        <input type="text" name="major" id="major" class="form-control  {{ $errors->has('major') ? 'is-invalid' : '' }}" value="{{ old('major') }}">
                                         <div class="invalid-feedback">
                                             This field is required.
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
     
                                 <div class="col-lg-4 col-md-12">
     
@@ -369,7 +358,7 @@
                                 <div class="col-lg-4 col-md-12">
     
                                     <div class="form-group">
-                                        <label for="year_level">Year Level <span class="text-danger">*</span></label>
+                                        <label for="year_level">Year Level (for tertiary and above)</label>
                                         <input type="number" 
                                             name="year_level" 
                                             id="year_level" 
@@ -387,7 +376,7 @@
     
                                     <div class="form-group">
                                         <label for="is_graduated">Is Graduate</label>
-                                        <select name="is_graduated" id="is_graduated" class="form-control  {{ $errors->has('is_graduated') ? 'is-invalid' : '' }}">
+                                        <select name="is_graduated" id="is_graduated" class="form-select  {{ $errors->has('is_graduated') ? 'is-invalid' : '' }}">
                                             <option 
                                                 value="0"
                                                 @if(old('is_graduated') == 0)
@@ -527,17 +516,17 @@
     
                                 <div class="col-lg-4 col-md-12">
                                     <div class="d-flex flex-column">
-                                        <span>Degree</span>
+                                        <span>Education Level / Degree</span>
                                         <b id="degree_text"></b>
                                     </div>
                                 </div>
     
-                                <div class="col-lg-4 col-md-12">
+                                <!-- <div class="col-lg-4 col-md-12">
                                     <div class="d-flex flex-column">
                                         <span>Major</span>
                                         <b id="major_text"></b>
                                     </div>
-                                </div>
+                                </div> -->
     
                                 <div class="col-lg-4 col-md-12">
                                     <div class="d-flex flex-column">

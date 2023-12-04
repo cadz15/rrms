@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('educations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('level');
-            $table->string('school_name');
-            $table->string('address');
-            $table->date('year_start');
-            $table->date('year_end');
+            $table->string('level')->nullable();
+            $table->string('school_name')->nullable();
+            $table->string('address')->nullable();
+            $table->date('year_start')->nullable();
+            $table->date('year_end')->nullable();
             $table->string('degree')->nullable();
             $table->string('major')->nullable();
             $table->boolean('is_graduated')->default(false);

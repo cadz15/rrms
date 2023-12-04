@@ -54,7 +54,7 @@
                                     <span class="badge rounded-pill bg-label-success">{{ $student->educations->last()?->prettyIsGraduated() }}</span>
                                 </td>
                                 <td>
-                                    <a href="/student/information" class="text-primary fs-5">
+                                    <a href="{{route('student.show', ['id' => $student->id])}}" class="text-primary fs-5">
                                         <i class='bx bx-show'></i>
                                     </a>
                                 </td>
