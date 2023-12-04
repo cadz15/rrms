@@ -30,14 +30,14 @@
             <span class="menu-header-text">Pages</span>
         </li>
 
-        <li class="menu-item {{ request()->is('requestors') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->is('requestors*') ? 'active' : '' }}">
             <a href="{{ route('requestors.list') }}" class="menu-link">
                 <i class='menu-icon bx bx-user-voice'></i>
                 <div data-i18n="Requestor">Requestor</div>
             </a>
         </li>
 
-        <li class="menu-item {{ request()->is('requests') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->is('requests*') ? 'active' : '' }}">
             <a href="/requests" class="menu-link">
                 <i class='menu-icon bx bx-receipt'></i>
                 <div data-i18n="Request">Request</div>
