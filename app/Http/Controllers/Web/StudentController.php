@@ -10,7 +10,7 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = User::approvedStudents()->with('educations')->get();
+        $students = User::approvedStudents()->with('educations')->paginate(10);
 
         return view('student.list', compact('students'));
     }

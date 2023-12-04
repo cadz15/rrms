@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::group(['prefix' => 'student'], function() {
-        Route::get('/list', [StudentController::class, 'index'])->name('students.index');
+        Route::get('/list', [StudentController::class, 'index'])->name('student.index');
         Route::get('/information', function() {
 
             return view('student.information-form');
@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::group(['prefix' => 'requests'], function() {
-    Route::get('/', [RequestController::class, 'index']);
+    Route::get('/', [RequestController::class, 'index'])->name('requests.list-web');
 
     Route::get('/history/{slug}', function($slug) {
         // we can use id here instead of slug. For this example we use slug for page title and breadcrumbs
