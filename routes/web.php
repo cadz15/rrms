@@ -52,11 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'student'], function () {
         Route::get('/list', [StudentController::class, 'index'])->name('student.index');
         Route::get('/information', [StudentController::class, 'show'])->name('student.show');
-
-        Route::get('/create', function () {
-
-            return view('student.create-form');
-        });
+        Route::get('/create', [StudentController::class, 'create'])->name('student.create');
 
         Route::get('/decline-student', function () {
 

@@ -17,6 +17,14 @@ class StudentController extends Controller
         return view('student.list', compact('students'));
     }
 
+    public function create()
+    {
+        $degrees = EducationLevel::get();
+        $majors = Major::get();
+
+        return view('student.create-form', compact('degrees', 'majors'));
+    }
+
     public function show(Request $request)
     {
         $student = User::find($request->id);
