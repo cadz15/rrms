@@ -16,22 +16,63 @@
                 <div class="card-body">
                     <h5 class="card-title">Requestor List</h5>
                 </div>
-                <div class="table-responsive">
 
+                <form action="" method="get">
                     <div class="px-3 pb-3 float-end d-flex align-items-center gap-3">
-                        <div>
+
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class='bx bx-filter-alt'></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="px-2">
+                                    <select name="filter_is_graduated" id="filter_is_graduated" class="form-select">
+                                        <option value="" {{ is_null($filterGraduate) ? 'selected': '' }}>Is Graduate?</option>
+                                        <option value="1" {{ $filterGraduate == true ? 'selected': '' }}>Yes</option>
+                                        <option value="0" {{ $filterGraduate == false ? '': 'selected' }}>No</option>
+                                    </select>
+                                </li>
+                                <li class="mt-2 px-2">
+                                    <select name="filter_education_level" id="filter_education_level" class="form-select">
+                                        <option value="" {{ is_null($filterEducation) ? 'selected': '' }}>Education Level</option>
+                                        @foreach ($programs as $program)
+                                            <optgroup label="{{ $program['level_name'] }}">
+                                                @foreach($program['major_names'] as $major)
+                                                    <option value="{{ $major }}" 
+                                                        @if($major == $filterEducation)
+                                                            selected
+                                                        @endif
+                                                    >
+                                                    {{ ucwords($major) }}
+                                                    </option>
+                                                @endforeach
+                                            </optgroup>
+                                        @endforeach
+                                    </select>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li class="px-2">
+                                    <button type="submit" class="btn btn-success w-100 text-center">Filter</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- <div>
                             <button class="btn btn-outline-secondary">
                                 <i class='bx bx-filter-alt'></i>
                             </button>
-                        </div>
+                        </div> -->
                         <div class="input-group input-group-merge">
-                            <input type="search" class="form-control" id="search" placeholder="Search">
+                            <input type="search" class="form-control" name="search" id="search" placeholder="Search" value="{{ $search }}">
                             <span class="input-group-text cursor-pointer" id="search-icon">
                                 <i class='bx bx-search-alt'></i>
                             </span>
                         </div>
                     </div>
+                </form>
 
+                <div class="table-responsive">
                     <table class="table table-striped">
                         <thead class="border-top">
                             <tr>
@@ -46,13 +87,13 @@
                     @forelse ($requestors as $requestor)
                               
                                     <td>{{ $requestor->student_number }}</td>
-                                    <td>{{ $requestor->fullName5() }}</td>
-                                    <td>{{ $requestor->degree }}</td>
+                                    <td>{{ $requestor->full_name_last_name_first }}</td>
+                                    <td>{{ $requestor->latest_education_level }}</td>
                                     <td>
-                                        <span class="badge rounded-pill bg-label-success">{{ $requestor->prettyTextIsGraduated() }}</span>
+                                        {!! $requestor->pretty_text_is_graduated !!}
                                     </td>
                                     <td>
-                                        <a href={{"student/$requestor->id"}} class="text-primary fs-5">
+                                        <a href={{ route('requestors.show', $requestor->id) }} class="text-primary fs-5">
                                             <i class='bx bx-show'></i>
                                         </a>
                                     </td>
@@ -66,24 +107,6 @@
                     </table>
 
                     <div class="px-3 pt-3 float-end">
-                        <!-- <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                                </li>
-                            </ul>
-                        </nav> -->
-
                         {{ $requestors->links() }}
                     </div>
                 </div>

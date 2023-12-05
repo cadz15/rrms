@@ -47,6 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::prefix('requestors')->controller(RequestorController::class)->group(function () {
         Route::get('/', 'index')->name('requestors.list');
         Route::get('/{student}', 'show')->name('requestors.show');
+        Route::get('/approve/{id}', 'approve')->name('requestors.approve');
+        Route::get('/disapprove-alert/{id}', 'showDisapprove')->name('requestors.show.disapprove');
+        Route::post('/disapprove/{id}', 'disapprove')->name('requestors.disapprove');
     });
 
     Route::group(['prefix' => 'student'], function () {
