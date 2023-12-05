@@ -7,8 +7,10 @@ use App\Models\Education;
 use App\Models\EducationLevel;
 use App\Models\User;
 use App\Services\CryptService;
+use App\Services\SmsNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class RequestorController extends Controller
 {
@@ -91,11 +93,27 @@ class RequestorController extends Controller
         return view('student.information-form', compact('student', 'educations', 'programs', 'currentEducation'));
     }
 
-    public function approve($id)
+    public function approve($id, Request $request)
     {
         $id = CryptService::decrypt($id);
 
         if(empty($id)) abort(404);
+
+        $validator = Validator::make($request->all(), [
+            'student_number' => ['required', Rule::unique('users', 'id_number')->ignore($id, 'id')]
+        ]);
+
+        if($validator->fails()) {
+            return back()->withErrors($validator->errors());
+        }
+
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+    
+        for ($i = 0; $i < 10; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
 
 
         $student = User::where('id', $id)
@@ -104,10 +122,21 @@ class RequestorController extends Controller
         if(empty($student)) abort(404);
 
         $student->update([
+            'id_number' => $request->student_number,
+            'password' => bcrypt($randomString),
             'is_approved' => 1,
             'approved_by' => auth()->user()->id
         ]);
 
+        
+
+        $idNumber = $student->id_number;
+        $password = $randomString; // ramdom string for pasword
+        $to = '63'. substr($student->contact_number, 1);
+        $from = 'RRMS';
+        $message = "Greetings, ". $student->last_name .". Your application has been accepted. Your login information is provided here. Username: $idNumber  Password: $password  ";
+
+        (new SmsNotificationService())->send($to, $from, $message);
         
         return redirect(route('requestors.list'));
     }
@@ -147,6 +176,13 @@ class RequestorController extends Controller
             'reason' => $request->reason
         ]);
 
+
+        $idNumber = $student->id_number;
+        $to = '63'. substr($student->contact_number, 1);
+        $from = config('vonage.sms_from');
+        $message = "Greetings, ". $student->last_name .". Your application has been disapproved. ";
+
+        (new SmsNotificationService())->send($to, $from, $message);
 
         return redirect(route('requestors.list'));
     }
