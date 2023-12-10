@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\EducationController;
+use App\Http\Controllers\Web\EducationController;
 use App\Http\Controllers\HealthCheckController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
@@ -47,14 +47,15 @@ Route::middleware('auth')->group(function () {
     Route::prefix('requestors')->controller(RequestorController::class)->group(function () {
         Route::get('/', 'index')->name('requestors.list');
         Route::get('/{student}', 'show')->name('requestors.show');
-        Route::get('/approve/{id}', 'approve')->name('requestors.approve');
+        Route::post('/approve/{id}', 'approve')->name('requestors.approve');
         Route::get('/disapprove-alert/{id}', 'showDisapprove')->name('requestors.show.disapprove');
         Route::post('/disapprove/{id}', 'disapprove')->name('requestors.disapprove');
     });
 
     Route::group(['prefix' => 'student'], function () {
-        Route::get('/list', [StudentController::class, 'index'])->name('student.index');
-        Route::get('/information', [StudentController::class, 'show'])->name('student.show');
+        Route::get('/list', [StudentController::class, 'index'])->name('students.index');
+        Route::get('/{id}/information', [StudentController::class, 'show'])->name('students.show');
+        Route::put('/{id}', [StudentController::class, 'update'])->name('students.update');
         Route::get('/create', [StudentController::class, 'create'])->name('student.create');
 
         Route::get('/decline-student', function () {
@@ -62,8 +63,16 @@ Route::middleware('auth')->group(function () {
             return view('student.decline-student');
         })->name('student.decline');
 
+        Route::controller(EducationController::class)->prefix('{id}/educations')->group(function () {
+            Route::get('/', 'index')->name('educations.index');
+            Route::post('/', 'store')->name('educations.store');
+            Route::get('/add', 'create')->name('educations.create');
+            Route::get('/{educationId}', 'show')->name('educations.show');
+            Route::put('/{educationId}', 'update')->name('educations.update');
+            Route::delete('/{educationId}', 'delete')->name('educations.delete');
+        });
 
-        Route::get('/{id}', [RequestorController::class, 'showStudentForm'])->name('student.information');
+        // Route::get('/{id}', [RequestorController::class, 'showStudentForm'])->name('student.information');
     });
 
     Route::group(['prefix' => 'setup'], function () {

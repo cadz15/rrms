@@ -16,7 +16,7 @@ class MajorSeeder extends Seeder
     {
         $primary = EducationLevel::where('name', 'Primary Level')->first();
         $secondary = EducationLevel::where('name', 'Secondary Level')->first();
-        $it = EducationLevel::where('name', 'Bachelor of Science in Information Technology')->first();
+        $tertiary = EducationLevel::where('name', 'Tertiary Level')->first();
 
         $primaryMajor = [
             'Grade 1',
@@ -38,21 +38,22 @@ class MajorSeeder extends Seeder
             'Senior High'
         ];
 
-        $itMajor = [
-            'Programming',
-            'Networking'
+        $tertiaryMajor = [
+            'Bachelor of Science in Business Administation',
+            'Bachelor of Elementary Education',
+            'Bachelor of Science in Hospitality Management'
         ];
 
         Major::factory(count($primaryMajor))
-        ->sequence(fn ($sequence) => ['name' => $primaryMajor[$sequence->index], 'education_level_id' => $primary->id])
-        ->create();
-        
-        Major::factory(count($secondaryMajor))
-        ->sequence(fn ($sequence) => ['name' => $secondaryMajor[$sequence->index], 'education_level_id' => $secondary->id])
-        ->create();
+            ->sequence(fn ($sequence) => ['name' => $primaryMajor[$sequence->index], 'education_level_id' => $primary->id])
+            ->create();
 
-        Major::factory(count($itMajor))
-        ->sequence(fn ($sequence) => ['name' => $itMajor[$sequence->index], 'education_level_id' => $it->id])
-        ->create();
+        Major::factory(count($secondaryMajor))
+            ->sequence(fn ($sequence) => ['name' => $secondaryMajor[$sequence->index], 'education_level_id' => $secondary->id])
+            ->create();
+
+        Major::factory(count($tertiaryMajor))
+            ->sequence(fn ($sequence) => ['name' => $tertiaryMajor[$sequence->index], 'education_level_id' => $tertiary->id])
+            ->create();
     }
 }

@@ -82,16 +82,18 @@ class User extends Authenticatable implements JWTSubject
     }
 
     // changed into attribute
-    public function getFullNameLastNameFirstAttribute() {
-        $middleInitial = empty($this->middle_name)? '': ' '. $this->middle_name[0] . '.';
-        $suffix = empty($this->suffix) ? '' : " , ". $this->suffix;
+    public function getFullNameLastNameFirstAttribute()
+    {
+        $middleInitial = empty($this->middle_name) ? '' : ' ' . $this->middle_name[0] . '.';
+        $suffix = empty($this->suffix) ? '' : " , " . $this->suffix;
 
         return $this->last_name . ', ' . $this->first_name . $middleInitial . $suffix;
     }
 
 
-    public function getLatestEducationLevelAttribute() {
-        if($this->educations->isEmpty()) {
+    public function getLatestEducationLevelAttribute()
+    {
+        if ($this->educations->isEmpty()) {
             return '';
         }
 
@@ -100,17 +102,43 @@ class User extends Authenticatable implements JWTSubject
         return $latestEducation->degree . ' - ' . $latestEducation->major;
     }
 
-    public function getPrettyTextIsGraduatedAttribute() {
-        if($this->educations->isEmpty()) {
+    public function getPrettyTextIsGraduatedAttribute()
+    {
+        if ($this->educations->isEmpty()) {
             return '';
         }
 
         $latestEducation = $this->educations->sortByDesc('year_start')->first();
 
-        if($latestEducation->is_graduated) {
+        if ($latestEducation->is_graduated) {
             return '<span class="badge bg-label-primary me-1">Graduate</span>';
         }
 
         return '<span class="badge bg-label-warning me-1">Not Graduate</span>';
+    }
+
+    public function getLatestEducation()
+    {
+        return $this->educations->sortByDesc('year_end')->first();
+    }
+
+    public function getMajorNameAttribute()
+    {
+        return $this->getLatestEducation()->major->name;
+    }
+
+    public function isAdmin()
+    {
+        return Role::where('name', RoleEnum::ADMIN->value)->where('id', $this->role_id)->exists();
+    }
+
+    public function isRegistrar()
+    {
+        return Role::where('name', RoleEnum::REGISTRAR->value)->where('id', $this->role_id)->exists();
+    }
+
+    public function isStudent()
+    {
+        return Role::where('name', RoleEnum::STUDENT->value)->where('id', $this->role_id)->exists();
     }
 }
