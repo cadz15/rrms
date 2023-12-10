@@ -14,15 +14,13 @@ return new class extends Migration
         Schema::create('educations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('level')->nullable();
+            $table->string('year_level')->nullable();
             $table->string('school_name')->nullable();
             $table->string('address')->nullable();
             $table->date('year_start')->nullable();
             $table->date('year_end')->nullable();
-            $table->string('degree')->nullable();
-            $table->string('major')->nullable();
+            $table->string('major_id')->nullable();
             $table->boolean('is_graduated')->default(false);
-            $table->date('date_graduated')->nullable();
             $table->timestamps();
         });
     }

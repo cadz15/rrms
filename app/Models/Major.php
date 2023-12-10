@@ -13,7 +13,13 @@ class Major extends Model
     protected $fillable = ['education_level_id', 'name'];
 
 
-    public function education_level() {
-        return $this->belongsTo(EducationLevel::class, 'id');
+    public function educationLevel()
+    {
+        return $this->belongsTo(EducationLevel::class);
+    }
+
+    public function educations()
+    {
+        return $this->hasMany(Education::class);
     }
 }

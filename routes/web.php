@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\EducationController;
+use App\Http\Controllers\Web\EducationController;
 use App\Http\Controllers\HealthCheckController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(HealthCheckController::class)->prefix('health-check')->group(function (){
+Route::controller(HealthCheckController::class)->prefix('health-check')->group(function () {
     Route::get('/sms', 'checkSmsNotification');
 });
 
@@ -32,7 +32,7 @@ Route::middleware('guest')->group(function () {
     });
 
 
-    Route::group(['prefix' => 'requestor'], function() {
+    Route::group(['prefix' => 'requestor'], function () {
 
         Route::get('/register', [RequestorRegistrationController::class, 'index']);
         Route::post('/register', [RequestorRegistrationController::class, 'store'])->name('requestor.register');
@@ -40,7 +40,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    
+
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -52,29 +52,35 @@ Route::middleware('auth')->group(function () {
         Route::post('/disapprove/{id}', 'disapprove')->name('requestors.disapprove');
     });
 
-    Route::group(['prefix' => 'student'], function() {
+    Route::group(['prefix' => 'student'], function () {
         Route::get('/list', [StudentController::class, 'index'])->name('students.index');
-        Route::get('/information', function() {
+        Route::get('/{id}', [StudentController::class, 'show'])->name('students.show');
+        Route::put('/{id}', [StudentController::class, 'update'])->name('students.update');
 
-            return view('student.information-form');
-        });
-
-        Route::get('/create', function() {
+        Route::get('/create', function () {
 
             return view('student.create-form');
         });
 
-        Route::get('/decline-student', function() {
+        Route::get('/decline-student', function () {
 
             return view('student.decline-student');
         })->name('student.decline');
 
+        Route::controller(EducationController::class)->prefix('{id}/educations')->group(function () {
+            Route::get('/', 'index')->name('educations.index');
+            Route::post('/', 'store')->name('educations.store');
+            Route::get('/add', 'create')->name('educations.create');
+            Route::get('/{educationId}', 'show')->name('educations.show');
+            Route::put('/{educationId}', 'update')->name('educations.update');
+            Route::delete('/{educationId}', 'delete')->name('educations.delete');
+        });
 
-        Route::get('/{id}', [RequestorController::class, 'showStudentForm'])->name('student.information');
+        // Route::get('/{id}', [RequestorController::class, 'showStudentForm'])->name('student.information');
     });
 
-    Route::group(['prefix' => 'setup'], function() {
-        Route::group(['prefix' => 'education'], function() {
+    Route::group(['prefix' => 'setup'], function () {
+        Route::group(['prefix' => 'education'], function () {
             Route::get('/', [EducationController::class, 'index'])->name('education.index');
             Route::get('/create-education', [EducationController::class, 'createEducation'])->name('education.create');
             Route::post('store-education', [EducationController::class, 'storeLevel'])->name('education.store');
@@ -87,10 +93,10 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-Route::group(['prefix' => 'requests'], function() {
+Route::group(['prefix' => 'requests'], function () {
     Route::get('/', [RequestController::class, 'index']);
 
-    Route::get('/history/{slug}', function($slug) {
+    Route::get('/history/{slug}', function ($slug) {
         // we can use id here instead of slug. For this example we use slug for page title and breadcrumbs
 
         return view('requestor.request-timeline', compact('slug'));
@@ -101,5 +107,3 @@ Route::group(['prefix' => 'requests'], function() {
 Route::get('/pages', function () {
     return view('home');
 });
-
-

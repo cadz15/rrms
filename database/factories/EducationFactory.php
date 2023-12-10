@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\EducationLevelEnum;
 use App\Enums\RoleEnum;
+use App\Models\Major;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
@@ -23,20 +24,13 @@ class EducationFactory extends Factory
         $user = User::whereHas('role', fn ($query) => $query->where('name', RoleEnum::STUDENT))->inRandomOrder()->first();
         return [
             'user_id' => $user->id,
-            'level' => Arr::random([
-                EducationLevelEnum::ELEMENTARY,
-                EducationLevelEnum::JUNIOR_HIGH,
-                EducationLevelEnum::SENIOR_HIGH,
-                EducationLevelEnum::COLLEGE
-            ]),
-            'school_name' => $this->faker->name(),
-            'address' => $this->faker->address(),
+            'year_level' => rand(1, 4),
+            'school_name' => config('education.school_name'),
+            'address' => config('education.school_address'),
             'year_start' => now()->subYears(4)->format('Y-m-d'),
             'year_end' => now()->addYears(5)->format('Y-m-d'),
-            'degree' => Arr::random(['BSED', 'BSIT',NULL]),
-            'major' => Arr::random(['EDUCATION', 'IT', NULL]),
+            'major_id' => Major::inRandomOrder()->first() ?? Major::factory()->create(),
             'is_graduated' => rand(0, 1),
-            'date_graduated' => now()->subYears(2),
         ];
     }
 }
