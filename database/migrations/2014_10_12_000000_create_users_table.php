@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('birth_place', 250);
             $table->string('address', 250);
             $table->boolean('is_approved')->default(false);
+            $table->text('reason')->nullable(); // if requestor's data is disapproved
             $table->unsignedBigInteger('approved_by')->nullable()->comment('ID the one who approved the student, might the ID of the employee');
             $table->timestamps();
             $table->softDeletes();

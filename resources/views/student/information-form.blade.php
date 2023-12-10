@@ -201,24 +201,31 @@
                     <div class="divider-text"><h6>Education</h6></div>
                 </div>
 
+                @if(empty($currentEducation))
 
-                <div class="col-lg-4 col-md-12">
+                <div class="alert alert-danger" role="alert">
+                    No Education found!
+                </div>
+                @else 
+                <div class="col-lg-8 col-md-12">
 
                     <div class="form-group">
-                        <label for="degree">Degree / Course <span class="text-danger">*</span></label>
+                        <label for="degree">Education Level / Degree <span class="text-danger">*</span></label>
                         <select name="degree" id="degree" class="form-select  {{ $errors->has('degree') ? 'is-invalid' : '' }}">
                             <option value="">--Select Degree/Course--</option>
-                            @if(!empty($degrees))
-                                @foreach ($degrees as $degree)
-                                    <option value="{{ $degree['id'] }}"
-                                    @if($student->degree == $degree['id'])
-                                        selected="selected"
-                                    @endif
-                                    >
-                                        {{ $degree['name'] }}
-                                    </option>
-                                @endforeach
-                            @endif
+                            @foreach ($programs as $program)
+                                <optgroup label="{{ $program['level_name'] }}">
+                                    @foreach($program['major_names'] as $major)
+                                        <option value="{{ $major }}" 
+                                            @if($major == $currentEducation->major)
+                                                selected
+                                            @endif
+                                        >
+                                        {{ ucwords($major) }}
+                                        </option>
+                                    @endforeach
+                                </optgroup>
+                            @endforeach
                         </select>
                         <div class="invalid-feedback">
                             This field is required.
@@ -226,30 +233,7 @@
                     </div>
                 </div>
                 
-                <div class="col-lg-4 col-md-12">
-
-                    <div class="form-group">
-                        <label for="major">Major <span class="text-danger">*</span></label>
-                        <select name="major" id="major" class="form-select  {{ $errors->has('major') ? 'is-invalid' : '' }}">
-                            <option value="">--Select Major--</option>
-                            @if(!empty($majors))
-                                @foreach ($majors as $major)
-                                    <option value="{{ $major['id'] }}"
-                                    @if($student->major == $major['id'])
-                                        selected="selected"
-                                    @endif
-                                    >
-                                        {{ $major['name'] }}
-                                    </option>
-                                @endforeach
-                            @endif
-                        </select>
-                        <div class="invalid-feedback">
-                            This field is required.
-                        </div>
-                    </div>
-                </div>
-
+                
                 <div class="col-lg-4 col-md-12">
 
                     <div class="form-group">
@@ -258,7 +242,7 @@
                             name="date_enrolled" 
                             id="date_enrolled" 
                             class="form-control  {{ $errors->has('date_enrolled') ? 'is-invalid' : '' }}"
-                            value="{{ $student->date_enrolled }}"
+                            value="{{ $currentEducation->year_start }}"
                         >
                         <div class="invalid-feedback">
                             This field is required.
@@ -275,7 +259,7 @@
                             id="year_level" 
                             class="form-control  {{ $errors->has('year_level') ? 'is-invalid' : '' }}" 
                             placeholder="Year Level"
-                            value="{{ $student->year_level }}"
+                            value="{{ $currentEducation->level }}"
                         >
                         <div class="invalid-feedback">
                             This field is required.
@@ -290,7 +274,7 @@
                         <select name="is_graduated" id="is_graduated" class="form-control  {{ $errors->has('is_graduated') ? 'is-invalid' : '' }}">
                             <option 
                                 value="0"
-                                @if($student->is_graduated == 0)
+                                @if($currentEducation->is_graduated == 0)
                                     selected="selected"
                                 @endif
                             >
@@ -298,7 +282,7 @@
                             </option>
                             <option 
                                 value="1"
-                                @if($student->is_graduated == 1)
+                                @if($currentEducation->is_graduated == 1)
                                     selected="selected"
                                 @endif   
                             >
@@ -319,7 +303,7 @@
                             name="date_graduated" 
                             id="date_graduated" 
                             class="form-control  {{ $errors->has('date_graduated') ? 'is-invalid' : '' }}"
-                            value="{{ $student->date_graduated }}"                                
+                            value="{{ $currentEducation->date_graduated }}"                                
                         >
                         <div class="invalid-feedback">
                             This field is required.
@@ -327,13 +311,53 @@
                     </div>
                 </div>
 
+                <div class="col-lg-12 col-md-12">
+
+                    <div class="form-group">
+                        <label for="school_name">School Name</label>
+                        <input type="text" 
+                            name="school_name" 
+                            id="school_name" 
+                            class="form-control  {{ $errors->has('school_name') ? 'is-invalid' : '' }}"
+                            value="{{ $currentEducation->school_name }}"   
+                            placeholder="School Name"                             
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12">
+
+                    <div class="form-group">
+                        <label for="school_address">School Address</label>
+                        <input type="text" 
+                            name="school_address" 
+                            id="school_address" 
+                            class="form-control  {{ $errors->has('school_address') ? 'is-invalid' : '' }}"
+                            value="{{ $currentEducation->address }}"  
+                            placeholder="School Address"                              
+                        >
+                        <div class="invalid-feedback">
+                            This field is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-3 pt-3 float-end">
+                    {{ $educations->links() }}
+                </div>
+                @endif
+                <!-- Education End -->
+
             </div>
 
         </div>
 
         <div class="card-footer border-top">
-            <a href="#" class="btn btn-outline-danger"><i class='bx bx-dislike'></i> Disapprove</a>
-            <a href="#" class="btn btn-outline-success"><i class='bx bx-like'></i> Approve</a>
+            <a href="{{ route('requestors.show.disapprove', cryptor($student->id)) }}" class="btn btn-outline-danger"><i class='bx bx-dislike'></i> Disapprove</a>
+            <a href="{{ route('requestors.approve', cryptor($student->id)) }}" class="btn btn-outline-success"><i class='bx bx-like'></i> Approve</a>
         </div>
     </div>
 </div>

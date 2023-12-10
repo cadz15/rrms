@@ -81,8 +81,36 @@ class User extends Authenticatable implements JWTSubject
         return $this->contact_number;
     }
 
-    public function fullName()
-    {
-        return $this->last_name . ', ' . $this->first_name . ' ' . $this->middle_name;
+    // changed into attribute
+    public function getFullNameLastNameFirstAttribute() {
+        $middleInitial = empty($this->middle_name)? '': ' '. $this->middle_name[0] . '.';
+        $suffix = empty($this->suffix) ? '' : " , ". $this->suffix;
+
+        return $this->last_name . ', ' . $this->first_name . $middleInitial . $suffix;
+    }
+
+
+    public function getLatestEducationLevelAttribute() {
+        if($this->educations->isEmpty()) {
+            return '';
+        }
+
+        $latestEducation = $this->educations->sortByDesc('year_start')->first();
+
+        return $latestEducation->degree . ' - ' . $latestEducation->major;
+    }
+
+    public function getPrettyTextIsGraduatedAttribute() {
+        if($this->educations->isEmpty()) {
+            return '';
+        }
+
+        $latestEducation = $this->educations->sortByDesc('year_start')->first();
+
+        if($latestEducation->is_graduated) {
+            return '<span class="badge bg-label-primary me-1">Graduate</span>';
+        }
+
+        return '<span class="badge bg-label-warning me-1">Not Graduate</span>';
     }
 }

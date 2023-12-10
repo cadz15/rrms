@@ -15,15 +15,15 @@
             <div class="card  card-border-shadow-danger">
             
                 <!-- Add form action here -->
-                <form action="" method="post"> 
-
+                <form action="{{ route('requestors.disapprove', $id) }}" method="post"> 
+                    @csrf
                     <div class="card-body">
                         <div class="text-center">
     
                             <i class='bx bx-error-circle text-danger' style="font-size: 8rem;"></i>
                             <p class="fs-1">Are you sure?</p>
                             <br>
-                            <p class="fs-5">Do you really want to delete these record? This process cannot be undone.</p>
+                            <p class="fs-5">Do you really want to disapprove this requestor? This process cannot be undone.</p>
                         </div>
                     
                         <input 
@@ -36,7 +36,7 @@
                     </div>
                     <div class="card-footer d-flex justify-content-center">
                         <a href="{{ url()->previous() }}" class="btn btn-secondary btn-lg me-3">Cancel</a>
-                        <button type="submit" class="btn btn-danger btn-lg ms-4">Delete</button>
+                        <button type="submit" class="btn btn-danger btn-lg ms-4">Disapprove</button>
                     </div>
                 </form>
 
