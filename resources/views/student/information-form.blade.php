@@ -16,13 +16,13 @@
             
                 <div class="form-group">
                     
-                    <label for="student_number">Student Number <span class="text-danger">*</span></label>
+                    <label for="id_number">Student Number <span class="text-danger">*</span></label>
                     <input type="text" 
-                        name="student_number" 
-                        id="student_number" 
-                        class="form-control {{ $errors->has('student_number') ? 'is-invalid' : '' }}"
+                        name="id_number" 
+                        id="id_number" 
+                        class="form-control {{ $errors->has('id_number') ? 'is-invalid' : '' }}"
                         placeholder="Student's ID Number" 
-                        value="{{ $student->student_number }}"
+                        value="{{ $student->id_number }}"
                     >
                     <div class="invalid-feedback">
                         This field is required and must be unique.

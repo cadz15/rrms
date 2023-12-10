@@ -54,7 +54,7 @@
                                     <span class="badge rounded-pill bg-label-success">{{ $student->educations->last()?->prettyIsGraduated() }}</span>
                                 </td>
                                 <td>
-                                    <a href="/student/information" class="text-primary fs-5">
+                                    <a href="{{route('student.show', ['id' => $student->id])}}" class="text-primary fs-5">
                                         <i class='bx bx-show'></i>
                                     </a>
                                 </td>
@@ -68,23 +68,7 @@
                     </table>
 
                     <div class="px-3 pt-3 float-end">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                                </li>
-                            </ul>
-                        </nav>
+                        {{ $students->links() }}
                     </div>
                 </div>
             </div>
