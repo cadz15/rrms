@@ -67,14 +67,15 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6">No Data</td>
+                                <td colspan="6" class="text-center">No Data</td>
                             </tr>
                         @endforelse
                         </tbody>
                     </table>
 
                     <div class="px-3 pt-3 float-end">
-                        <nav aria-label="Page navigation example">
+                    {{ $requests->links() }}
+                        {{-- <nav aria-label="Page navigation example">
                             <ul class="pagination">
                                 <li class="page-item">
                                 <a class="page-link" href="#" aria-label="Previous">
@@ -90,7 +91,7 @@
                                 </a>
                                 </li>
                             </ul>
-                        </nav>
+                        </nav> --}}
                     </div>
                 </div>
             </div>

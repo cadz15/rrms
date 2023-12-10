@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\EducationLevel;
 use App\Http\Controllers\Controller;
 use App\Models\Education;
+use App\Models\Major;
 
 class StudentController extends Controller
 {
@@ -37,5 +38,13 @@ class StudentController extends Controller
     public function update(Request $request)
     {
         dd($request->all());
+    }
+
+    public function create()
+    {
+        $degrees = EducationLevel::get();
+        $majors = Major::get();
+
+        return view('student.create-form', compact('degrees', 'majors'));
     }
 }
