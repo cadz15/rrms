@@ -59,10 +59,8 @@ Route::middleware('auth')->group(function () {
             return view('student.information-form');
         });
 
-        Route::get('/create', function() {
-
-            return view('student.create-form');
-        });
+        Route::get('/create', [StudentController::class, 'viewCreate']);
+        Route::post('/create', [StudentController::class, 'storeStudent'])->name('student.create');
 
         Route::get('/decline-student', function() {
 

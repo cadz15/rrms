@@ -47,7 +47,7 @@
                         @forelse ($students as $student)
                             <tr>
                                 <td>{{ $student->id_number }}</td>
-                                <td>{{ $student->fullName() }}</td>
+                                <td>{{ $student->full_name_last_name_first }}</td>
                                 <td>{{ $student->educations->last()?->level ?? '-' }}</td>
                                 <td>{{ $student->educations->last()?->degree ?? '-' }}</td>
                                 <td>
