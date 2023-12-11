@@ -18,11 +18,16 @@ class Education extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function major()
+    {
+        return $this->belongsTo(Major::class);
+    }
+
     public function prettyIsGraduated()
     {
-        return match($this->is_graduated) {
-            '0' => 'No',
-            '1' => 'Yes',
+        return match ($this->is_graduated) {
+            0 => 'No',
+            1 => 'Yes',
             default => 'No'
         };
     }

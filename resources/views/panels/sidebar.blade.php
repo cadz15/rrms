@@ -42,6 +42,18 @@
                 <i class='menu-icon bx bx-receipt'></i>
                 <div data-i18n="Request">Request</div>
             </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->is('student/create') ? 'active' : '' }}">
+                    <a href="/student/create" class="menu-link">
+                        <div class="text-truncate" data-i18n="Add Student">Add Request</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->routeIs('requests.list-web') ? 'active' : '' }}">
+                    <a href="{{ route('requests.list-web') }}" class="menu-link">
+                        <div class="text-truncate" data-i18n="List">List</div>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <li class="menu-item {{ request()->is('student*') ? 'active open' : '' }}">

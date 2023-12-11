@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Web;
 use App\Enums\RoleEnum;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\EducationLevel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentCreateRequest;
 use App\Models\Education;
-use App\Models\EducationLevel;
 use App\Models\Major;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +17,7 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = User::approvedStudents()->with('educations')->get();
+        $students = User::approvedStudents()->with('educations.major')->paginate(10);
 
         return view('student.list', compact('students'));
     }
@@ -102,5 +102,36 @@ class StudentController extends Controller
 
             return abort(500);
         }
+    }
+
+
+    public function show($id)
+    {
+        $student = User::approvedStudents()->find($id) ?? abort(404);
+        $student->educations = Education::where('user_id', $student->id)->with('major')->get();
+
+        $programs = EducationLevel::with('majors')
+            ->get()
+            ->transform(function ($level) {
+                return [
+                    'level_name' => $level->name,
+                    'major_names' => [...$level->majors],
+                ];
+            });
+
+        return view('student.information-form', compact('student', 'programs'));
+    }
+
+    public function update(Request $request)
+    {
+        dd($request->all());
+    }
+
+    public function create()
+    {
+        $degrees = EducationLevel::get();
+        $majors = Major::get();
+
+        return view('student.create-form', compact('degrees', 'majors'));
     }
 }

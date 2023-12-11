@@ -37,54 +37,44 @@
                             <tr>
                                 <th>ID Number</th>
                                 <th>Name</th>
-                                <th>Level</th>
-                                <th>Course</th>
+                                <th>Year Level</th>
+                                <th>Major</th>
                                 <th>Is Graduate</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                        @forelse ($students as $student)
-                            <tr>
-                                <td>{{ $student->id_number }}</td>
-                                <td>{{ $student->full_name_last_name_first }}</td>
-                                <td>{{ $student->educations->last()?->level ?? '-' }}</td>
-                                <td>{{ $student->educations->last()?->degree ?? '-' }}</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-label-success">{{ $student->educations->last()?->prettyIsGraduated() }}</span>
-                                </td>
-                                <td>
-                                    <a href="/student/information" class="text-primary fs-5">
-                                        <i class='bx bx-show'></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5"></td>
-                            </tr>
-                        @endforelse
+                            @forelse ($students as $student)
+                                <tr>
+                                    <td>{{ $student->id_number }}</td>
+                                    <td>{{ $student->full_name_last_name_first }}</td>
+                                    <td>{{ $student->getLatestEducation()?->year_level ?? '-' }}</td>
+                                    <td>{{ $student->getLatestEducation()?->major->name ?? '-' }}</td>
+                                    <td>
+                                        <span
+                                            class="badge rounded-pill bg-label-success">{{ $student->getLatestEducation()?->prettyIsGraduated() }}</span>
+                                    </td>
+                                    <td class="d-flex gap-2">
+                                        <a href="{{ route('students.show', $student->id) }}" title="Show Information"
+                                            class="text-primary fs-5">
+                                            <i class='bx bx-show'></i>
+                                        </a>
+                                        <a href="{{ route('educations.index', ['id' => $student->id]) }}"
+                                            title="Show Educational Background" class="text-secondary fs-5">
+                                            <i class='bx bxs-graduation'></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5"></td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
 
                     <div class="px-3 pt-3 float-end">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                                </li>
-                            </ul>
-                        </nav>
+                        {{ $students->links() }}
                     </div>
                 </div>
             </div>

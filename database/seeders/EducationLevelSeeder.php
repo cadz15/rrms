@@ -16,7 +16,7 @@ class EducationLevelSeeder extends Seeder
         $levels = [
             ['name' => 'Primary Level'],
             ['name' => 'Secondary Level'],
-            ['name' => 'Bachelor of Science in Information Technology']
+            ['name' => 'Tertiary Level']
         ];
 
         EducationLevel::insert($levels);
