@@ -38,12 +38,12 @@
                                         @foreach ($programs as $program)
                                             <optgroup label="{{ $program['level_name'] }}">
                                                 @foreach($program['major_names'] as $major)
-                                                    <option value="{{ $major->id }}" 
-                                                        @if($major == $filterEducation)
+                                                    <option value="{{ $major['id'] }}" 
+                                                        @if($major['id'] == $filterEducation)
                                                             selected
                                                         @endif
                                                     >
-                                                    {{ ucwords($major->name) }}
+                                                    {{ ucwords($major['name']) }}
                                                     </option>
                                                 @endforeach
                                             </optgroup>

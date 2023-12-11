@@ -57,12 +57,19 @@ class RequestorController extends Controller
             ->with(['educations.major.educationLevel'])
             ->paginate(10);
 
-        $programs = EducationLevel::with('majors')
+            $programs = EducationLevel::with('majors')
             ->get()
-            ->transform(function ($level) {
+            ->transform(function($level) {
+                $majors = $level->majors->transform(function($major) {
+                    return [
+                        'id' => $major->id,
+                        'name' => $major->name
+                    ];
+                });
+    
                 return [
                     'level_name' => $level->name,
-                    'major_names' => [...$level->majors],
+                    'major_names' => [...$majors]
                 ];
             });
 
@@ -85,13 +92,20 @@ class RequestorController extends Controller
         $currentEducation = $student->getLatestEducation();
 
         $programs = EducationLevel::with('majors')
-            ->get()
-            ->transform(function ($level) {
+        ->get()
+        ->transform(function($level) {
+            $majors = $level->majors->transform(function($major) {
                 return [
-                    'level_name' => $level->name,
-                    'major_names' => [...$level->majors],
+                    'id' => $major->id,
+                    'name' => $major->name
                 ];
             });
+
+            return [
+                'level_name' => $level->name,
+                'major_names' => [...$majors]
+            ];
+        });
 
         return view('requestor.information', compact('student', 'programs', 'currentEducation'));
     }

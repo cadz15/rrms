@@ -186,9 +186,9 @@
                                          @foreach ($programs as $program)
                                              <optgroup label="{{ $program['level_name'] }}">
                                                  @foreach ($program['major_names'] as $major)
-                                                     <option value="{{ $major->id }}"
-                                                         @if ($major->id == $currentEducation->major->id) selected @endif>
-                                                         {{ ucwords($major->name) }}
+                                                     <option value="{{ $major['id'] }}"
+                                                         @if ($major['id'] == $currentEducation->major->id) selected @endif>
+                                                         {{ ucwords($major['name']) }}
                                                      </option>
                                                  @endforeach
                                              </optgroup>

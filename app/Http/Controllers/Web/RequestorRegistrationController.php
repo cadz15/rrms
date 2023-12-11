@@ -24,9 +24,16 @@ class RequestorRegistrationController extends Controller
         $programs = EducationLevel::with('majors')
         ->get()
         ->transform(function($level) {
+            $majors = $level->majors->transform(function($major) {
+                return [
+                    'id' => $major->id,
+                    'name' => $major->name
+                ];
+            });
+
             return [
                 'level_name' => $level->name,
-                'major_names' => [...$level->majors->pluck('name')]
+                'major_names' => [...$majors]
             ];
         });
 
@@ -55,22 +62,16 @@ class RequestorRegistrationController extends Controller
             // "degree",
             // "major",
             // "date_enrolled",
-            // "year_level",
+            "year_level",
             "is_graduated",
-            "date_graduated"
+            // "date_graduated"
         ]);
 
-        // Get Degree
-        $educationName = Major::join('education_levels', 'education_levels.id', '=', 'majors.education_level_id')
-        ->where('majors.name', $request->degree)
-        ->select('education_levels.name as level_name')
-        ->pluck('level_name')
-        ->first() ?? '';
-
-        $educationData['major'] = $request->degree;
-        $educationData['degree'] = $educationName;
+        
+        $educationData['major_id'] = $request->degree;
         $educationData['year_start'] = $request->date_enrolled;
-        $educationData['level'] = $request->year_level ?? null;
+        // $educationData['year_end'] = $request->date_graduated;
+        // $educationData['year_level'] = $request->year_level ?? null;
         
         if($request->has('is_graduated')) {
             if($request->is_graduated == 1) {
