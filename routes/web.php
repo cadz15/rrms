@@ -56,9 +56,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/list', [StudentController::class, 'index'])->name('students.index');
         Route::get('/{id}/information', [StudentController::class, 'show'])->name('students.show');
         Route::put('/{id}', [StudentController::class, 'update'])->name('students.update');
-        Route::get('/create', [StudentController::class, 'create'])->name('student.create');
+        // Route::get('/create', [StudentController::class, 'create'])->name('student.create');
 
-        Route::get('/decline-student', function () {
+        Route::get('/create', [StudentController::class, 'viewCreate'])->name('student.create.form');
+        Route::post('/create', [StudentController::class, 'storeStudent'])->name('student.create');
+
+        Route::get('/decline-student', function() {
 
             return view('student.decline-student');
         })->name('student.decline');

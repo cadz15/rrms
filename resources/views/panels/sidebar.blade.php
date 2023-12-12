@@ -78,7 +78,7 @@
         </li>
         <li class="menu-item {{ request()->is('setup*') ? 'active open' : '' }}">
             <a href="#" class="menu-link menu-toggle">                
-                <i class='bx bx-cog'></i>
+                <i class='menu-icon bx bx-cog'></i>
                 <div class="text-truncate" data-i18n="Setup">
                     Setup
                 </div>

@@ -31,13 +31,20 @@ class EducationController extends Controller
         }
 
         $programs = EducationLevel::with('majors')
-            ->get()
-            ->transform(function ($level) {
+        ->get()
+        ->transform(function($level) {
+            $majors = $level->majors->transform(function($major) {
                 return [
-                    'level_name' => $level->name,
-                    'major_names' => [...$level->majors],
+                    'id' => $major->id,
+                    'name' => $major->name
                 ];
             });
+
+            return [
+                'level_name' => $level->name,
+                'major_names' => [...$majors]
+            ];
+        });
 
         return view('student.educations.create', compact('student', 'programs'));
     }
@@ -74,13 +81,20 @@ class EducationController extends Controller
         }
 
         $programs = EducationLevel::with('majors')
-            ->get()
-            ->transform(function ($level) {
+        ->get()
+        ->transform(function($level) {
+            $majors = $level->majors->transform(function($major) {
                 return [
-                    'level_name' => $level->name,
-                    'major_names' => [...$level->majors],
+                    'id' => $major->id,
+                    'name' => $major->name
                 ];
             });
+
+            return [
+                'level_name' => $level->name,
+                'major_names' => [...$majors]
+            ];
+        });
 
         return view('student.educations.form', compact('education', 'student', 'programs'));
     }
