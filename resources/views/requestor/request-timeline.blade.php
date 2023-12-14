@@ -59,7 +59,7 @@
                     
                     <div class="float-end d-flex flex-column">
                             <h6 class="m-0 text-center">Total</h6>
-                            <div class="text-end "><h5 class="text-primary">₱ {{ number_format($total) }}</h5></div>
+                            <div class="text-end "><h5 class="text-primary">₱ {{ number_format((float) $total) }}</h5></div>
                         </div>
                 @endif
                 </div>
@@ -163,7 +163,7 @@
                                         </div>
 
                                         <p>
-                                            Your balance is <b>₱{{ number_format($total) }}</b>. This can be paid for with Gcash. Please see the information below.
+                                            Your balance is <b>₱{{ number_format((float) $total) }}</b>. This can be paid for with Gcash. Please see the information below.
                                         </p>
                                         <div class="d-flex flex-wrap">
                                             <div>

@@ -74,11 +74,11 @@ class RequestController extends Controller
         
         // TODO calculate and display total.
         // TODO approve the requested item
-        $total = number_format($request->requestItems->reduce(function($carry, $item) {
+        $total = $request->requestItems->reduce(function($carry, $item) {
             $price = $item->price?? 0;
 
             return $carry + ($item->quantity * $price);
-        }));
+        });
 
         $declinedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::DECLINED)->first();
         $approvedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::PENDING_REVIEW)->first();
