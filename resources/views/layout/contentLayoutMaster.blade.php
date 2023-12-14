@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - {{ env('APP_NAME') }}</title>
 
+    @livewireStyles
     @vite([
         'resources/css/app.css',
         'resources/css/custom-style.css'
@@ -31,7 +32,9 @@
 </head>
 <body>
     @include('layout.verticalLayout')
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 
+    @livewireScripts
     @vite([
         'resources/js/app.js',
         'resources/js/main.js',

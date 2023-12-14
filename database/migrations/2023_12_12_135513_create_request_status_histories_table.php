@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('education_levels', function (Blueprint $table) {
+        Schema::create('request_status_histories', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 150);
+            $table->unsignedBigInteger('request_id');
+            $table->string('status');
+            $table->date('date_completed')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('education_levels');
+        Schema::dropIfExists('request_status_histories');
     }
 };

@@ -16,28 +16,60 @@
                 <div class="card-body">
                     <h5 class="card-title">Request List</h5>
                 </div>
-                <div class="table-responsive">
 
+                <form action="" method="get">
                     <div class="px-3 pb-3 float-end d-flex align-items-center gap-3">
-                        <div>
+
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class='bx bx-filter-alt'></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="mt-2 px-2">
+                                    <select name="filter_status" id="filter_status" class="form-select">
+                                        <option value="" {{ is_null($filterStatus) ? 'selected': '' }}>Request Status</option>
+                                        @foreach ($statuses as $status)
+                                            <option 
+                                            value="{{ $status['value'] }}"
+                                            @if($filterStatus == $status['value'])
+                                             selected
+                                            @endif
+                                            >
+                                                {{ $status['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li class="px-2">
+                                    <button type="submit" class="btn btn-success w-100 text-center">Filter</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- <div>
                             <button class="btn btn-outline-secondary">
                                 <i class='bx bx-filter-alt'></i>
                             </button>
-                        </div>
+                        </div> -->
                         <div class="input-group input-group-merge">
-                            <input type="search" class="form-control" id="search" placeholder="Search">
+                            <input type="search" class="form-control" name="search" id="search" placeholder="Search" value="{{ $search }}">
                             <span class="input-group-text cursor-pointer" id="search-icon">
                                 <i class='bx bx-search-alt'></i>
                             </span>
                         </div>
                     </div>
+                </form>
 
+                
+                <div class="table-responsive">
                     <table class="table table-striped">
                         <thead class="border-top">
                             <tr>
                                 <th>ID Number</th>
                                 <th>Name</th>
-                                <th>Course</th>
+                                <!-- <th>Course</th> -->
                                 <!-- <th>Is Graduate</th> -->
                                 <th>Requested Item</th>
                                 <th>Status</th>
@@ -47,20 +79,36 @@
                         <tbody>
                         @forelse ($requests as $request)
                             <tr>
-                                <td>1010230-1</td>
-                                <td>Dela Cruz, Juan Jr.</td>
-                                <td>BSCrim</td>
+                                <td>{{ $request->user->id_number }}</td>
+                                <td>{{ $request->user->full_name_last_name_first }}</td>
+                                <!-- <td>BSCrim</td> -->
                                 <!-- <td>
                                     <span class="badge rounded-pill bg-label-success">Yes</span>
                                 </td> -->
                                 <td>
-                                    TOR and Good Moral
+                                    {{ implode(', ', $request->requestItems->pluck('item_name')->toArray()) }}
                                 </td>
                                 <td>
-                                    <span class="badge rounded-pill bg-label-secondary">Pending Review</span>
+                                    
+                                    @if ($request->status == App\Enums\RequestStatusEnum::PENDING_REVIEW->value)
+
+                                        <span class="badge rounded-pill bg-label-secondary">Pending Review</span>
+                                    @elseif ($request->status == App\Enums\RequestStatusEnum::PENDING_PAYMENT->value)
+
+                                        <span class="badge rounded-pill bg-label-warning">Pending Payment</span>
+                                    @elseif ($request->status == App\Enums\RequestStatusEnum::FOR_PICK_UP->value)
+
+                                        <span class="badge rounded-pill bg-label-primary">For pickup</span>
+                                    @elseif ($request->status == App\Enums\RequestStatusEnum::DECLINED->value)
+
+                                        <span class="badge rounded-pill bg-label-danger">Declined</span>
+                                    @elseif ($request->status == App\Enums\RequestStatusEnum::COMPLETED->value)
+
+                                        <span class="badge rounded-pill bg-label-success">Completed</span>
+                                    @endif
                                 </td>
                                 <td>
-                                    <a href="/requests/history/dela cruz request" class="text-primary fs-5">
+                                    <a href="/requests/history/{{ $request->id }}" class="text-primary fs-5">
                                         <i class='bx bx-show'></i>
                                     </a>
                                 </td>
@@ -75,23 +123,6 @@
 
                     <div class="px-3 pt-3 float-end">
                     {{ $requests->links() }}
-                        {{-- <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                                </li>
-                            </ul>
-                        </nav> --}}
                     </div>
                 </div>
             </div>

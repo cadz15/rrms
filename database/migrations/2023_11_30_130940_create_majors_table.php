@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('education_level_id');
             $table->string('name', 255);
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('education_level_id')
               ->references('id')->on('education_levels')->onDelete('cascade');
         });

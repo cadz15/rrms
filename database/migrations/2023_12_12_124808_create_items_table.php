@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('education_levels', function (Blueprint $table) {
+        Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 150);
+            $table->string('name');
             $table->timestamps();
-            $table->softDeletes();
+            $table->softDeletes();// Item can be hidden. for example, item is no longer available or registrar doesn't release such item
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('education_levels');
+        Schema::dropIfExists('items');
     }
 };

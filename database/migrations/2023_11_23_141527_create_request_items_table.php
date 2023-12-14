@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('request_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('request_id');
+            $table->unsignedBigInteger('item_id')->nullable();
             $table->string('item_name');
             $table->integer('quantity');
-            $table->float('price');
+            $table->float('price')->default(0);
             $table->integer('status');
             $table->timestamps();
             $table->softDeletes();
