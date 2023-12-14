@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Item;
+use App\Models\RequestableItem;
 use App\Models\RequestItem;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -15,7 +15,7 @@ class RequestItemController extends Controller
         $search = $request->has('search')? $request->search : '';
 
         
-        $items = Item::when(!empty($search), function($query) use($search){
+        $items = RequestableItem::when(!empty($search), function($query) use($search){
             return $query->where('name', 'LIKE', "%$search%");
         })
         ->oldest('name')
@@ -28,10 +28,10 @@ class RequestItemController extends Controller
     public function create(Request $request) {
         $request->validate([
             'item-name' => ['required', 
-            Rule::unique('items', 'name')->whereNull('deleted_at')]
+            Rule::unique('requestable_items', 'name')->whereNull('deleted_at')]
         ]);
 
-        Item::create([
+        RequestableItem::create([
             'name' => $request->get('item-name')
         ]);
 
@@ -40,14 +40,14 @@ class RequestItemController extends Controller
 
 
     public function viewEdit($id) {
-        $updateItem = Item::whereNull('deleted_at')
+        $updateItem = RequestableItem::whereNull('deleted_at')
         ->where('id', $id)
         ->first();
 
         if(empty($updateItem)) return abort(404);
         $search = '';
         
-        $items = Item::oldest('name')
+        $items = RequestableItem::oldest('name')
         ->paginate(10);
 
         return view('requests.item.list', compact('items', 'search', 'updateItem'));
@@ -57,10 +57,10 @@ class RequestItemController extends Controller
     public function update(Request $request) {
         $request->validate([
             'item-name' => ['required', 
-            Rule::unique('items', 'name')->whereNull('deleted_at')->ignore($request->get('update-id'))]
+            Rule::unique('requestable_items', 'name')->whereNull('deleted_at')->ignore($request->get('update-id'))]
         ]);
 
-        $updateItem = Item::whereNull('deleted_at')
+        $updateItem = RequestableItem::whereNull('deleted_at')
         ->where('id', $request->get('update-id'))
         ->first();
 
@@ -82,7 +82,7 @@ class RequestItemController extends Controller
 
 
     public function viewDelete($id) {
-        $item = Item::whereNull('deleted_at')
+        $item = RequestableItem::whereNull('deleted_at')
         ->where('id', $id)
         ->first();
 
@@ -93,7 +93,7 @@ class RequestItemController extends Controller
 
 
     public function destroy($id) {
-        $item = Item::whereNull('deleted_at')
+        $item = RequestableItem::whereNull('deleted_at')
         ->where('id', $id)
         ->first();
 

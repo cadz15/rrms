@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Enums\RequestStatusEnum;
 use App\Enums\RoleEnum;
-use App\Models\Item;
 use App\Models\Request;
+use App\Models\RequestableItem;
 use App\Models\RequestItem;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -30,9 +30,9 @@ class ItemSeeder extends Seeder
             ['name' => 'Good Moral']
         ];
 
-        Item::insert($items);
+        RequestableItem::insert($items);
 
-        $item1 = Item::inRandomOrder()->first();        
+        $item1 = RequestableItem::inRandomOrder()->first();        
         RequestItem::create([
             'request_id' => $request->id,
             'item_id' => $item1->id,
@@ -42,7 +42,7 @@ class ItemSeeder extends Seeder
             'status' => rand(1, 10)
         ]);
 
-        $item2 = Item::inRandomOrder()->first();        
+        $item2 = RequestableItem::inRandomOrder()->first();        
         RequestItem::create([
             'request_id' => $request->id,
             'item_id' => $item2->id,
