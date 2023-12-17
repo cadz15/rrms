@@ -103,6 +103,14 @@
                                             title="Show Educational Background" class="text-secondary fs-5">
                                             <i class='bx bxs-graduation'></i>
                                         </a>
+                                        <a href="{{ route('students.request.history', ['id' => $student->id]) }}"
+                                            title="Request history" class="text-secondary fs-5">
+                                            <i class='bx bx-copy-alt'></i>
+                                        </a>
+                                        <a href="{{ route('students.account.setting', ['id' => $student->id]) }}"
+                                            title="Account setting" class="text-secondary fs-5">
+                                            <i class='bx bx-cog'></i>
+                                        </a>
                                     </td>
                                 </tr>
                             @empty

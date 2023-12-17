@@ -21,7 +21,7 @@
                     <div class="app-brand mb-5">
                         <a href="#" class="app-brand-link">
                             <span class="app-brand-logo">
-                                <img src="{{ asset('img/bato leyte icon.jpg') }}" alt="logo"
+                                <img src="{{ asset('img/logo.png') }}" alt="logo"
                                 class="">
                             </span>
                             <span class="app-brand-text menu-text fw-bolder ms-2">RRMS</span>

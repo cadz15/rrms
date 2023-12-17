@@ -23,7 +23,7 @@
                             <i class='bx bx-error-circle text-danger' style="font-size: 8rem;"></i>
                             <p class="fs-1">Are you sure?</p>
                             <br>
-                            <p class="fs-5">Do you really want to delete this item? This process cannot be undone.</p>
+                            <p class="fs-5">Do you really want to delete this item? This may brick the system and this process cannot be undone.</p>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-center">

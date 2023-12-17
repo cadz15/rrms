@@ -1,114 +1,148 @@
 @extends('layout.contentLayoutMaster')
 
-@section('title', 'Sample Design')
+@section('title', 'Dashboard')
 
 @section('content')
 
     <div class="row">
 
-        <div class="col-12">
+        <div class="col-md-12 col-lg-4 mb-4">
+            <div class="card">
+                <div class="d-flex align-items-end row">
+                    <div class="col-7">
+                        <div class="card-body">
+                            <h6 class="card-title mb-4 text-nowrap">Total Student</h6>
+
+                            <h5 class="card-title text-primary mb-4">{{ number_format($totalStudent) }}</h5>
+
+                            <a href="{{ route('students.index') }}" class="btn btn-sm btn-primary ">View Students</a>
+                        </div>
+                    </div>
+                    <div class="col-5 pt-3 ps-0">
+                        <img src="{{ asset('img/total-student.png') }}" width="140" height="140" class="rounded-start" alt="View Sales">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12 col-lg-4 mb-4">
+            <div class="card">
+                <div class="d-flex align-items-end row">
+                    <div class="col-7">
+                        <div class="card-body">
+                            <h6 class="card-title mb-4 text-nowrap">Total Request</h6>
+                            <h4 class="card-title text-nowrap mb-2">{{ number_format($totalRequest) }}</h4>
+                            
+                            <a href="{{ route('requests.list-web') }}" class="btn btn-sm text-primary ">View Requests</a>
+                        </div>
+                    </div>
+                    <div class="col-5 pt-3 ps-0">
+                        <img src="{{ asset('img/total-request.png') }}" width="130" height="140" class="rounded-start" alt="View Sales">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12 col-lg-4 mb-4">
+            <div class="card">
+                <div class="d-flex align-items-end row">
+                    <div class="col-7">
+                        <div class="card-body">
+                            <h6 class="card-title mb-4 text-nowrap">Pending Requestor</h6>
+                            <h4 class="card-title text-nowrap mb-2">{{ number_format($pendingRequestor) }}</h4>
+                            
+                            <a href="{{ route('requestors.list') }}" class="btn btn-sm text-warning ">View Requestors</a>
+                        </div>
+                    </div>
+                    <div class="col-5 pt-3 ps-0">
+                        <img src="{{ asset('img/student scan.png') }}" width="140" height="140" class="rounded-start" alt="View Sales">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-12  mb-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title text-primary">Congratulations John! 🎉</h5>
-                    <p class="mb-4">You have done <span class="fw-medium">72%</span> more sales today. Check your new badge in your profile.</p>
-
-                    <a href="#" class="btn btn-sm btn-label-primary">View Badges</a>
+                    <h5 class="card-title text-primary">Good Day {{ ucwords(auth()->user()->last_name) }}! 🎉</h5>
+                    <p class="mb-4">Welcome to Bato Institute of Science and Technology - RRMS</p>
 
                 </div>
             </div>
         </div>
 
-        <div class="col-12 mt-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Sample Table Design</h5>
-                    <p>
-                        Please refer 
-                        <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/tables-basic.html">Tables</a>
-                        for more details
-                    <p>
-                </div>
-                <div class="table-responsive">
 
+
+        <div class="col-12">
+            <div class="card">
+                <h5 class="card-title m-4">Active Request</h5>
+                <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                <th>ID Number</th>
                                 <th>Name</th>
-                                <th>Age</th>
-                                <th>Year</th>
+                                <th>Requested Item</th>
+                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody class="table-border-bottom-0">
+                        <tbody>
+                        @forelse ($requests as $request)
                             <tr>
-                                <td>Juan Dela Cruz</td>
-                                <td>20</td>
-                                <td>2030</td>
+                                <td>{{ $request->user->id_number }}</td>
+                                <td>{{ $request->user->full_name_last_name_first }}</td>
+                                <!-- <td>BSCrim</td> -->
+                                <!-- <td>
+                                    <span class="badge rounded-pill bg-label-success">Yes</span>
+                                </td> -->
+                                <td>
+                                    {{ implode(', ', $request->requestItems->pluck('item_name')->toArray()) }}
+                                </td>
+                                <td>
+                                    
+                                    @if ($request->status == App\Enums\RequestStatusEnum::PENDING_REVIEW->value)
+
+                                        <span class="badge rounded-pill bg-label-secondary">Pending Review</span>
+                                    @elseif ($request->status == App\Enums\RequestStatusEnum::PENDING_PAYMENT->value)
+
+                                        <span class="badge rounded-pill bg-label-warning">Pending Payment</span>
+                                    @elseif ($request->status == App\Enums\RequestStatusEnum::FOR_PICK_UP->value)
+
+                                        <span class="badge rounded-pill bg-label-primary">For pickup</span>
+                                    @elseif ($request->status == App\Enums\RequestStatusEnum::DECLINED->value)
+
+                                        <span class="badge rounded-pill bg-label-danger">Declined</span>
+                                    @elseif ($request->status == App\Enums\RequestStatusEnum::COMPLETED->value)
+
+                                        <span class="badge rounded-pill bg-label-success">Completed</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="/requests/history/{{ $request->id }}" class="text-primary fs-5">
+                                        <i class='bx bx-show'></i>
+                                    </a>
+                                </td>
                             </tr>
+                        @empty
                             <tr>
-                                <td>Juan Dela Cruz</td>
-                                <td>20</td>
-                                <td>2030</td>
+                                <td colspan="6" class="text-center">No Data</td>
                             </tr>
-                            <tr>
-                                <td>Juan Dela Cruz</td>
-                                <td>20</td>
-                                <td>2030</td>
-                            </tr>
+                        @endforelse
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
 
-        <div class="col-12 mt-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Sample Form</h5>
-                    <p>
-                        Please refer 
-                        <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/form-layouts-vertical.html">Forms</a>
-                        for more details
-                    <p>
-
-                    <h6>1. Account Details</h6>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" name="username" id="username" class="form-control" placeholder="Username">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label" for="multicol-email">Email</label>
-                                <div class="input-group input-group-merge">
-                                    <input type="text" id="multicol-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="multicol-email2">
-                                    <span class="input-group-text" id="multicol-email2">@example.com</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr class="my-4 mx-n4">
-
-                    
-                    <h6>2. About</h6>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="about-me" class="form-label">Description</label>
-                            <textarea name="about-me" id="about-me" cols="30" rows="10" class="form-control"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="pt-4">
-                        <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
-                        <button type="reset" class="btn btn-label-secondary">Cancel</button>
-                    </div>
+                <div class="px-3 pt-3 float-end">
+                    {{ $requests->links() }}
                 </div>
             </div>
         </div>
-    </div>
+
+
+        
 
 @endsection

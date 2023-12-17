@@ -46,6 +46,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    Route::prefix(('account'))->group(function() {        
+        Route::get('account-setting', [DashboardController::class, 'showAccount'])->name('account.setting');
+        Route::post('account-setting', [DashboardController::class, 'changePassword'])->name('account.change.password');
+    });
+
     Route::prefix('requestors')->controller(RequestorController::class)->group(function () {
         Route::get('/', 'index')->name('requestors.list');
         Route::get('/{student}', 'show')->name('requestors.show');
@@ -57,6 +62,9 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'student'], function () {
         Route::get('/list', [StudentController::class, 'index'])->name('students.index');
         Route::get('/{id}/information', [StudentController::class, 'show'])->name('students.show');
+        Route::get('/{id}/request-history', [StudentController::class, 'requestHistory'])->name('students.request.history');
+        Route::get('/{id}/account-setting', [StudentController::class, 'showAccount'])->name('students.account.setting');
+        Route::post('/{id}/account-setting', [StudentController::class, 'changePassword'])->name('students.account.change.password');
         Route::put('/{id}', [StudentController::class, 'update'])->name('students.update');
         // Route::get('/create', [StudentController::class, 'create'])->name('student.create');
 
