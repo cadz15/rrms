@@ -6,7 +6,7 @@
 
 
     <h5 class="py-3">
-        <span class="text-muted fw-light">Account /</span> Change Password
+        <span class="text-muted fw-light">Account /</span> Create Account
     </h5>
 
     <div class="row">
@@ -14,21 +14,25 @@
         <div class="col-md-6 col-sm-12 mt-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Account Setting</h5>
+                    <h5 class="card-title">Create Account</h5>
 
-                    <form action="{{ route('account.update.information', $id) }}" method="post">
+                    <form action="{{ route('account.create.information') }}" method="post">
                         @csrf
 
-                        @if(session()->has('success_admin'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session()->get('success_admin') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        @endif
+                        <div class="alert alert-danger {{ $errors->has('password') ? '' : 'd-none' }}" role="alert">
+                            <ul>
+                                @if($errors->has('password'))
+                                
+                                    @foreach ($errors->get('password') as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
 
-                        @if(session()->has('error_admin'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ session()->get('error_admin') }}
+                        @if(session()->has('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session()->get('success') }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
@@ -44,7 +48,7 @@
                                     id="first_name" 
                                     class="form-control {{ $errors->has('first_name') ? 'is-invalid' : '' }}"
                                     placeholder="First Name"
-                                    value="{{ $user->first_name }}"
+                                    value="{{ old('first_name') }}"
                                     >
                                     <div class="invalid-feedback">
                                         {{ $errors->first('first_name') }}
@@ -60,7 +64,7 @@
                                     id="middle_name" 
                                     class="form-control {{ $errors->has('middle_name') ? 'is-invalid' : '' }}"
                                     placeholder="Middle Name"
-                                    value="{{ $user->middle_name }}"
+                                    value="{{ old('middle_name') }}"
                                     >
                                     <div class="invalid-feedback">
                                         {{ $errors->first('middle_name') }}
@@ -76,7 +80,7 @@
                                     id="last_name" 
                                     class="form-control {{ $errors->has('last_name') ? 'is-invalid' : '' }}"
                                     placeholder="Last Name"
-                                    value="{{ $user->last_name }}"
+                                    value="{{ old('last_name') }}"
                                     >
                                     <div class="invalid-feedback">
                                         {{ $errors->first('last_name') }}
@@ -92,7 +96,7 @@
                                     id="suffix" 
                                     class="form-control {{ $errors->has('suffix') ? 'is-invalid' : '' }}"
                                     placeholder="e.g. Jr. Sr."
-                                    value="{{ $user->suffix }}"
+                                    value="{{ old('suffix') }}"
                                     >
                                     <div class="invalid-feedback">
                                         {{ $errors->first('suffix') }}
@@ -110,7 +114,7 @@
                                     id="user_name" 
                                     class="form-control {{ $errors->has('user_name') ? 'is-invalid' : '' }}"
                                     placeholder="User Name"
-                                    value="{{ $user->id_number }}"
+                                    value="{{ old('user_name') }}"
                                     >
                                     <div class="invalid-feedback">
                                         {{ $errors->first('user_name') }}
@@ -128,52 +132,15 @@
                                     placeholder="User Name"
                                     >
                                         <option value="">Select Type</option>
-                                        <option value="1" {{ $user->role_id == 1 ? 'selected' : '' }} >Admin</option>
-                                        <option value="2" {{ $user->role_id == 2 ? 'selected' : '' }} >Registrar</option>
+                                        <option value="1" {{ old('account_type') == 1 ? 'selected' : '' }} >Admin</option>
+                                        <option value="2" {{ old('account_type') == 2 ? 'selected' : '' }} >Registrar</option>
                                     </select>
                                     <div class="invalid-feedback">
                                         {{ $errors->first('account_type') }}
                                     </div>
                                 </div>
                             </div>
-                            
-                        </div>
-    
-                        <button class="btn btn-primary mt-4">Update Information</button>
-                    </form>               
-                </div>
 
-                
-            </div>
-        </div>
-        
-        <div class="col-md-6 col-sm-12 mt-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Update Password</h5>
-
-                    <form action="{{ route('account.change.password', $id) }}" method="post">
-                        @csrf
-                        <div class="alert alert-danger {{ $errors->has('password') ? '' : 'd-none' }}" role="alert">
-                            <ul>
-                                @if($errors->has('password'))
-                                
-                                    @foreach ($errors->get('password') as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                @endif
-                            </ul>
-                        </div>
-
-
-                        @if(session()->has('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session()->get('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        @endif
-
-                        <div class="row">                           
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="password">Password <span class="text-danger">*</span></label>
@@ -197,16 +164,18 @@
                                     >
                                 </div>
                             </div>
+                            
                         </div>
     
-                        <button class="btn btn-primary mt-4">Change Password</button>
+                        <button class="btn btn-primary mt-4">Create User</button>
                     </form>               
                 </div>
 
                 
             </div>
         </div>
-
+        
+        
 
     </div>
 

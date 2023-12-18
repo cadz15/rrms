@@ -94,6 +94,11 @@
                         <div class="text-truncate" data-i18n="Request Item">Request Item</div>
                     </a>
                 </li>
+                <li class="menu-item {{ request()->is('setup/accounts*') ? 'active' : '' }}">
+                    <a href="/setup/accounts" class="menu-link">
+                        <div class="text-truncate" data-i18n="Accounts">Accounts</div>
+                    </a>
+                </li>
             </ul>
         </li>
 

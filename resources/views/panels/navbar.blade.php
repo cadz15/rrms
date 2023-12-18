@@ -81,7 +81,7 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="{{ route('account.setting') }}">
+                        <a class="dropdown-item" href="{{ route('account.setting', auth()->user()->id) }}">
                             <i class="bx bx-cog me-2"></i>
                             <span class="align-middle">Settings</span>
                         </a>

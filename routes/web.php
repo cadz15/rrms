@@ -46,10 +46,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::prefix(('account'))->group(function() {        
-        Route::get('account-setting', [DashboardController::class, 'showAccount'])->name('account.setting');
-        Route::post('account-setting', [DashboardController::class, 'changePassword'])->name('account.change.password');
-    });
+    // Route::prefix(('account'))->group(function() {        
+    //     Route::get('account-setting', [DashboardController::class, 'showAccount'])->name('account.setting');
+    //     Route::post('account-setting', [DashboardController::class, 'changePassword'])->name('account.change.password');
+    // });
 
     Route::prefix('requestors')->controller(RequestorController::class)->group(function () {
         Route::get('/', 'index')->name('requestors.list');
@@ -108,6 +108,16 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/confirm-delete/{id}', [RequestItemController::class, 'viewDelete'])->name('item.setup.view.delete');
             Route::post('/delete/{id}', [RequestItemController::class, 'destroy'])->name('item.setup.destroy');
+        });
+
+        Route::group(['prefix' => 'accounts'], function() {
+            Route::get('/', [DashboardController::class, 'showAccounts'])->name('accounts.list');
+            Route::get('account-setting/create', [DashboardController::class, 'showCreateForm'])->name('account.create.user');
+            Route::post('account-setting/create', [DashboardController::class, 'createUser'])->name('account.create.information');
+            Route::get('account-setting/{id}', [DashboardController::class, 'showAccount'])->name('account.setting');
+            Route::post('account-setting/{id}', [DashboardController::class, 'updateInformation'])->name('account.update.information');
+            Route::post('account-setting/update-password/{id}', [DashboardController::class, 'changePassword'])->name('account.change.password');
+            Route::get('account-delete/{id}', [DashboardController::class, 'deleteAccount'])->name('account.delete');
         });
     });
 

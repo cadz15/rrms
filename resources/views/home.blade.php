@@ -6,6 +6,18 @@
 
     <div class="row">
 
+    
+        
+        <div class="col-12  mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Good Day {{ ucwords(auth()->user()->last_name) }}! 🎉</h5>
+                    <p class="mb-4">Welcome to Bato Institute of Science and Technology - RRMS</p>
+
+                </div>
+            </div>
+        </div>
+
         <div class="col-md-12 col-lg-4 mb-4">
             <div class="card">
                 <div class="d-flex align-items-end row">
@@ -62,18 +74,6 @@
                 </div>
             </div>
         </div>
-
-        
-        <div class="col-12  mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Good Day {{ ucwords(auth()->user()->last_name) }}! 🎉</h5>
-                    <p class="mb-4">Welcome to Bato Institute of Science and Technology - RRMS</p>
-
-                </div>
-            </div>
-        </div>
-
 
 
         <div class="col-12">
