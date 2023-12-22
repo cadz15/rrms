@@ -10,6 +10,8 @@ use App\Http\Controllers\Web\RequestItemController;
 use App\Http\Controllers\Web\RequestorController;
 use App\Http\Controllers\Web\StudentController;
 use App\Http\Controllers\Web\RequestorRegistrationController;
+use App\Services\CryptService;
+use App\Services\PayMongoService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -124,8 +126,22 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'requests'], function () {
         Route::get('/', [RequestController::class, 'index'])->name('requests.list-web');
         Route::get('/history/{id}', [RequestController::class, 'viewRequest']);
+        Route::post('/for-pickup', [RequestController::class, 'forPickup'])->name('request.mark.forpickup');
+        Route::post('/completed', [RequestController::class, 'requestComplete'])->name('request.mark.completed');
     });
     
+    Route::group(['prefix' => 'payment'], function() {
+        Route::get('/cancelled-payment/{e_id}', function($e_id) {
+            $request = PayMongoService::markRequestAsSuccess(CryptService::decrypt($e_id));
+
+            return redirect('/');
+        })->name('payment.cancelled');
+        Route::get('/success-payment/{e_id}', function($e_id) {
+            $request = PayMongoService::markRequestAsSuccess(CryptService::decrypt($e_id));
+
+            return redirect('/');
+        })->name('payment.success');
+    });
 });
 
 

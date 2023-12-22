@@ -39,6 +39,12 @@
             Request is <b>declined!</b>
         </div>
     @endif
+
+    @if(session()->has('error_status'))
+        <div class="alert alert-warning" role="alert">
+            {{session()->get('error_status')}}
+        </div>
+    @endif
     <!-- hide this form if request is approved -->
     <div class="row mb-3">
         <!-- <form action=""> -->           
@@ -58,9 +64,26 @@
                     </div>
                     
                     <div class="float-end d-flex flex-column">
-                            <h6 class="m-0 text-center">Total</h6>
-                            <div class="text-end "><h5 class="text-primary">₱ {{ number_format((float) $total) }}</h5></div>
-                        </div>
+                        <h6 class="m-0 text-center">Total</h6>
+                        <div class="text-end "><h5 class="text-primary">₱ {{ number_format((float) $total) }}</h5></div>
+                    </div>
+
+
+                    @if(empty($pickupedHistory) && !empty($workedOnRequestHistory))
+                        <form action="{{route('request.mark.forpickup')}}" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$request->id}}">
+                            <button class="btn btn-outline-success col-12 my-2"> Ready for pickup </button>
+                        </form>
+                    @endif
+
+                    @if(!empty($pickupedHistory) && !empty($workedOnRequestHistory) && empty($completedHistory))
+                        <form action="{{route('request.mark.completed')}}" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$request->id}}">
+                            <button class="btn btn-outline-success col-12 my-2"> Mark as Complete </button>
+                        </form>
+                    @endif
                 @endif
                 </div>
             </div>
@@ -162,16 +185,19 @@
                                             @endif
                                         </div>
 
-                                        <p>
-                                            Your balance is <b>₱{{ number_format((float) $total) }}</b>. This can be paid for with Gcash. Please see the information below.
-                                        </p>
-                                        <div class="d-flex flex-wrap">
-                                            <div>
-                                                <h5>Gcash Information</h5>
-                                                <p class="py-0 my-0"><span class="fw-bold">Name:</span> Registrar Gcash</p>
-                                                <p class="py-0 my-0"><span class="fw-bold">Gcash #:</span> 09876543210</p>
-                                            </div>                                    
-                                        </div>
+                                        @if(!empty($paidHistory) && !empty($workedOnRequestHistory))
+                                            <p>
+                                                You have successfully paid the balance <b>₱{{ number_format((float) $total) }}</b>.
+                                            </p>
+                                        @else 
+
+                                            <p>
+                                                Your balance is <b>₱{{ number_format((float) $total) }}</b>. To pay click the link below and your reference number is <b class="text-info"><em>{{ $request->reference_number }}</em></b>.
+                                            </p>
+
+                                            <a href="{{ $request->checkout_url }}" target="_blank">{{ $request->checkout_url }}</a>
+                                        @endif
+                                        
                                     </div>
                                 </li>
                             @endif
@@ -193,18 +219,26 @@
                                     </span>
                                     <div class="timeline-event">
                                         <div class="timeline-header border-bottom mb-3">
-                                            @if(!empty($pickupedHistory))
+                                            @if(!empty($pickupedHistory) && !empty($workedOnRequestHistory))
                                                 <h6 class="mb-0">Pickup successful</h6>
                                                 <span class="text-muted">{{ $pickupedHistory->formatted_date_completed }}</span>
+                                            @elseif(empty($pickupedHistory) && !empty($workedOnRequestHistory))
+
+                                                <h6 class="mb-0">Processing the request</h6>
+                                                <span class="text-muted">{{ date('jS F') }}</span>
                                             @else
-                                                <h6 class="mb-0">Pending Pickup</h6>
+                                                <h6 class="mb-0">Pending for pickup</h6>
                                                 <span class="text-muted">{{ date('jS F') }}</span>
                                             @endif
                                         </div>
 
                                         @if(!empty($pickupedHistory))
                                             <p>
-                                            The requested item have been successfully picked up! This request is completed 🎉
+                                                The requested item have been successfully picked up! This request is completed 🎉
+                                            </p>
+                                        @elseif(empty($pickupedHistory) && !empty($workedOnRequestHistory))
+                                            <p>
+                                                The registrar is working on your request. You will receive a text message when your request is ready for pickup.
                                             </p>
                                         @else
                                             <p>
