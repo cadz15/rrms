@@ -17,6 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('approved_by');
             $table->string('status')->default(RequestStatusEnum::PENDING_REVIEW);
+            $table->string('checkout_url')->nullable();
+            $table->string('reference_number')->nullable();
+            $table->string('checkout_session_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

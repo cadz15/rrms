@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('request_id');
             $table->string('status');
-            $table->date('date_completed')->nullable();
+            $table->string('date_completed')->nullable();
             $table->timestamps();
         });
     }

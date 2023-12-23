@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Request;
 use App\Models\RequestStatusHistory;
 use Illuminate\Http\Request as HttpRequest;
+use App\Services\PayMongoService;
+use App\Services\SmsNotificationService;
+use Illuminate\Support\Facades\Validator;
 
 class RequestController extends Controller
 {
@@ -50,6 +53,10 @@ class RequestController extends Controller
                 'value' => 'for_pick_up'
             ],
             [
+                'name' => 'Working on Request',
+                'value' => 'working_on_request'
+            ],
+            [
                 'name' => 'Declined',
                 'value' => 'declined'
             ],
@@ -80,12 +87,91 @@ class RequestController extends Controller
             return $carry + ($item->quantity * $price);
         });
 
-        $declinedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::DECLINED)->first();
-        $approvedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::PENDING_REVIEW)->first();
-        $paidHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::PENDING_PAYMENT)->first();
-        $pickupedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::FOR_PICK_UP)->first();
-        $completedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::COMPLETED)->first();
+        $declinedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::DECLINED->value)->first();
+        $approvedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::PENDING_REVIEW->value)->first();
+        $paidHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::PENDING_PAYMENT->value)->first();
+        $workedOnRequestHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::WORKING_ON_REQUEST->value)->first();
+        $pickupedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::FOR_PICK_UP->value)->first();
+        $completedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::COMPLETED->value)->first();
 
-        return view('requestor.request-timeline', compact('request', 'total', 'declinedHistory', 'approvedHistory', 'paidHistory', 'pickupedHistory', 'completedHistory'));
+        if(!empty($request->reference_number) && !empty($approvedHistory)) {
+
+            $paymentCheck = PayMongoService::markRequestAsSuccess($request->reference_number);
+
+        }
+        
+        return view('requestor.request-timeline', compact('request', 'total', 'declinedHistory', 'approvedHistory', 'paidHistory', 'workedOnRequestHistory', 'pickupedHistory', 'completedHistory'));
+    }
+
+
+
+    public function forPickup(HttpRequest $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+
+
+        if($validator->fails()) {
+            return redirect()->back()->with('error_status', 'Server error! Please refresh and try again.');
+        }
+
+        $studentRequest = Request::where('id', $request->id)
+        ->with('user')
+        ->first();
+
+        if(empty($studentRequest)) return abort(404);
+
+        $studentRequest->update([
+            'status' => RequestStatusEnum::FOR_PICK_UP->value,
+        ]);
+
+        RequestStatusHistory::firstOrCreate([
+            'request_id' => $studentRequest->id,
+            'status' => RequestStatusEnum::FOR_PICK_UP->value
+        ], [
+            'request_id' => $studentRequest->id,
+            'status' => RequestStatusEnum::FOR_PICK_UP->value,
+            'date_completed' => date('Y-m-d')
+        ]);
+        
+        $to = '63' . substr($studentRequest->user->contact_number, 1);
+        $from = 'RRMS';
+        $message = "Greetings, " . $studentRequest->user->last_name . "Your requested item(s) is/are ready for pickup.";
+
+        (new SmsNotificationService())->send($to, $from, $message);
+
+        return redirect()->back();
+    }
+
+
+    public function requestComplete(HttpRequest $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+
+
+        if($validator->fails()) {
+            return redirect()->back()->with('error_status', 'Server error! Please refresh and try again.');
+        }
+
+        $studentRequest = Request::where('id', $request->id)->first();
+
+        if(empty($studentRequest)) return abort(404);
+
+        $studentRequest->update([
+            'status' => RequestStatusEnum::COMPLETED->value,
+        ]);
+
+        RequestStatusHistory::firstOrCreate([
+            'request_id' => $studentRequest->id,
+            'status' => RequestStatusEnum::COMPLETED->value
+        ], [
+            'request_id' => $studentRequest->id,
+            'status' => RequestStatusEnum::COMPLETED->value,
+            'date_completed' => date('Y-m-d')
+        ]);
+        
+
+        return redirect()->back();
     }
 }

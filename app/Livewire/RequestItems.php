@@ -6,6 +6,8 @@ use App\Enums\RequestStatusEnum;
 use App\Models\Request;
 use App\Models\RequestItem;
 use App\Models\RequestStatusHistory;
+use App\Services\PayMongoService;
+use App\Services\SmsNotificationService;
 use Livewire\Component;
 
 class RequestItems extends Component
@@ -14,6 +16,7 @@ class RequestItems extends Component
     public $selectedItemId;
     public $items;
     public $total = 0;
+    public $checkoutSessionError = false;
     
     protected $rules = [];
     
@@ -79,21 +82,41 @@ class RequestItems extends Component
                 'price' => $item['price']
             ]);
         }
+        $request = Request::where('id', $this->request->id)
+        ->with('user')
+        ->first();
 
-        Request::where('id', $this->request->id)
-        ->update([
-            'status' => RequestStatusEnum::PENDING_PAYMENT
-        ]);
-        
-        RequestStatusHistory::firstOrCreate([
-            'request_id' => $this->request->id,
-            'status' => RequestStatusEnum::PENDING_REVIEW
-        ], [
-            'request_id' => $this->request->id,
-            'status' => RequestStatusEnum::PENDING_REVIEW,
-            'date_completed' => now()->format('Y-m-d')
-        ]);
-        $this->dispatch('approved');
+        $checkoutSession = PayMongoService::checkout($request->user_id, $request->id);
+
+        // check response
+        if($checkoutSession['status'] == 200) {
+            $this->checkoutSessionError = false;
+            $request->update([
+                'status' => RequestStatusEnum::PENDING_PAYMENT,
+                'checkout_url' => $checkoutSession['data']['checkout_url'],
+                'reference_number' => $checkoutSession['data']['reference_number'],
+                'checkout_session_id' => $checkoutSession['data']['checkout_session_id'],
+            ]);
+            
+            RequestStatusHistory::firstOrCreate([
+                'request_id' => $this->request->id,
+                'status' => RequestStatusEnum::PENDING_REVIEW
+            ], [
+                'request_id' => $this->request->id,
+                'status' => RequestStatusEnum::PENDING_REVIEW,
+                'date_completed' => now()->format('Y-m-d')
+            ]);
+
+            $to = '63' . substr($request->user->contact_number, 1);
+            $from = 'RRMS';
+            $message = "Greetings, " . $request->user->last_name . "Your request has been approved. The total amount to pay is P". $checkoutSession['data']['total'] . '. You can pay it by visiting your RRMS account. Thank you';
+
+            (new SmsNotificationService())->send($to, $from, $message);
+
+            $this->dispatch('approved');
+        }else {
+            $this->checkoutSessionError = true;
+        }        
     }
 
 

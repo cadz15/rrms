@@ -1,6 +1,12 @@
 <!-- resources/views/livewire/request-items.blade.php -->
 
 <div>
+    @if($checkoutSessionError)
+    
+        <div class="alert alert-danger" id="checkout-error-cont" role="alert">
+            Oops! Unable to create a checkout.
+        </div>
+    @endif
     <div class="row gap-3 mt-1">
         @foreach ($request->requestItems as $key => $item)
             <div class="col-12 row">
