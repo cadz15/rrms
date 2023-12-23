@@ -90,6 +90,15 @@ class User extends Authenticatable implements JWTSubject
         return $this->last_name . ', ' . $this->first_name . $middleInitial . $suffix;
     }
 
+    // changed into attribute
+    public function getFullNameAttribute()
+    {
+        $middleInitial = empty($this->middle_name) ? '' : ' ' . $this->middle_name[0] . '. ';
+        $suffix = empty($this->suffix) ? '' : " " . $this->suffix;
+
+        return $this->first_name . $middleInitial . $this->last_name . $suffix;
+    }
+
 
     public function getLatestEducationLevelAttribute()
     {

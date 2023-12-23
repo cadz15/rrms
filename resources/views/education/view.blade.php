@@ -34,7 +34,7 @@
 
                         @foreach ($education->majors as $major)
                             <tr>
-                                <td><a href="{{ route('education.major.destroy', cryptor($major->id)) }}" class="text-danger"><i class='bx bx-trash'></i></a></td>
+                                <td><a href="{{ route('education.setup.major.destroy', cryptor($major->id)) }}" class="text-danger"><i class='bx bx-trash'></i></a></td>
                                 <td>{{ $major->name }}</td>
                             </tr>                            
                         @endforeach
@@ -49,8 +49,9 @@
             <div class="row gy-4">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body">
-                            <form action="{{ route('education.update') }}" method="post">
+                        <div class="card-body">                           
+
+                            <form action="{{ route('education.setup.update') }}" method="post">
                                 <input type="hidden" name="id_s" value="{{ cryptor($education->id) }}">
                                 @csrf
                                 <div class="alert alert-success {{ empty(session('successLevel')) ? 'd-none' : '' }}" role="alert">
@@ -83,7 +84,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{route('education.major.store')}}" method="post">
+                            <form action="{{route('education.setup.major.store')}}" method="post">
                                 <input type="hidden" name="id_e" value="{{ cryptor($education->id) }}">
                                 @csrf
                                 <div class="alert alert-success {{ empty(session('successMajor')) ? 'd-none' : '' }}" role="alert">

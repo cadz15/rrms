@@ -29,14 +29,14 @@
                     <h5>Education Master List</h5>                    
                 </div>
                 <div class="table-responsive">
-                    <a href="{{ route('education.create') }}" class="btn btn-primary ms-3"><i class='bx bx-plus'></i> Add Education Level</a>
+                    <a href="{{ route('education.setup.create') }}" class="btn btn-primary ms-3"><i class='bx bx-plus'></i> Add Education Level</a>
                     <div class="px-3 pb-3 float-end d-flex align-items-center gap-3">
                         <!-- <div>
                             <button class="btn btn-outline-secondary">
                                 <i class='bx bx-filter-alt'></i>
                             </button>
                         </div> -->
-                        <form action="{{ route('education.index') }}" method="get">
+                        <form action="{{ route('education.setup.index') }}" method="get">
 
                             <div class="input-group input-group-merge">
                                 <input type="search" name="search" class="form-control" id="search" placeholder="Search" value="{{ $search }}">
@@ -63,7 +63,7 @@
                             @endif
                             @foreach ($educations as $education)
                                 <tr>
-                                    <td><a href="{{ route('education.view', cryptor($education->id)) }}"><i class='bx bx-edit'></i></a></td>
+                                    <td><a href="{{ route('education.setup.view', cryptor($education->id)) }}"><i class='bx bx-edit'></i></a></td>
                                     <td>{{ $education->name }}</td>
                                     <td>{{ implode(', ', $education->majors->pluck('name')->toArray())}}</td>
                                     <!-- <td>{{ mb_strimwidth(implode(', ', $education->majors->pluck('name')->toArray()), 0, 50, '...') }}</td> -->

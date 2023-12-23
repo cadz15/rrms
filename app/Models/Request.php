@@ -11,7 +11,7 @@ class Request extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = [];
+    protected $guarded = ['id', 'created_at', 'updated_at', 'deleted_at'];
 
     public function prettyStatus()
     {
@@ -20,7 +20,7 @@ class Request extends Model
 
     public function user()
     {
-        return $this->belongs(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**

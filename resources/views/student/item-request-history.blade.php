@@ -1,12 +1,12 @@
 @extends('layout.contentLayoutMaster')
 
-@section('title', 'Request List')
+@section('title', 'Student | Request History')
 
 @section('content')
 
 
     <h5 class="py-3">
-        <span class="text-muted fw-light">Request /</span> List
+        <span class="text-muted fw-light">Student /</span> Request History
     </h5>
 
     <div class="row">
@@ -14,7 +14,7 @@
         <div class="col-12 mt-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Request List</h5>
+                    <h5 class="card-title">Request History</h5>
                 </div>
 
                 <form action="" method="get">

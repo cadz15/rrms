@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentCreateRequest;
 use App\Models\Education;
 use App\Models\Major;
+use App\Models\Request as ModelsRequest;
 use App\Models\Role;
 use App\Services\SmsNotificationService;
 use Illuminate\Support\Facades\DB;
@@ -80,6 +81,84 @@ class StudentController extends Controller
         return view('student.list', compact('students', 'programs', 'filterEducation', 'search', 'filterGraduate'));
     }
 
+
+    public function requestHistory($id, Request $request) {
+        $search = $request->has('search')? $request->search : '';
+        $filterStatus = $request->has('filter_status') ? $request->filter_status : '';
+
+        $requests = ModelsRequest::whereNull('deleted_at')
+        ->where('user_id', $id)
+        ->when($request->has('search'), function($query) use($search){
+            
+            if(!empty($search)) {
+                return $query->whereHas('user', function($subQuery) use($search){
+                    $subQuery->where('first_name', 'LIKE', "%$search%")
+                    ->orWhere('last_name', 'LIKE', "%$search%");
+                })
+                ->orWhereHas('requestItems', function($subQuery) use($search) {
+                    $subQuery->where('item_name', 'LIKE', "%$search%");
+                });
+            }
+        })
+        ->when(!empty($filterStatus), function($query) use($filterStatus){
+
+            $query->where('status', $filterStatus);
+        })
+        ->with(['requestItems', 'user'])
+        ->latest()
+        ->paginate(10);
+
+        $statuses = [
+            [
+                'name' => 'Pending for review',
+                'value' => 'pending_for_review'
+            ],
+            [
+                'name' => 'Pending payment',
+                'value' => 'pending_payment'
+            ],
+            [
+                'name' => 'For Pickup',
+                'value' => 'for_pick_up'
+            ],
+            [
+                'name' => 'Declined',
+                'value' => 'declined'
+            ],
+            [
+                'name' => 'Completed',
+                'value' => 'completed'
+            ],
+        ];
+       
+        return view('student.item-request-history', compact('requests', 'search', 'filterStatus', 'statuses'));
+    }
+
+
+
+    public function showAccount() {
+        return view('student.account-setting');
+    }
+
+
+    public function changePassword($id, Request $request) {
+        $request->validate([
+            'password' => ['required', 'min:3', 'max:50', 'confirmed'],
+        ]);
+
+        $student = User::where('id', $request->id)
+        ->where('role_id', Role::where('name', RoleEnum::STUDENT)->pluck('id')->first())
+        ->first();
+
+        if(empty($student)) return abort(404);
+
+        $student->update([
+            'password' => bcrypt($request->password)
+        ]);
+
+        
+        return redirect()->back()->with('success', 'Password successfully updated!');
+    }
 
     public function viewCreate() {
         $programs = EducationLevel::with('majors')

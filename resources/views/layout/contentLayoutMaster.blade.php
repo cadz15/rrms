@@ -6,8 +6,14 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('img/favicon_io/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon_io/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon_io/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('img/favicon_io/site.webmanifest') }}">
     <title>@yield('title') - {{ env('APP_NAME') }}</title>
 
+    @livewireStyles
     @vite([
         'resources/css/app.css',
         'resources/css/custom-style.css'
@@ -31,7 +37,9 @@
 </head>
 <body>
     @include('layout.verticalLayout')
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 
+    @livewireScripts
     @vite([
         'resources/js/app.js',
         'resources/js/main.js',

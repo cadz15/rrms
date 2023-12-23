@@ -3,7 +3,7 @@
     <div class="app-brand">
         <a href="#" class="app-brand-link">
             <span class="app-brand-logo">
-                <img src="{{ asset('img/bato leyte icon.jpg') }}" alt="logo"
+                <img src="{{ asset('img/logo.png') }}" alt="logo"
                 class="">
             </span>
             <span class="app-brand-text menu-text fw-bolder ms-2">RRMS</span>
@@ -92,6 +92,11 @@
                 <li class="menu-item {{ request()->is('setup/request-item') ? 'active' : '' }}">
                     <a href="/setup/request-item" class="menu-link">
                         <div class="text-truncate" data-i18n="Request Item">Request Item</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->is('setup/accounts*') ? 'active' : '' }}">
+                    <a href="/setup/accounts" class="menu-link">
+                        <div class="text-truncate" data-i18n="Accounts">Accounts</div>
                     </a>
                 </li>
             </ul>
