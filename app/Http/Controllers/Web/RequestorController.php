@@ -7,6 +7,7 @@ use App\Models\Education;
 use App\Models\EducationLevel;
 use App\Models\User;
 use App\Services\CryptService;
+use App\Services\SemaphoreService;
 use App\Services\SmsNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -150,10 +151,11 @@ class RequestorController extends Controller
         $idNumber = $student->id_number;
         $password = $randomString; // ramdom string for pasword
         $to = '63' . substr($student->contact_number, 1);
-        $from = 'RRMS';
-        $message = "Greetings, " . $student->last_name . ". Your application has been accepted. Your login information is provided here. Username: $idNumber  Password: $password  ";
+        // $from = 'RRMS';
+        $message = "Greetings " . $student->last_name . ", your application has been accepted. Your login information is provided here. Username: $idNumber  Password: $password  ";
 
-        (new SmsNotificationService())->send($to, $from, $message);
+        SemaphoreService::send($to, $message);
+        // (new SmsNotificationService())->send($to, $from, $message);
 
         return redirect(route('requestors.list'));
     }
@@ -196,12 +198,13 @@ class RequestorController extends Controller
         ]);
 
 
-        $idNumber = $student->id_number;
+        // $idNumber = $student->id_number;
         $to = '63' . substr($student->contact_number, 1);
-        $from = config('vonage.sms_from');
-        $message = "Greetings, " . $student->last_name . ". Your application has been disapproved. ";
+        // $from = config('vonage.sms_from');
+        $message = "Greetings " . $student->last_name . ", your application has been disapproved. ";
 
-        (new SmsNotificationService())->send($to, $from, $message);
+        SemaphoreService::send($to, $message);
+        // (new SmsNotificationService())->send($to, $from, $message);
 
         return redirect(route('requestors.list'));
     }

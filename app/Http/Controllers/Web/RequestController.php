@@ -8,6 +8,7 @@ use App\Models\Request;
 use App\Models\RequestStatusHistory;
 use Illuminate\Http\Request as HttpRequest;
 use App\Services\PayMongoService;
+use App\Services\SemaphoreService;
 use App\Services\SmsNotificationService;
 use Illuminate\Support\Facades\Validator;
 
@@ -135,10 +136,11 @@ class RequestController extends Controller
         ]);
         
         $to = '63' . substr($studentRequest->user->contact_number, 1);
-        $from = 'RRMS';
-        $message = "Greetings, " . $studentRequest->user->last_name . "Your requested item(s) is/are ready for pickup.";
+        // $from = 'RRMS';
+        $message = "Greetings " . $studentRequest->user->last_name . ", your requested item(s) is/are ready for pickup.";
 
-        (new SmsNotificationService())->send($to, $from, $message);
+        SemaphoreService::send($to, $message);
+        // (new SmsNotificationService())->send($to, $from, $message);
 
         return redirect()->back();
     }
