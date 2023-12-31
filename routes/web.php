@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\EducationController;
 use App\Http\Controllers\HealthCheckController;
+use App\Http\Controllers\SMSController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\EducationSetupController;
@@ -52,6 +53,11 @@ Route::middleware('auth')->group(function () {
     //     Route::get('account-setting', [DashboardController::class, 'showAccount'])->name('account.setting');
     //     Route::post('account-setting', [DashboardController::class, 'changePassword'])->name('account.change.password');
     // });
+
+    Route::group(['prefix' => 'sms'], function() {
+        Route::get('/', [SMSController::class, 'index'])->name('sms.list');
+        Route::post('/', [SMSController::class, 'clearCache']);
+    });
 
     Route::prefix('requestors')->controller(RequestorController::class)->group(function () {
         Route::get('/', 'index')->name('requestors.list');

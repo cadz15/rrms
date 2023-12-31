@@ -30,6 +30,13 @@
             <span class="menu-header-text">Pages</span>
         </li>
 
+        <li class="menu-item {{ request()->is('sms*') ? 'active' : '' }}">
+            <a href="{{ route('sms.list') }}" class="menu-link">
+                <i class='menu-icon bx bx-envelope'></i>
+                <div data-i18n="SMS">SMS</div>
+            </a>
+        </li>
+        
         <li class="menu-item {{ request()->is('requestors*') ? 'active' : '' }}">
             <a href="{{ route('requestors.list') }}" class="menu-link">
                 <i class='menu-icon bx bx-user-voice'></i>

@@ -7,6 +7,7 @@ use App\Models\Request;
 use App\Models\RequestItem;
 use App\Models\RequestStatusHistory;
 use App\Services\PayMongoService;
+use App\Services\SemaphoreService;
 use App\Services\SmsNotificationService;
 use Livewire\Component;
 
@@ -109,9 +110,10 @@ class RequestItems extends Component
 
             $to = '63' . substr($request->user->contact_number, 1);
             $from = 'RRMS';
-            $message = "Greetings, " . $request->user->last_name . "Your request has been approved. The total amount to pay is P". $checkoutSession['data']['total'] . '. You can pay it by visiting your RRMS account. Thank you';
+            $message = "Greetings " . $request->user->last_name . ", your request has been approved. The total amount to pay is P". $checkoutSession['data']['total'] . '. You can pay it by visiting your RRMS account. Thank you!';
 
-            (new SmsNotificationService())->send($to, $from, $message);
+            SemaphoreService::send($to, $message);
+            // (new SmsNotificationService())->send($to, $from, $message);
 
             $this->dispatch('approved');
         }else {
@@ -122,12 +124,16 @@ class RequestItems extends Component
 
     public function declineItems() 
     {
-        Request::where('id', $this->request->id)
+        $request = Request::where('id', $this->request->id)
+        ->with('user')
         ->update([
             'status' => RequestStatusEnum::DECLINED
         ]);
 
-        
+        $to = '63' . substr($request->user->contact_number, 1);
+        $message = "Greetings " . $request->user->last_name . ", your request has been disapproved. Please visit your RRMS account for more details.";
+
+        SemaphoreService::send($to, $message);
         $this->dispatch('declined');
     }
 }
