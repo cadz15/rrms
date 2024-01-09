@@ -12,8 +12,10 @@ use App\Models\Education;
 use App\Models\Major;
 use App\Models\Request as ModelsRequest;
 use App\Models\Role;
+use App\Services\CryptService;
 use App\Services\SmsNotificationService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -194,6 +196,7 @@ class StudentController extends Controller
             "birth_date",
             "birth_place",
             "address",
+            "email",
         ]);
 
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -286,9 +289,42 @@ class StudentController extends Controller
         return view('student.information-form', compact('student', 'programs'));
     }
 
-    public function update(Request $request)
+    public function update($encryptedId, Request $request)
     {
-        dd($request->all());
+        $id = CryptService::decrypt($encryptedId);
+
+        $validator = Validator::make($request->all(), [
+            'student_number' => ['required', 'unique:users,id_number,' . $id],
+            'last_name' => ['required'],
+            'first_name' => ['required'],
+            'suffix' => ['max:10'],
+            'sex' => 'required',
+            'contact_number' => ['required', 'regex:/^0\d{10}$/', 'unique:users,contact_number,' . $id],
+            'email' => ['required', 'email'],
+        ]);
+
+        $data = $request->only([
+            'last_name',
+            'first_name',
+            'middle_name',
+            'suffix',
+            'sex',
+            'contact_number',
+            'email',
+            'birth_date',
+            'birth_place',
+            'address'
+        ]);
+
+        $data['id_number'] = $request->student_number;
+
+        $student = User::where('id', $id)->first();
+
+        if(empty($student)) return abort(404);
+
+        $student->update($data);
+
+        return redirect()->back()->with('successUpdate', ['Student information successfully updated!']);
     }
 
     public function create()

@@ -28,6 +28,7 @@ class StudentCreateRequest extends FormRequest
             'suffix' => ['max:10'],
             'sex' => 'required',
             'contact_number' => ['required', 'regex:/^0\d{10}$/', 'unique:users,contact_number'],
+            'email' => ['required', 'email'],
             'birth_date' => ['required', 'date', 'before:3 years ago'],
             'birth_place' => ['required', 'min:5'],
             'address' => ['required', 'min:5'],
