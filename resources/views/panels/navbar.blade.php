@@ -47,6 +47,118 @@
                         <a href="javascript:void(0)" class="dropdown-notifications-all text-body" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Mark all as read" data-bs-original-title="Mark all as read"><i class="bx fs-4 bx-envelope-open"></i></a>
                         </div>
                     </li>
+                    <li class="dropdown-notifications-list ">
+                        <ul class="list-group list-group-flush" style="max-height: 60vh; overflow-y: auto; position: relative;" id="notifications-container">
+                            <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar">
+                                    <img src="../../assets/img/avatars/1.png" alt="" class="w-px-40 h-auto rounded-circle">
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">Congratulation Lettie 🎉</h6>
+                                    <p class="mb-0">Won the monthly best seller gold badge</p>
+                                    <small class="text-muted">1h ago</small>
+                                </div>
+                                <div class="flex-shrink-0 dropdown-notifications-actions">
+                                    <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
+                                    <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
+                                </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar">
+                                        <span class="avatar-initial rounded-circle bg-label-danger">CF</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">Charles Franklin</h6>
+                                        <p class="mb-0">Accepted your connection</p>
+                                        <small class="text-muted">12hr ago</small>
+                                    </div>
+                                    <div class="flex-shrink-0 dropdown-notifications-actions">
+                                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
+                                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar">
+                                        <span class="avatar-initial rounded-circle bg-label-danger">CF</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">Charles Franklin</h6>
+                                        <p class="mb-0">Accepted your connection</p>
+                                        <small class="text-muted">12hr ago</small>
+                                    </div>
+                                    <div class="flex-shrink-0 dropdown-notifications-actions">
+                                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
+                                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar">
+                                        <span class="avatar-initial rounded-circle bg-label-danger">CF</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">Charles Franklin</h6>
+                                        <p class="mb-0">Accepted your connection</p>
+                                        <small class="text-muted">12hr ago</small>
+                                    </div>
+                                    <div class="flex-shrink-0 dropdown-notifications-actions">
+                                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
+                                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar">
+                                        <span class="avatar-initial rounded-circle bg-label-danger">CF</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">Charles Franklin</h6>
+                                        <p class="mb-0">Accepted your connection</p>
+                                        <small class="text-muted">12hr ago</small>
+                                    </div>
+                                    <div class="flex-shrink-0 dropdown-notifications-actions">
+                                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
+                                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar">
+                                        <span class="avatar-initial rounded-circle bg-label-danger">CF</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">Charles Franklin</h6>
+                                        <p class="mb-0">Accepted your connection</p>
+                                        <small class="text-muted">12hr ago</small>
+                                    </div>
+                                    <div class="flex-shrink-0 dropdown-notifications-actions">
+                                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
+                                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li> -->
 

@@ -32,6 +32,7 @@ class UserFactory extends Factory
             'birth_date' => $this->faker->date('Y-m-d'),
             'birth_place' => $this->faker->address,
             'address' => $this->faker->address,
+            'email' => 'bogokah@gmail.com'
         ];
     }
 
