@@ -6,12 +6,13 @@ use App\Services\SemaphoreService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 
 class SMSController extends Controller
 {
     //
     public function index(Request $request) {
-        // 86400
+        // 86400 seconds to remember the cache
         $response = SemaphoreService::getMessages();
         $balanceResponse = SemaphoreService::getAccount();
 
@@ -54,6 +55,27 @@ class SMSController extends Controller
             });
         }
         
+        return redirect(route('sms.list'));
+    }
+
+
+    public function draft() {
+
+        return view('SMS.draft');
+    }
+
+    public function send(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'phone_numbers' => ['required'],
+            'message' => ['required']
+        ]);
+
+        if($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors());
+        }
+
+        SemaphoreService::send($request->phone_numbers, $request->message);
+
         return redirect(route('sms.list'));
     }
 }

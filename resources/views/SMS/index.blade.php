@@ -17,15 +17,22 @@
                     <h5 class="card-title">Message List</h5>
                 </div>
 
-                <form action="" method="post">
-                    @csrf
-                    <div class="px-3 pb-3 float-end d-flex align-items-center gap-3">
-                        <div>
-                            <span>Current Balance : <em class="text-primary">{{ number_format($balance['credit_balance']) }}</em></span>
-                        </div>
-                        <button type="submit" class="btn btn-outline-primary"><i class='bx bx-refresh'></i> Refresh</button>
+                <div class="px-3 pb-3 d-flex justify-content-between align-items-center gap-3">
+                    <div>
+                        <a href="{{ route('sms.draft') }}" class="btn btn-primary">
+                            <i class='bx bx-send'></i> Send SMS
+                        </a>
                     </div>
-                </form>
+                    <div >
+                        <form action="" method="post" class="d-flex align-items-center gap-3">
+                            @csrf
+                            <div>
+                                <span>Current Balance : <em class="text-primary">{{ number_format($balance['credit_balance']) }}</em></span>
+                            </div>
+                            <button type="submit" class="btn btn-outline-primary btn-sm"><i class='bx bx-refresh'></i> Refresh</button>
+                        </form>
+                    </div>
+                </div>
                                
                 <div class="table-responsive">
                     <table class="table table-striped">

@@ -26,9 +26,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(HealthCheckController::class)->prefix('health-check')->group(function () {
-    Route::get('/sms', 'checkSmsNotification');
-});
+// Route::controller(HealthCheckController::class)->prefix('health-check')->group(function () {
+//     Route::get('/sms', 'checkSmsNotification');
+// });
 
 Route::middleware('guest')->group(function () {
     Route::controller(AuthController::class)->group(function () {
@@ -57,6 +57,8 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'sms'], function() {
         Route::get('/', [SMSController::class, 'index'])->name('sms.list');
         Route::post('/', [SMSController::class, 'clearCache']);
+        Route::get('/draft', [SMSController::class, 'draft'])->name('sms.draft');
+        Route::post('/send', [SMSController::class, 'send'])->name('sms.send');
     });
 
     Route::prefix('requestors')->controller(RequestorController::class)->group(function () {
