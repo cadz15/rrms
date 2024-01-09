@@ -5,6 +5,11 @@
 
  @section('content')
      <div class="col-12">
+        @if(session()->has('successUpdate'))
+            <div class="alert alert-success" role="alert">
+                {{ session()->get('successUpdate')[0] }}
+            </div>
+        @endif
          <form action="{{ route('students.update', cryptor($student->id)) }}" method="post">
              @method('PUT')
              @csrf
@@ -127,6 +132,19 @@
                          <div class="col-lg-4 col-md-12">
 
                              <div class="form-group">
+                                 <label for="email">E-mail <span class="text-danger">*</span></label>
+                                 <input type="email" name="email" id="email"
+                                     class="form-control  {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                     placeholder="Contact Number" value="{{ $student->email }}">
+                                 <div class="invalid-feedback">
+                                     This field is required.
+                                 </div>
+                             </div>
+                         </div>
+
+                         <div class="col-lg-4 col-md-12">
+
+                             <div class="form-group">
                                  <label for="birth_date">Birthday <span class="text-danger">*</span></label>
                                  <input type="date" name="birth_date" id="birth_date"
                                      class="form-control  {{ $errors->has('birth_date') ? 'is-invalid' : '' }}"
@@ -137,7 +155,7 @@
                              </div>
                          </div>
 
-                         <div class="col-lg-8 col-md-12">
+                         <div class="col-lg-4 col-md-12">
 
                              <div class="form-group">
                                  <label for="birth_place">Birth Place <span class="text-danger">*</span></label>
@@ -165,7 +183,7 @@
 
                      </div>
 
-                     <div class="card-footer border-top">
+                     <div class="card-footer ">
                          <a href="{{ route('students.index') }}" class="btn btn-outline-danger gap-1"><i
                                  class='bx bx-exit'></i>
                              Cancel</a>

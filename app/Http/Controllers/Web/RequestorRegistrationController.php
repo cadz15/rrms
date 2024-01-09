@@ -53,6 +53,7 @@ class RequestorRegistrationController extends Controller
             "birth_date",
             "birth_place",
             "address",
+            "email",
         ]);
 
         $data['id_number'] = $request->student_number;
