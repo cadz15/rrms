@@ -238,6 +238,27 @@
                                 <div class="col-lg-4 col-md-12">
     
                                     <div class="form-group">
+                                        <label for="email">E-mail <span class="text-danger">*</span></label>
+                                        <input type="email" 
+                                            name="email" 
+                                            id="email" 
+                                            class="form-control  {{ $errors->has('email') ? 'is-invalid' : '' }}" 
+                                            placeholder="E-mail Address"
+                                            value="{{ old('email') }}"
+                                        >
+                                        <div class="invalid-feedback">
+                                            @if($errors->has('contact_number'))
+                                                {{ $errors->first('contact_number') }}
+                                            @else 
+                                                This field is required or number already in use.
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-lg-4 col-md-12">
+    
+                                    <div class="form-group">
                                         <label for="birth_date">Birthday <span class="text-danger">*</span></label>
                                         <input type="date" 
                                             name="birth_date" 

@@ -143,7 +143,28 @@
                                 value="{{ old('contact_number') }}"
                             >
                             <div class="invalid-feedback">
-                                This field is required.
+                                @if($errors->has('contact_number'))
+                                    {{ $errors->first('contact_number') }}
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-12">
+
+                        <div class="form-group">
+                            <label for="email">E-mail <span class="text-danger">*</span></label>
+                            <input type="email" 
+                                name="email" 
+                                id="email" 
+                                class="form-control  {{ $errors->has('email') ? 'is-invalid' : '' }}" 
+                                placeholder="Contact Number"
+                                value="{{ old('email') }}"
+                            >
+                            <div class="invalid-feedback">
+                                @if($errors->has('email'))
+                                    {{ $errors->first('email') }}
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -165,7 +186,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-8 col-md-12">
+                    <div class="col-lg-4 col-md-12">
 
                         <div class="form-group">
                             <label for="birth_place">Birth Place <span class="text-danger">*</span></label>

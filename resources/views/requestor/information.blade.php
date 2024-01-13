@@ -126,6 +126,19 @@
                          <div class="col-lg-4 col-md-12">
 
                              <div class="form-group">
+                                 <label for="email">E-mail <span class="text-danger">*</span></label>
+                                 <input type="email" name="email" id="email"
+                                     class="form-control  {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                     placeholder="Contact Number" value="{{ $student->email }}">
+                                 <div class="invalid-feedback">
+                                     This field is required.
+                                 </div>
+                             </div>
+                         </div>
+
+                         <div class="col-lg-4 col-md-12">
+
+                             <div class="form-group">
                                  <label for="birth_date">Birthday <span class="text-danger">*</span></label>
                                  <input type="date" name="birth_date" id="birth_date"
                                      class="form-control  {{ $errors->has('birth_date') ? 'is-invalid' : '' }}"
@@ -136,7 +149,7 @@
                              </div>
                          </div>
 
-                         <div class="col-lg-8 col-md-12">
+                         <div class="col-lg-4 col-md-12">
 
                              <div class="form-group">
                                  <label for="birth_place">Birth Place <span class="text-danger">*</span></label>
