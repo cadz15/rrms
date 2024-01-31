@@ -54,7 +54,7 @@ Route::middleware('auth')->group(function () {
     //     Route::post('account-setting', [DashboardController::class, 'changePassword'])->name('account.change.password');
     // });
 
-    Route::group(['prefix' => 'sms'], function() {
+    Route::group(['prefix' => 'sms', 'middleware' => 'forAdmin'], function() {
         Route::get('/', [SMSController::class, 'index'])->name('sms.list');
         Route::post('/', [SMSController::class, 'clearCache']);
         Route::get('/draft', [SMSController::class, 'draft'])->name('sms.draft');
@@ -138,20 +138,20 @@ Route::middleware('auth')->group(function () {
         Route::post('/completed', [RequestController::class, 'requestComplete'])->name('request.mark.completed');
     });
     
-    Route::group(['prefix' => 'payment'], function() {
-        Route::get('/cancelled-payment/{e_id}', function($e_id) {
-            $request = PayMongoService::markRequestAsSuccess(CryptService::decrypt($e_id));
-
-            return redirect('/');
-        })->name('payment.cancelled');
-        Route::get('/success-payment/{e_id}', function($e_id) {
-            $request = PayMongoService::markRequestAsSuccess(CryptService::decrypt($e_id));
-
-            return redirect('/');
-        })->name('payment.success');
-    });
 });
 
+Route::group(['prefix' => 'payment'], function() {
+    Route::get('/cancelled-payment/{e_id}', function($e_id) {
+        $request = PayMongoService::markRequestAsSuccess(CryptService::decrypt($e_id));
+
+        return redirect('/');
+    })->name('payment.cancelled');
+    Route::get('/success-payment/{e_id}', function($e_id) {
+        $request = PayMongoService::markRequestAsSuccess(CryptService::decrypt($e_id));
+
+        return redirect('/');
+    })->name('payment.success');
+});
 
 
 Route::get('/pages', function () {

@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('approved_by');
+            $table->unsignedBigInteger('approved_by')->nullable();
             $table->string('status')->default(RequestStatusEnum::PENDING_REVIEW);
             $table->string('checkout_url')->nullable();
             $table->string('reference_number')->nullable();

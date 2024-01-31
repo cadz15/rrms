@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('item_name');
             $table->integer('quantity');
             $table->float('price')->default(0);
-            $table->integer('status');
+            $table->integer('status')->default(0); // para asa ni uie
             $table->timestamps();
             $table->softDeletes();
         });

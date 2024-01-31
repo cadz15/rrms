@@ -30,12 +30,14 @@
             <span class="menu-header-text">Pages</span>
         </li>
 
-        <li class="menu-item {{ request()->is('sms*') ? 'active' : '' }}">
-            <a href="{{ route('sms.list') }}" class="menu-link">
-                <i class='menu-icon bx bx-envelope'></i>
-                <div data-i18n="SMS">SMS</div>
-            </a>
-        </li>
+        @if(auth()->user()->isAdmin())
+            <li class="menu-item {{ request()->is('sms*') ? 'active' : '' }}">
+                <a href="{{ route('sms.list') }}" class="menu-link">
+                    <i class='menu-icon bx bx-envelope'></i>
+                    <div data-i18n="SMS">SMS</div>
+                </a>
+            </li>
+        @endif
         
         <li class="menu-item {{ request()->is('requestors*') ? 'active' : '' }}">
             <a href="{{ route('requestors.list') }}" class="menu-link">
