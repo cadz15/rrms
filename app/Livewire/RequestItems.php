@@ -130,6 +130,12 @@ class RequestItems extends Component
             'status' => RequestStatusEnum::DECLINED
         ]);
 
+        RequestStatusHistory::create([
+            'request_id' => $this->request->id,
+            'status' => RequestStatusEnum::DECLINED,
+            'date_completed' => now()->format('Y-m-d'),
+        ]);
+
         $to = '63' . substr($request->user->contact_number, 1);
         $message = "Greetings " . $request->user->last_name . ", your request has been disapproved. Please visit your RRMS account for more details.";
 
