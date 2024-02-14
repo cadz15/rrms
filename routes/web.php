@@ -136,6 +136,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/history/{id}', [RequestController::class, 'viewRequest']);
         Route::post('/for-pickup', [RequestController::class, 'forPickup'])->name('request.mark.forpickup');
         Route::post('/completed', [RequestController::class, 'requestComplete'])->name('request.mark.completed');
+        Route::post('/declined', [RequestController::class, 'requestDeclined'])->name('request.force.declined');
     });
     
 });

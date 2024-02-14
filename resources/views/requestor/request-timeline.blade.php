@@ -48,7 +48,7 @@
     <!-- hide this form if request is approved -->
     <div class="row mb-3">
         <!-- <form action=""> -->           
-        <div class="col-6">
+        <div class=" col-8">
             <div class="card">
                 <h5 class="card-header border-bottom mb-2">Requested Item</h5>
                 <div class="card-body pb-0">
@@ -67,6 +67,15 @@
                         <h6 class="m-0 text-center">Total</h6>
                         <div class="text-end "><h5 class="text-primary">₱ {{ number_format((float) $total) }}</h5></div>
                     </div>
+
+
+                    @if(empty($paidHistory) && !empty($approvedHistory))
+                        <form action="{{route('request.force.declined')}}" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$request->id}}">
+                            <button class="btn btn-outline-danger col-12 my-2"> Decline Request </button>
+                        </form>
+                    @endif
 
 
                     @if(empty($pickupedHistory) && !empty($workedOnRequestHistory))
@@ -88,6 +97,9 @@
                 </div>
             </div>
         </div>
+        @if($request->status == App\Enums\RequestStatusEnum::PENDING_REVIEW->value)
+            <livewire:add-item :educations="$educations" :requestableItems="$requestableItems" :request="$request" />
+        @endif
         <!-- </form> -->
     </div>
 

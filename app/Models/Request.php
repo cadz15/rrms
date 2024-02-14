@@ -35,7 +35,7 @@ class Request extends Model
         ->latest()
         ->get()
         ->transform(function($request) {
-            $statuses = $request->requestHistory->transform(function($status) use($request){
+            $statuses = $request->requestHistory->sortByDesc('created_at')->transform(function($status) use($request){
                 $details = "";
                 $url = null;
 
@@ -61,69 +61,71 @@ class Request extends Model
                     'is_completed' => !empty($status->date_completed),
                     'details' => $details,
                     'checkout_url' => $url,
-                    'created_at' => $status->created_at->format('Y-m-d')
+                    'created_at' => $status->created_at->format('Y-m-d H:i:s')
                 ];
             });
 
             // add statuses that are currrently in progress.
-            if($request->status == RequestStatusEnum::PENDING_REVIEW->value) $statuses->push([
-                'id' => 0,
-                'status' => ucwords(strtolower(RequestStatusEnum::PENDING_REVIEW->prettyStatus())),
-                'date' => now()->format('D F j, Y'),
-                'is_completed' => false,
-                'details' => "Request is being reviewed by the registrar. Please wait for the registrar to approve the request.",
-                'checkout_url' => null,
-                'created_at' => now()->format('Y-m-d')
-            ]);
+            if($request->status == RequestStatusEnum::PENDING_REVIEW->value && !$statuses->contains('status', ucwords(strtolower(RequestStatusEnum::PENDING_REVIEW->prettyStatus())))) {
+                $statuses->push([
+                    'id' => 0,
+                    'status' => ucwords(strtolower(RequestStatusEnum::PENDING_REVIEW->prettyStatus())),
+                    'date' => now()->format('D F j, Y'),
+                    'is_completed' => false,
+                    'details' => "Request is being reviewed by the registrar. Please wait for the registrar to approve the request.",
+                    'checkout_url' => null,
+                    'created_at' => now()->format('Y-m-d H:i:s')
+                ]);
+            }
 
-            if($request->status == RequestStatusEnum::PENDING_PAYMENT->value) $statuses->push([
+            if($request->status == RequestStatusEnum::PENDING_PAYMENT->value && !$statuses->contains('status', ucwords(strtolower(RequestStatusEnum::PENDING_PAYMENT->prettyStatus())))) $statuses->push([
                 'id' => 0,
                 'status' => ucwords(strtolower(RequestStatusEnum::PENDING_PAYMENT->prettyStatus())),
                 'date' => now()->format('D F j, Y'),
                 'is_completed' => false,
                 'details' => "Your request is approved. Please pay by clicking the link below.",
                 'checkout_url' => $request->checkout_url,
-                'created_at' => now()->format('Y-m-d')
+                'created_at' => now()->format('Y-m-d H:i:s')
             ]);
 
-            if($request->status == RequestStatusEnum::WORKING_ON_REQUEST->value) $statuses->push([
+            if($request->status == RequestStatusEnum::WORKING_ON_REQUEST->value && !$statuses->contains('status', ucwords(strtolower(RequestStatusEnum::WORKING_ON_REQUEST->prettyStatus())))) $statuses->push([
                 'id' => 0,
                 'status' => ucwords(strtolower(RequestStatusEnum::WORKING_ON_REQUEST->prettyStatus())),
                 'date' => now()->format('D F j, Y'),
                 'is_completed' => false,
                 'details' => "Your request is being processed. Please wait for the registrar to complete your request.",
                 'checkout_url' => null,
-                'created_at' => now()->format('Y-m-d')
+                'created_at' => now()->format('Y-m-d H:i:s')
             ]);
 
-            if($request->status == RequestStatusEnum::FOR_PICK_UP->value) $statuses->push([
+            if($request->status == RequestStatusEnum::FOR_PICK_UP->value && !$statuses->contains('status', ucwords(strtolower(RequestStatusEnum::FOR_PICK_UP->prettyStatus())))) $statuses->push([
                 'id' => 0,
                 'status' => ucwords(strtolower(RequestStatusEnum::FOR_PICK_UP->prettyStatus())),
                 'date' => now()->format('D F j, Y'),
                 'is_completed' => false,
                 'details' => "Your request is ready for pick up. Please contact the registrar for pick up details.",
                 'checkout_url' => null,
-                'created_at' => now()->format('Y-m-d')
+                'created_at' => now()->format('Y-m-d H:i:s')
             ]);
 
-            // if($request->status == RequestStatusEnum::COMPLETED->value) $statuses->push([
+            // if($request->status == RequestStatusEnum::COMPLETED->value && !$statuses->contains('status', ucwords(strtolower(RequestStatusEnum::PENDING_REVIEW->COMPLETED())))) $statuses->push([
             //     'id' => 0,
             //     'status' => ucwords(strtolower(RequestStatusEnum::COMPLETED->prettyStatus())),
             //     'date' => now()->format('D F j, Y'),
             //     'is_completed' => false,
             //     'details' => "Your request has been completed. Thank you for your patience.",
             //     'checkout_url' => null,
-            //     'created_at' => now()->format('Y-m-d')
+            //     'created_at' => now()->format('Y-m-d H:i:s')
             // ]);
             
-            // if($request->status == RequestStatusEnum::DECLINED->value) $statuses->push([
+            // if($request->status == RequestStatusEnum::DECLINED->value && !$statuses->contains('status', ucwords(strtolower(RequestStatusEnum::PENDING_REVIEW->DECLINED())))) $statuses->push([
             //     'id' => 0,
             //     'status' => ucwords(strtolower(RequestStatusEnum::DECLINED->prettyStatus())),
             //     'date' => now()->format('D F j, Y'),
             //     'is_completed' => false,
             //     'details' => "Your request has been declined or cancelled.",
             //     'checkout_url' => null,
-            //     'created_at' => now()->format('Y-m-d')
+            //     'created_at' => now()->format('Y-m-d H:i:s')
             // ]);
 
             
@@ -135,7 +137,7 @@ class Request extends Model
                     'price' => $item->price,
                     'amount' => '₱ '. number_format($item->quantity * $item->price, 2),
                     'amount_raw' => $item->quantity * $item->price,
-                    'created_at' => $item->created_at->format('Y-m-d')
+                    'created_at' => $item->created_at->format('Y-m-d H:i:s')
                 ];
             });
 

@@ -8,45 +8,61 @@
         </div>
     @endif
     <div class="row gap-3 mt-1">
-        @foreach ($request->requestItems as $key => $item)
-            <div class="col-12 row">
-                <div class="col-4 align-items-center d-flex">
-                    <i wire:click="confirmDelete({{ $item->id }})" class='bx bx-trash me-1 text-danger cursor-pointer'></i>
-                    <span>{{ $item->item_name }}</span>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="item-{{ $key }}-qty">Copies / Qty</label>
-                        <input wire:model.lazy="items.{{$key}}.quantity" readonly 
-                        type="number" 
-                        class='form-control {{ $errors->has("items.$key.quantity") ? "is-invalid" : "" }}' 
-                        name="item-qty[{{ $key }}]" 
-                        id="item-{{ $key }}-qty" 
-                        wire:key="item-qty[{{ $key }}]"
-                        
-                        >
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="item-{{ $key }}-price">Price</label>
-                        <input wire:model.lazy="items.{{$key}}.price" 
-                        type="number" 
-                        class='form-control {{ $errors->has("items.$key.price") ? "is-invalid" : "" }}' 
-                        name="item-price[{{ $key }}]" 
-                        id="item-{{ $key }}-price" 
-                        wire:key="item-price[{{ $key }}]"
-                        >
-                    </div>
-                </div>
-            </div>
-            
-        <div class="loading-livewire" wire:loading wire:target="confirmDelete({{ $item->id }})">
-            <div class="d-flex align-items-center justify-content-center h-100">
-                <i class='bx bx-loader'></i>
-            </div>
+        <div class="table-responsive">
+
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Education</th>
+                        <th>Item Name</th>
+                        <th>Copies/Qty</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($request->requestItems as $key => $item)
+                        <tr>
+                            <td>
+                                <i wire:click="confirmDelete({{ $item->id }})" class='bx bx-trash me-1 text-danger cursor-pointer'></i>
+                            </td>
+                            <td>
+                                {{ $item->degree_name }}
+                            </td>
+                            <td>
+                                {{ $item->item_name }}
+                            </td>
+                            <td>
+                                <input wire:model.lazy="items.{{$key}}.quantity" readonly 
+                                    type="number" 
+                                    class='form-control {{ $errors->has("items.$key.quantity") ? "is-invalid" : "" }}' 
+                                    name="item-qty[{{ $key }}]" 
+                                    id="item-{{ $key }}-qty" 
+                                    wire:key="item-qty[{{ $key }}]"
+                                    style="min-width: 70px;"
+                                >
+                            </td>
+                            <td>
+                                <input wire:model.lazy="items.{{$key}}.price" 
+                                    type="number" 
+                                    class='form-control {{ $errors->has("items.$key.price") ? "is-invalid" : "" }}' 
+                                    name="item-price[{{ $key }}]" 
+                                    id="item-{{ $key }}-price" 
+                                    wire:key="item-price[{{ $key }}]"
+                                    style="min-width: 70px;"
+                                >
+                            </td>
+                        </tr>
+                        <div class="loading-livewire" wire:loading wire:target="confirmDelete({{ $item->id }})">
+                            <div class="d-flex align-items-center justify-content-center h-100">
+                                <i class='bx bx-loader'></i>
+                            </div>
+                        </div>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-        @endforeach
+        
     </div>
 
     <div class="card-footer border-top mt-3">

@@ -233,6 +233,7 @@ class MobileAppController extends Controller
                 'item_id' => $requestItem['itemId'],
                 'item_name' => $requestItem['itemName'],
                 'quantity' => $requestItem['quantity'],
+                'degree_name' => $requestItem['degreeName'],
             ]);
         }
 
