@@ -20,6 +20,8 @@ use App\Services\SmsNotificationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
+use function Ramsey\Uuid\v1;
+
 class StudentController extends Controller
 {
     public function index(Request $request)
@@ -347,6 +349,7 @@ class StudentController extends Controller
 
         return view('student.create-form', compact('degrees', 'majors'));
     }
+
 
     /**
      * Student Dashboard

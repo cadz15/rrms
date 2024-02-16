@@ -25,7 +25,20 @@ class AuthController extends Controller
             ]);
         }
 
-        return redirect()->intended(route('dashboard'));
+        
+        if(auth()->user()->isAdmin() || auth()->user()->isRegistrar()) {
+            
+            return redirect()->intended(route('dashboard'));
+        }else if(auth()->user()->isStudent()) {
+
+            return redirect()->intended(route('student.dashboard'));
+        }
+
+        auth()->logout();
+        
+        return back()->withErrors([
+            'username' => 'Invalid credentials provided.',
+        ]);
     }
 
     public function logout(Request $request)
