@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\RequestStatusEnum;
 use App\Enums\RoleEnum;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,6 +12,8 @@ use App\Http\Requests\StudentCreateRequest;
 use App\Models\Education;
 use App\Models\Major;
 use App\Models\Request as ModelsRequest;
+use App\Models\RequestableItem;
+use App\Models\RequestStatusHistory;
 use App\Models\Role;
 use App\Services\CryptService;
 use App\Services\SmsNotificationService;
@@ -293,7 +296,17 @@ class StudentController extends Controller
     {
         $id = CryptService::decrypt($encryptedId);
 
-        $validator = Validator::make($request->all(), [
+        // $validator = Validator::make($request->all(), [
+        //     'student_number' => ['required', 'unique:users,id_number,' . $id],
+        //     'last_name' => ['required'],
+        //     'first_name' => ['required'],
+        //     'suffix' => ['max:10'],
+        //     'sex' => 'required',
+        //     'contact_number' => ['required', 'regex:/^0\d{10}$/', 'unique:users,contact_number,' . $id],
+        //     'email' => ['required', 'email'],
+        // ]);
+
+        $request->validate([
             'student_number' => ['required', 'unique:users,id_number,' . $id],
             'last_name' => ['required'],
             'first_name' => ['required'],
@@ -333,5 +346,158 @@ class StudentController extends Controller
         $majors = Major::get();
 
         return view('student.create-form', compact('degrees', 'majors'));
+    }
+
+    /**
+     * Student Dashboard
+     *  - Show list of request
+     */
+    public function dashboard() {
+        $requests = ModelsRequest::where('user_id', auth()->user()->id)->latest()->paginate(10);
+
+        return view('student.dashboard', compact('requests'));  
+    }
+
+    public  function viewRequest($id) {
+        $request = ModelsRequest::where('id', $id)->where('user_id', auth()->user()->id)->with('user')->first();
+        
+        if(empty($request)) return abort(404);
+
+        $declinedHistory = RequestStatusHistory::where('request_id', $request->id)->where('status', RequestStatusEnum::DECLINED->value)->first();
+        $approvedHistory = RequestStatusHistory::where('request_id', $request->id)->where('status', RequestStatusEnum::PENDING_REVIEW->value)->first();
+        $paidHistory = RequestStatusHistory::where('request_id', $request->id)->where('status', RequestStatusEnum::PENDING_PAYMENT->value)->first();
+        $workedOnRequestHistory = RequestStatusHistory::where('request_id', $request->id)->where('status', RequestStatusEnum::WORKING_ON_REQUEST->value)->first();
+        $pickupedHistory = RequestStatusHistory::where('request_id', $request->id)->where('status', RequestStatusEnum::FOR_PICK_UP->value)->first();
+        $completedHistory = RequestStatusHistory::where('request_id', $request->id)->where('status', RequestStatusEnum::COMPLETED->value)->first();
+
+
+        $total = $request->requestItems->reduce(function($carry, $item) {
+            $price = $item->price?? 0;
+
+            return $carry + ($item->quantity * $price);
+        });
+
+        $degrees = Education::where('user_id', auth()->user()->id)->pluck('major_id');
+        $majors = Major::whereIn('id', $degrees)->get();
+
+        $requestableItems = RequestableItem::all();
+
+        $items = $request->requestItems->map(function($item) use($majors){
+            return [
+                'item_id' => $item->item_id,
+                'item_name' => $item->item_name,
+                'degree_id' => $majors->where('name', $item->degree_name)->pluck('id')->first(),
+                'degree_name' => $item->degree_name,
+                'quantity' => $item->quantity,
+            ];
+        })->toArray();
+
+        
+        return view('student.view-request', compact('items', 'majors', 'requestableItems', 'request', 'declinedHistory', 'approvedHistory', 'paidHistory', 'workedOnRequestHistory', 'pickupedHistory', 'completedHistory', 'total'));;
+    }
+
+
+    public function viewRequestCreate() {
+        $degrees = Education::where('user_id', auth()->user()->id)->pluck('major_id');
+        $majors = Major::whereIn('id', $degrees)->get();
+
+        $requestableItems = RequestableItem::all();
+
+        return view('student.create-request', compact('majors', 'requestableItems'));
+    }
+
+    public function cancelRequest($id) {
+        $request = ModelsRequest::where('id', $id)->where('user_id', auth()->user()->id)->with('user')->first();
+
+        if(empty($request)) return abort(404);
+
+        if($request->status == RequestStatusEnum::PENDING_REVIEW->value) {
+            $request->update([
+                'status' => RequestStatusEnum::DECLINED->value
+            ]);
+
+            return redirect(route('student.dashboard'));
+        }else {
+            return redirect()->back()->with('error_status', 'You cannot cancel this request. Request has already been approved.');
+        }
+    }
+
+
+    public function viewProfile() {
+        $student = auth()->user();
+
+        return view('student.information', compact('student'));
+    }
+
+
+    public  function updateProfile(Request $request) {
+        // $validator = Validator::make($request->all(), [
+        //     'last_name' => ['required'],
+        //     'first_name' => ['required'],
+        //     'suffix' => ['max:10'],
+        //     'sex' => 'required',
+        //     'contact_number' => ['required', 'regex:/^0\d{10}$/', 'unique:users,contact_number,' . auth()->user()->id],
+        //     'email' => ['required', 'email'],
+        // ]);
+
+        $request->validate([
+            'last_name' => ['required'],
+            'first_name' => ['required'],
+            'suffix' => ['max:10'],
+            'sex' => 'required',
+            'contact_number' => ['required', 'regex:/^0\d{10}$/', 'unique:users,contact_number,' . auth()->user()->id],
+            'email' => ['required', 'email'],
+        ]);
+
+        $data = $request->only([
+            'last_name',
+            'first_name',
+            'middle_name',
+            'suffix',
+            'sex',
+            'contact_number',
+            'email',
+            'birth_date',
+            'birth_place',
+            'address'
+        ]);
+
+        $student = User::where('id', auth()->user()->id)->first();
+
+        if(empty($student)) return abort(404);
+
+        $student->update($data);
+
+        return redirect()->back()->with('successUpdate', ['Student information successfully updated!']);
+    }
+
+    public function viewEducations() {
+        $educations = auth()->user()->educations()->latest('year_start')->paginate(15);
+
+        return view('student.education-list', compact('educations'));
+    }
+
+
+    public function viewChangePassword() {
+        return view('student.change-password');
+    }
+
+    public function changePass(Request $request) {
+        $request->validate([
+            'password' => ['required', 'min:3', 'max:50', 'confirmed'],
+        ]);
+
+        $student = User::where('id', auth()->user()->id)
+        ->where('role_id', Role::where('name', RoleEnum::STUDENT)->pluck('id')->first())
+        ->first();
+
+        if(empty($student)) return abort(404);
+
+        $student->update([
+            'password' => bcrypt($request->password)
+        ]);
+
+        
+        return redirect()->back()->with('success', 'Password successfully updated!');
     }
 }
