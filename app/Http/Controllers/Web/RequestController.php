@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Web;
 
 use App\Enums\RequestStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Education;
 use App\Models\Request;
+use App\Models\RequestableItem;
 use App\Models\RequestStatusHistory;
 use Illuminate\Http\Request as HttpRequest;
 use App\Services\PayMongoService;
@@ -88,6 +90,10 @@ class RequestController extends Controller
             return $carry + ($item->quantity * $price);
         });
 
+        //Student's Education
+        $educations = collect(Education::toApiData($request->user_id));
+        $requestableItems = RequestableItem::all();
+
         $declinedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::DECLINED->value)->first();
         $approvedHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::PENDING_REVIEW->value)->first();
         $paidHistory = RequestStatusHistory::where('request_id', $id)->where('status', RequestStatusEnum::PENDING_PAYMENT->value)->first();
@@ -101,7 +107,7 @@ class RequestController extends Controller
 
         }
         
-        return view('requestor.request-timeline', compact('request', 'total', 'declinedHistory', 'approvedHistory', 'paidHistory', 'workedOnRequestHistory', 'pickupedHistory', 'completedHistory'));
+        return view('requestor.request-timeline', compact('request', 'educations', 'requestableItems', 'total', 'declinedHistory', 'approvedHistory', 'paidHistory', 'workedOnRequestHistory', 'pickupedHistory', 'completedHistory'));
     }
 
 
@@ -175,5 +181,44 @@ class RequestController extends Controller
         
 
         return redirect()->back();
+    }
+
+    public function requestDeclined(HttpRequest $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+
+
+        if($validator->fails()) {
+            return redirect()->back()->with('error_status', 'Server error! Please refresh and try again.');
+        }
+
+        $studentRequest = Request::where('id', $request->id)->with('user')->first();
+
+        if(empty($studentRequest)) return abort(404);
+
+        $checkoutStatus = PayMongoService::markCheckoutExpired($studentRequest->reference_number);
+
+        if($checkoutStatus['status'] == 200) {
+            $studentRequest->update([
+                'status' => RequestStatusEnum::DECLINED
+            ]);
+
+            RequestStatusHistory::create([
+                'request_id' => $studentRequest->id,
+                'status' => RequestStatusEnum::DECLINED,
+                'date_completed' => now()->format('Y-m-d'),
+            ]);
+
+            $to = '63' . substr($studentRequest->user->contact_number, 1);
+            $message = "Greetings " . $studentRequest->user->last_name . ", your request has been declined. Please visit your RRMS account for more details.";
+
+            SemaphoreService::send($to, $message);
+
+            return redirect()->back();
+
+        }else {
+            return redirect()->back()->with('error_status', $checkoutStatus['message']);
+        }
     }
 }

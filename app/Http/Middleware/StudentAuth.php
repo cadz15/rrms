@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminAuth
+class StudentAuth
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class AdminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(auth()->user()->isAdmin() || auth()->user()->isRegistrar()) {
+        if(auth()->user()->isStudent()) {
             return $next($request);
         }
 

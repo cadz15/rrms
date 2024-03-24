@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('request_id');
             $table->unsignedBigInteger('item_id')->nullable();
+            $table->string('degree_name')->nullable();
             $table->string('item_name');
             $table->integer('quantity');
             $table->float('price')->default(0);

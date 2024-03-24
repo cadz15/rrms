@@ -217,9 +217,48 @@ class MobileAppController extends Controller
                 'errors' => $validator->errors(),
             ], Response::HTTP_UNAUTHORIZED);
         }
+        
+        $requestInvalid = false;
+        $invalidItems = [];
+
 
         //convert to laravel collection
         $requestItems = collect($request->new_request);
+
+
+        // Check if items currently requested
+        $requestIds = auth()
+        ->guard('api')
+        ->user()
+        ->requests()
+        ->whereNotIn('status', [RequestStatusEnum::COMPLETED, RequestStatusEnum::DECLINED])
+        ->pluck('id')
+        ->toArray();
+
+        $requestedItems = RequestItem::whereIn('request_id', $requestIds)->get();
+
+        foreach($requestItems as $requestItem) {
+            $foundItem = $requestedItems->where('item_id', $requestItem['itemId'])->where('degree_name', $requestItem['degreeName'])->first();
+
+            if(!empty($foundItem)) {
+                $requestInvalid = true;
+
+                array_push($invalidItems, [
+                    'item_name' => $requestItem['itemName'],
+                    'degree_name' => $requestItem['degreeName'],
+                ]);
+                
+            }
+        }
+
+
+        if($requestInvalid) {
+            return response()->json([
+                'message' => 'The requested item(s) is/are being processed right now.',
+                'invalid_items' => $invalidItems,
+            ], Response::HTTP_CONFLICT);
+        }
+
 
         $newRequest = ModelsRequest::create([
             'user_id' => auth()->guard('api')->user()->id,
@@ -233,6 +272,7 @@ class MobileAppController extends Controller
                 'item_id' => $requestItem['itemId'],
                 'item_name' => $requestItem['itemName'],
                 'quantity' => $requestItem['quantity'],
+                'degree_name' => $requestItem['degreeName'],
             ]);
         }
 

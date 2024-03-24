@@ -44,7 +44,7 @@ Route::middleware('guest')->group(function () {
     });
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'employeeAuth'])->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -136,8 +136,25 @@ Route::middleware('auth')->group(function () {
         Route::get('/history/{id}', [RequestController::class, 'viewRequest']);
         Route::post('/for-pickup', [RequestController::class, 'forPickup'])->name('request.mark.forpickup');
         Route::post('/completed', [RequestController::class, 'requestComplete'])->name('request.mark.completed');
+        Route::post('/declined', [RequestController::class, 'requestDeclined'])->name('request.force.declined');
     });
     
+});
+
+Route::group(['prefix' => 'students', 'middleware' => ['auth', 'studentAuth']], function () {
+    Route::get('/', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    Route::get('/request-history/{id}', [StudentController::class, 'viewRequest'])->name('student.request.history');
+    Route::get('/cancel-request/{id}', [StudentController::class, 'cancelRequest'])->name('student.request.cancel');
+    Route::get('/create-request', [StudentController::class, 'viewRequestCreate'])->name('student.request.create');
+    Route::get('/edit-request/{id}', [StudentController::class, 'viewRequest'])->name('student.request.edit');
+    Route::get('/profile/information', [StudentController::class, 'viewProfile'])->name('student.profile');
+    Route::put('/profile/information', [StudentController::class, 'updateProfile'])->name('student.profile.update');
+    Route::get('/profile/education', [StudentController::class, 'viewEducations'])->name('student.profile.education');
+    Route::get('/profile/change-password', [StudentController::class, 'viewChangePassword'])->name('student.profile.change.password');
+    Route::post('/profile/change-password', [StudentController::class, 'changePass'])->name('student.profile.change.password.update');
+
+    
+    Route::get('/logout', [AuthController::class, 'logout'])->name('student.logout');
 });
 
 Route::group(['prefix' => 'payment'], function() {

@@ -1,15 +1,11 @@
-@extends('layout.contentLayoutMaster')
+@extends('layout.contentLayoutStudent')
 
-@section('title', 'Request Timeline')
+@section('title', 'Request')
+
 
 @section('page-styles')
-
-<style>
-    .bg-muted {
-        background-color: #F8F8F8;
-    }
-
-    .loading-livewire {
+    <style>
+        .loading-livewire {
         position: absolute;
         top: 0;
         width: 100%;
@@ -24,15 +20,16 @@
         background-color: #000;
         opacity: 0.5;
     }
-</style>
+    </style>
 @endsection
 
 @section('content')
 
 
     <h5 class="py-3">
-        <span class="text-muted fw-light"> Request Item /</span>  {{ $request->user->full_name_last_name_first }}
+        <span class="text-muted fw-light"> Request /</span>  {{ $request->user->full_name_last_name_first }}
     </h5>
+
 
     @if($request->status == App\Enums\RequestStatusEnum::DECLINED->value)
         <div class="alert alert-danger" role="alert">
@@ -47,58 +44,32 @@
     @endif
     <!-- hide this form if request is approved -->
     <div class="row mb-3">
-        <!-- <form action=""> -->           
-        <div class=" col-8">
-            <div class="card">
-                <h5 class="card-header border-bottom mb-2">Requested Item</h5>
-                <div class="card-body pb-0">
-                @if($request->status == App\Enums\RequestStatusEnum::PENDING_REVIEW->value)
-                    <livewire:request-items :request="$request" />
-                @else
-                    <div class="d-flex justify-content-between flex-wrap mb-2">
-                        <ul>
-                            @foreach ($request->requestItems as $item)
-                                <li>{{$item->quantity}}x {{$item->item_name}} - ₱ {{ $item->quantity * $item->price }}</li>
-                            @endforeach
-                        </ul>
+        <!-- <form action=""> -->   
+        @if($request->status == App\Enums\RequestStatusEnum::PENDING_REVIEW->value)
+            <livewire:create-request :majors="$majors" :requestableItems="$requestableItems" :items="$items" :userId="auth()->user()->id" :requestId="$request->id" :mode="'update'" />
+        @else
+            <div class=" col-8">
+                <div class="card">
+                    <h5 class="card-header border-bottom mb-2">Requested Item</h5>
+                    <div class="card-body pb-0">
+                        <div class="d-flex justify-content-between flex-wrap mb-2">
+                            <ul>
+                                @foreach ($request->requestItems as $item)
+                                    <li>{{$item->quantity}}x {{$item->item_name}} - ₱ {{ $item->quantity * $item->price }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        
+                        <div class="float-end d-flex flex-column">
+                            <h6 class="m-0 text-center">Total</h6>
+                            <div class="text-end "><h5 class="text-primary">₱ {{ number_format((float) $total) }}</h5></div>
+                        </div>
+
+
+
                     </div>
-                    
-                    <div class="float-end d-flex flex-column">
-                        <h6 class="m-0 text-center">Total</h6>
-                        <div class="text-end "><h5 class="text-primary">₱ {{ number_format((float) $total) }}</h5></div>
-                    </div>
-
-
-                    @if(empty($paidHistory) && !empty($approvedHistory))
-                        <form action="{{route('request.force.declined')}}" method="post">
-                            @csrf
-                            <input type="hidden" name="id" value="{{$request->id}}">
-                            <button class="btn btn-outline-danger col-12 my-2"> Decline Request </button>
-                        </form>
-                    @endif
-
-
-                    @if(empty($pickupedHistory) && !empty($workedOnRequestHistory))
-                        <form action="{{route('request.mark.forpickup')}}" method="post">
-                            @csrf
-                            <input type="hidden" name="id" value="{{$request->id}}">
-                            <button class="btn btn-outline-success col-12 my-2"> Ready for pickup </button>
-                        </form>
-                    @endif
-
-                    @if(!empty($pickupedHistory) && !empty($workedOnRequestHistory) && empty($completedHistory))
-                        <form action="{{route('request.mark.completed')}}" method="post">
-                            @csrf
-                            <input type="hidden" name="id" value="{{$request->id}}">
-                            <button class="btn btn-outline-success col-12 my-2"> Mark as Complete </button>
-                        </form>
-                    @endif
-                @endif
                 </div>
             </div>
-        </div>
-        @if($request->status == App\Enums\RequestStatusEnum::PENDING_REVIEW->value)
-            <livewire:add-item :educations="$educations" :requestableItems="$requestableItems" :request="$request" />
         @endif
         <!-- </form> -->
     </div>

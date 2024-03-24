@@ -138,7 +138,8 @@ class PayMongoService {
             $dataResult = [
                 'payment_method_used' => 'pending',
                 'status' => 'pending',
-                'paid_at' => null
+                'paid_at' => null,
+                'checkout_id' => $checkOutSession->checkout_session_id
             ];
 
 
@@ -187,20 +188,56 @@ class PayMongoService {
                     'date_completed' => $paymentCheck['data']['paid_at']
                 ]);
 
-                RequestStatusHistory::firstOrCreate([
-                    'request_id' => $request->id,
-                    'status' => RequestStatusEnum::WORKING_ON_REQUEST->value
-                ], [
-                    'request_id' => $request->id,
-                    'status' => RequestStatusEnum::WORKING_ON_REQUEST->value,
-                    'date_completed' => ''
-                ]);
+                // RequestStatusHistory::firstOrCreate([
+                //     'request_id' => $request->id,
+                //     'status' => RequestStatusEnum::WORKING_ON_REQUEST->value
+                // ], [
+                //     'request_id' => $request->id,
+                //     'status' => RequestStatusEnum::WORKING_ON_REQUEST->value,
+                //     'date_completed' => ''
+                // ]);
             }
 
             return true;
         }
 
         return false;
+    }
+
+
+    public static function markCheckoutExpired($referenceNumber) {
+        $paymentCheck = self::checkReferenceNumber($referenceNumber);
+
+        if($paymentCheck['data']['status'] == 'pending') {
+            $checkout = Http::withBasicAuth(config('paymongo.api_secret'), '')
+            ->withHeaders([
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json'
+            ])
+            ->post(config('paymongo.checkout_url'). '/' . $paymentCheck['data']['checkout_id'] . '/expire');
+
+            $data = json_decode($checkout->body());
+
+            if($checkout->status() == 200) {
+                return [
+                    'status' => 200,
+                    'message' => 'Checkout expired!'
+                ];
+            }else {
+                return [
+                    'status' => $checkout->status(),
+                    'message' => 'Unable to decline request. Payment has already been made.',
+                    'errors' => $data->errors
+                ];
+            }
+        }else {
+            return [
+                'status' => 404,
+                'message' => 'Unable to decline request. Payment has already been made.',
+                'errors' => null
+            ];
+        }
+        
     }
 
     private static function generateReferenceNumber($requestorId) {

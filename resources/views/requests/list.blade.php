@@ -99,6 +99,9 @@
                                     @elseif ($request->status == App\Enums\RequestStatusEnum::FOR_PICK_UP->value)
 
                                         <span class="badge rounded-pill bg-label-primary">For pickup</span>
+                                    @elseif ($request->status == App\Enums\RequestStatusEnum::WORKING_ON_REQUEST->value)
+
+                                        <span class="badge rounded-pill bg-label-primary">Working on request</span>
                                     @elseif ($request->status == App\Enums\RequestStatusEnum::DECLINED->value)
 
                                         <span class="badge rounded-pill bg-label-danger">Declined</span>

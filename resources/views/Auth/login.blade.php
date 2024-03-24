@@ -47,7 +47,7 @@
                             <div class="d-flex justify-content-between">
                                 <label class="form-label" for="password">Password</label>
                                 <a href="#">
-                                    <small>Forgot Password?</small>
+                                    <!-- <small>Forgot Password?</small> -->
                                 </a>
                             </div>
                             <div class="form-group has-validation">
