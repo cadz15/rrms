@@ -37,6 +37,7 @@ RUN useradd -G www-data,root -u 100 -d /home/devuser devuser
 RUN mkdir -p /home/devuser/.composer && \
     chown -R devuser:devuser /home/devuser /var/www/html
 
-RUN a2enmod rewrite headers
+RUN a2enmod rewrite header
 
-ENTRYPOINT [ "./start-container.sh" ]
+CMD php artisan serve --host=0.0.0.0 --port=8181
+EXPOSE 8181
