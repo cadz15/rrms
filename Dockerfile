@@ -21,6 +21,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
+RUN composer dump-autoload --optimize
+
 # Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
