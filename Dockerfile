@@ -14,13 +14,16 @@ RUN apt update && apt install -y zlib1g-dev g++ libicu-dev zip libzip-dev libpq-
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
-# Composer Setup
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Copy composer files
+COPY composer.json composer.lock /var/www/html/
 
-# Copy Laravel files
-WORKDIR /var/www/html
-COPY . .
+# Install composer dependencies
+RUN composer install --no-interaction --no-scripts --no-autoloader
 
+# Copy the rest of your application code
+COPY . /var/www/html
+
+# Generate autoload files
 RUN composer dump-autoload --optimize
 
 # Set permissions
