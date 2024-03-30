@@ -24,5 +24,7 @@ COPY . .
 # Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
+CMD php artisan serve --host=0.0.0.0 
+
 # Expose port 80 (default HTTP port)
 EXPOSE 80
